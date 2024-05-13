@@ -1,0 +1,169 @@
+.footer{
+    color: white;
+    text-align: center;
+    padding: 0px 120px;
+    padding-top: 20px;
+    background-color: #4E3366;
+}
+
+.footer .top{
+    display: grid;
+    grid-template-columns: 30% 30% 40%;
+}
+
+.footer .top div{
+    padding: 20px;
+    text-align: start;
+    line-height: 150%;
+}
+
+.footer .top div .title{
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+} 
+
+.footer .top div .title::after{
+    content: "";
+    width: 50px;
+    height: 2px;
+    background-color: white;
+    display: block;
+    margin: 20px auto;
+    margin-bottom: 30px;
+    margin-left: 0px;
+}
+
+.footer .top .site-links .links{
+    display: flex;
+    flex-direction: column;
+}
+
+.footer .top .site-links a{
+    color: white;
+}
+
+.footer .top .our-newsletter{
+    margin-right: 30px;
+}
+
+.footer .top .our-newsletter form{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    border: 0.1px solid white;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.footer .top .our-newsletter form .email-icon{
+    padding: 10px;
+    background-color: #4E3366;
+    margin-right: -5px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.footer .top .our-newsletter form input{
+    max-width: 250px;
+    min-width: fit-content;
+    padding: 13px;
+    font-size: 14px;
+    background-color: #4E3366;
+    color: white;
+}
+.footer .top .our-newsletter form button{
+    padding: 11px 20px;
+    background-color: white;
+    margin-left: -5px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #4E3366;
+    border-radius: 0px 4px 4px 0px;
+    border: 1px solid white;
+}
+
+.footer .top .our-newsletter form a:hover{
+    background-color: #4E3366;
+    color: white;
+    transition: 0.3s;
+}
+
+.footer .bottom{
+    padding: 40px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer .bottom img{
+    display: block;
+    margin-top: -20px;
+    height: 65px;
+}
+
+.footer .bottom .social-media{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer .bottom .social-media a{
+    color: white;
+    box-shadow: 0px 0px 5px 0px white;
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.footer .bottom .social-media a:hover{
+    background-color: #4E3366;
+    transition: 0.3s;
+    scale: 1.2;
+}
+
+.footer .bottom .copy-right{
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 768px){
+    .footer{
+        padding: 0px 10px;
+        padding-top: 10px;
+    }
+    .footer .top{
+        grid-template-columns: 100%;
+    }
+
+    .footer .top .site-links .links{
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 0;
+    }
+
+    .footer .top .our-newsletter{
+        margin-right: 0px;
+    }
+
+    .footer .bottom{
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .footer .bottom img{
+        width: 100px;
+        margin-top: 0px;
+    }
+    
+}

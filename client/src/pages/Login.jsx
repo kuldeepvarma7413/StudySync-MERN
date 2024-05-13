@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
-
+import React, { useState } from 'react'
 import './css/Login.css'
-import Logo from '../images/StudySyncLogo.png'
+import Logo from '../images/logo.png'
 import Character from '../images/Character-sitting-chair.png'
 import Cactus from '../images/cactus.png'
 import { FcGoogle } from "react-icons/fc";
 import { SERVER_URL } from '../App'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Login() {
 
@@ -18,7 +17,7 @@ function Login() {
     async function loginUser(e) {
         e.preventDefault()
         try {
-            const response = await fetch(`${SERVER_URL}/api/login`, {
+            const response = await fetch(`${SERVER_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,8 +30,7 @@ function Login() {
             const data = await response.json()
             if(data.token){
                 localStorage.setItem('token', data.token)
-                alert('User logged in successfully')
-                navigate('/dashboard')
+                navigate('/')
             }else{
                 alert('User not found')
             }
@@ -54,7 +52,7 @@ function Login() {
                         <label htmlFor="email">Email</label>
                         <input type="text" id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='example@gmail.com' />
 
-                        <label htmlFor="password" className='password-label'>Password<span>Forgot Password?</span></label>
+                        <label htmlFor="password" className='password-label'>Password<Link to={'/forgot-password'}>Forgot Password?</Link></label>
                         <input type="password" id='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='********'/>
 
                         <button className='btn login-btn'>

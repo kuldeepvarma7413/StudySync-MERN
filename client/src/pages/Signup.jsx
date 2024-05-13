@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './css/Login.css'
-import Logo from '../images/StudySyncLogo.png'
+import Logo from '../images/logo.png'
 import Character from '../images/Character-sitting-chair.png'
 import Cactus from '../images/cactus.png'
 import { FcGoogle } from "react-icons/fc";
@@ -17,7 +17,7 @@ function Signup() {
     async function registerUser(e) {
         e.preventDefault()
         try {
-            const response = await fetch(`${SERVER_URL}/api/register`, {
+            const response = await fetch(`${SERVER_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ function Signup() {
                         <label htmlFor="email">Email</label>
                         <input type="text" id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='example@gmail.com' />
 
-                        <label htmlFor="password" className='password-label'>Password<span>Forgot Password?</span></label>
+                        <label htmlFor="password" className='password-label'>Password</label>
                         <input type="password" id='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='********'/>
 
                         <button className='btn login-btn'>
