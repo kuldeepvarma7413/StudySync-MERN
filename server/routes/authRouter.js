@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken'); // Import JWT for token generation
 const bcrypt = require('bcryptjs'); // Import bcrypt for password hashing
 
 // Registration route
-router.post('/auth/register', async (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password } = req.body; // Destructure request body
 
   try {
@@ -27,7 +27,7 @@ router.post('/auth/register', async (req, res) => {
 });
 
 // Login route
-router.post('/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body; // Destructure request body
 
   try {

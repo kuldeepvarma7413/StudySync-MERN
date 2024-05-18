@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SERVER_URL } from '../App'
 import {jwtDecode} from 'jwt-decode'
 
 
@@ -8,7 +7,7 @@ function Dashboard() {
 
     const navigate = useNavigate()    
     async function populateCode(){
-        const response = await fetch(`${SERVER_URL}/`, {
+        const response = await fetch(`api/`, {
             method: 'GET',
             headers: {
                 'x-access-token': localStorage.getItem('token')

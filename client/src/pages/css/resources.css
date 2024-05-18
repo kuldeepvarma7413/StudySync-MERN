@@ -1,0 +1,84 @@
+.resources-container{
+    padding: 20px 70px;
+}
+
+.filters select, .filters input{
+    width: fit-content;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: #eeeeee;
+    padding: 8px 10px;
+    padding-right: 20px;
+    border-radius: 24px;
+    font-weight: 700;
+}
+
+.filters .filter a{
+    border-left: 1px solid gray;
+    padding-left: 10px;
+    font-weight: 500;
+}
+
+.filters{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filters .filter{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
+
+.filters .filetype select{
+    background-color: #4E3366;
+    color: white;
+    min-width: 50px;
+    max-width: auto;
+    white-space: nowrap;
+    /* width: fit-content; */
+}
+
+/* results */
+
+.result{
+    margin-top: 30px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* resources */
+.resources{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: start;
+    align-items: start;
+    min-height: 400px;
+}
+
+/* pagination */
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    list-style: none;
+}
+
+.pagination li{
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: #EFE5FF;
+}
+
+.pagination li.active{
+    background: #4E3366;
+    color: white;
+}

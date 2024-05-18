@@ -4,7 +4,6 @@ import Logo from '../images/logo.png'
 import Character from '../images/Character-sitting-chair.png'
 import Cactus from '../images/cactus.png'
 import { FcGoogle } from "react-icons/fc";
-import { SERVER_URL } from '../App'
 import { Link, useNavigate } from 'react-router-dom'
 
 function Login() {
@@ -17,7 +16,7 @@ function Login() {
     async function loginUser(e) {
         e.preventDefault()
         try {
-            const response = await fetch(`${SERVER_URL}/auth/login`, {
+            const response = await fetch(`api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

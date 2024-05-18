@@ -5,7 +5,6 @@ import Logo from '../images/logo.png'
 import Character from '../images/Character-sitting-chair.png'
 import Cactus from '../images/cactus.png'
 import { FcGoogle } from "react-icons/fc";
-import { SERVER_URL } from '../App'
 
 function Signup() {
 
@@ -17,7 +16,7 @@ function Signup() {
     async function registerUser(e) {
         e.preventDefault()
         try {
-            const response = await fetch(`${SERVER_URL}/auth/register`, {
+            const response = await fetch(`api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

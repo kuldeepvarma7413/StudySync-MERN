@@ -15,7 +15,9 @@
   }
   
   .snackbar .symbol {
-    flex: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .snackbar .symbol h1 {
     font-size: 20px;

@@ -102,6 +102,7 @@
     display: block;
     margin-top: -20px;
     height: 65px;
+    filter: drop-shadow(2px 4px 6px black);
 }
 
 .footer .bottom .social-media{

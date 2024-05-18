@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 router.use((req, res, next) => {
-    const token = req.headers['authorization'];
+    var token = req.headers['authorization'];
+    token = token.replace('Bearer ', '')
     if(token){
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if(err){

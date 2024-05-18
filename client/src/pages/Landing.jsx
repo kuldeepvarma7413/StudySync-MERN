@@ -1,11 +1,9 @@
 import React from 'react'
-import Navbar from '../components/common/Navbar'
 import './css/landing.css'
 import standingMan from '../images/people-standing.png'
 import FeatureCard from '../components/cards/landing-feature-card'
 import PlayStore from '../images/googleplay.png'
 import StepCard from '../components/cards/StepCard'
-import Footer from '../components/common/Footer'
 
 function Landing() {
 
@@ -95,7 +93,6 @@ function Landing() {
 
   return (
     <div className='landing-page'>
-        <Navbar />
         <section className='landing-content'>
             <div className='left-content'>
               {/* // content */}
@@ -151,7 +148,6 @@ function Landing() {
         <section className="testimonials">
 
         </section>
-        <Footer />
     </div>
   )
 }
