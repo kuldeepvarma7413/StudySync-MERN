@@ -82,3 +82,27 @@
     background: #4E3366;
     color: white;
 }
+
+@media screen and (min-device-width: 481px) and (max-device-width: 1000px) { 
+    /* STYLES HERE */
+    .filter{
+        flex-wrap: wrap;
+        align-items: start;
+        gap: 10px;
+    }
+    .filters{
+        gap: 20px;
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    .filter{
+        flex-wrap: wrap;
+        align-items: start;
+        gap: 10px;
+    }
+    .filters{
+        flex-direction: column;
+        gap: 20px;
+    }
+}

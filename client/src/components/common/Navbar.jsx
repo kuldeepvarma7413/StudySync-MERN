@@ -50,7 +50,6 @@ const Navbar = () => {
   // add selected class when we click on the nav item
   const addSelectedClass = () => {
     const navItem = document.querySelectorAll('.nav__item');
-    console.log(navItem);
     navItem.forEach((item) => {
       item.addEventListener('click', () => {
         console.log("clicked")
@@ -59,6 +58,7 @@ const Navbar = () => {
       });
     });
   };
+  
 
   // container style
   const location = useLocation();

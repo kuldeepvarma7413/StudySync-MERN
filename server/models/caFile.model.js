@@ -11,15 +11,9 @@ const caFileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    teacherName: {
+    uploadedBy: {
         type: String,
-        required: true,
-        maxlength: 100
+        required: true
     },
     caNumber: {
         type: Number,
@@ -36,6 +30,14 @@ const caFileSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    likes: {
+        type: Number,
+        default: 0
     }
 });
 

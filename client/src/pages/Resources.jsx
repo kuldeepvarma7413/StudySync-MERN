@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./css/resources.css";
 import FileCard from "../components/cards/FileCard";
 import { useState } from "react";
@@ -6,10 +6,21 @@ import ReactPaginate from "react-paginate";
 import FooterSmall from "../components/common/FooterSmall";
 
 function Resources() {
+  // filters
+  const [fileType, setFileType] = useState("ppt");
+  const [subjectFilter, setSubjectFilter] = useState("");
+  const [uploadedByVal, setUploadedByVal] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const filesPerPage = 15; // Number of files per page
-  const files = [{}, {}, {}, {}, {}]; // Your array of files
+  const [files, setFiles] = useState([]); // Your array of files
+
+  // ca
+  const [caFiles, setCaFiles] = useState([]);
+  // courses
+  const [courses, setcourses] = useState([]);
 
   // Logic to slice files based on current page
   const indexOfLastFile = currentPage * filesPerPage;
@@ -21,23 +32,111 @@ function Resources() {
     setCurrentPage(pageNumber);
   };
 
+  useEffect(() => {
+    let queryParams = "?";
+    if (subjectFilter) {
+      queryParams += `&subject=${subjectFilter}`;
+    }
+    if (uploadedByVal) {
+      queryParams += `&uploadedBy=${uploadedByVal}`;
+    }
+    if (dateFilter) {
+      queryParams += `&date=${dateFilter}`;
+    }
+
+    if (fileType === "ppt") {
+      fetch(`http://localhost:5000/content/pdffiles${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.data);
+          setFiles(res.data);
+        });
+    } else {
+      // ca
+      fetch(`http://localhost:5000/content/cafiles${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.data);
+          setCaFiles(res.data);
+        });
+    }
+  }, [subjectFilter, uploadedByVal, dateFilter, fileType]);
+
+  useEffect(() => {
+    // fetch courses
+    fetch("/api/courses", {
+      headers: {
+        authorization:
+          "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setcourses(res.data);
+      });
+  }, []);
+
+  const handleClearFilters = () => {
+    setSubjectFilter("");
+    setDateFilter("");
+    setUploadedByVal("");
+  };
+
   return (
     <>
       <div className="resources-container">
         {/* filters */}
         <div className="filters">
           <div className="filter">
-            <select name="" id="">
+            <select
+              name=""
+              id=""
+              value={subjectFilter}
+              onChange={(e) => setSubjectFilter(e.target.value)}
+            >
               <option value="">Select Subject</option>
+              {courses.map((course, index) => (
+                <option key={index} value={course._id}>
+                  {course.courseCode}: {course.courseTitle}
+                </option>
+              ))}
             </select>
-            <input type="date" />
-            <select name="" id="">
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            />
+            <select
+              name=""
+              id=""
+              value={uploadedByVal}
+              onChange={(e) => setUploadedByVal(e.target.value)}
+            >
               <option value="">Uploaded By</option>
+              <option value="studysync">StudySync</option>
+              <option value="users">All</option>
             </select>
-            <a>Clear All</a>
+            <a onClick={handleClearFilters}>Clear All</a>
           </div>
           <div className="filetype">
-            <select name="" id="">
+            <select
+              name=""
+              id=""
+              value={fileType}
+              onChange={(e) => setFileType(e.target.value)}
+            >
               <option value="ppt">PPTs</option>
               <option value="ca">CA</option>
             </select>
@@ -45,13 +144,23 @@ function Resources() {
         </div>
         {/* result */}
         <div className="result">
-          <p>18 Results Found</p>
+          <p>{fileType=='ppt' ? files.length : caFiles.length} Results Found</p>
         </div>
         {/* resources */}
         <div className="resources">
-          {currentFiles.map((file, index) => (
-            <FileCard key={index} {...file} />
-          ))}
+          {fileType === "ppt" ? (
+            <>
+              {currentFiles.map((file, index) => (
+                <FileCard key={index} {...file} />
+              ))}
+            </>
+          ) : (
+            <>
+              {caFiles.map((file, index) => (
+                <FileCard key={index} {...file} />
+              ))}
+            </>
+          )}
         </div>
         <ReactPaginate
           pageCount={Math.ceil(files.length / filesPerPage)}

@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard";
 import OurTeam from "./pages/OurTeam";
 import Resources from "./pages/Resources";
 import "./App.css";
+import Upload from "./pages/Upload";
+import FileView from "./pages/FileView";
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/resources" element={<Resources />} />
+                <Route path="/upload" element={<Upload />} />
+                {/* sub routes */}
+                <Route path="/resources/view" element = {<FileView />}/> 
               </Routes>
             </div>
           }

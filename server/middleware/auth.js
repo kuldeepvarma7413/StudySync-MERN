@@ -11,7 +11,7 @@ router.use((req, res, next) => {
             if(err){
                 res.json({status: 'ERROR', error: 'Unauthorized request'})
             }else{
-                console.log(decoded)
+                req.user = decoded
                 next()
             }
         })

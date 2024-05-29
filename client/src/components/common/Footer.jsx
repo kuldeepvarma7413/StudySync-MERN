@@ -37,7 +37,6 @@ function Footer() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setEmail("");
         // show snackbar
         setMessage(data.message);

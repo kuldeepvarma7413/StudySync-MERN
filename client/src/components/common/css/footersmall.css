@@ -46,3 +46,21 @@
 .footer-small p{
     font-size: 12px;
 }
+
+@media screen and (min-width: 769px) {
+    
+}
+
+@media screen and (min-device-width: 481px) and (max-device-width: 768px) { 
+    .footer-small{
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    .footer-small{
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+}

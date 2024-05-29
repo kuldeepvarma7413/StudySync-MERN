@@ -9,6 +9,7 @@ const requireAuth = require("./middleware/auth");
 // routers
 const userRouter = require("./routes/authRouter");
 const contentRouter = require("./routes/contentRouter");
+const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
 
 const port = process.env.PORT || 5000;
@@ -23,17 +24,23 @@ mongoose
 
     // middleware
     app.use(cors());
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-    app.use((req, res, next)=>{
-        console.log(req.method, req.path)
-        next()
-    })
 
+    // routes which handle file uploads
+    
+    app.use(express.json({ limit: "50mb"}));
+    app.use(express.urlencoded({ limit: "50mb", extended: true }));
+    
+    app.use((req, res, next) => {
+      console.log(req.method, req.path);
+      console.log(`Request Size: ${req.headers['content-length']} bytes`)
+      next();
+    });
+    
     // routes
     app.use("/auth", userRouter);
     app.use("/content", requireAuth, contentRouter);
-    app.use('/subscribe', subscribeRouter)
+    app.use("/courses", requireAuth, courseRouter);
+    app.use("/subscribe", subscribeRouter);
 
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");

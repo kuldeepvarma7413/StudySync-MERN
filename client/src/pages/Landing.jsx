@@ -4,6 +4,7 @@ import standingMan from '../images/people-standing.png'
 import FeatureCard from '../components/cards/landing-feature-card'
 import PlayStore from '../images/googleplay.png'
 import StepCard from '../components/cards/StepCard'
+import Footer from '../components/common/Footer'
 
 function Landing() {
 
@@ -92,6 +93,7 @@ function Landing() {
   ]
 
   return (
+    <>
     <div className='landing-page'>
         <section className='landing-content'>
             <div className='left-content'>
@@ -149,6 +151,8 @@ function Landing() {
 
         </section>
     </div>
+          <Footer />
+    </>
   )
 }
 

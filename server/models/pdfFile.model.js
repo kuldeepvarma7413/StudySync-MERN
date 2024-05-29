@@ -21,6 +21,18 @@ const pdfFileSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    uploadedBy: {
+        type: String,
+        required: true
     }
 });
 
