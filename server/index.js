@@ -11,6 +11,7 @@ const userRouter = require("./routes/authRouter");
 const contentRouter = require("./routes/contentRouter");
 const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
+const reportRouter = require("./routes/reportRouter");
 
 const port = process.env.PORT || 5000;
 
@@ -41,6 +42,8 @@ mongoose
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
     app.use("/subscribe", subscribeRouter);
+    app.use("/report", requireAuth,reportRouter);
+
 
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");

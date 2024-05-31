@@ -13,8 +13,14 @@ function Login() {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
+    // msgs
+    const [errmsg, setErrmsg] = useState('')
+    const [successmsg, setSuccessmsg] = useState('')
+
     async function loginUser(e) {
         e.preventDefault()
+        setErrmsg('')
+        setSuccessmsg('')
         try {
             const response = await fetch(`api/auth/login`, {
                 method: 'POST',
@@ -27,13 +33,13 @@ function Login() {
                 })
             })
             const data = await response.json()
-            if(data.token){
+            if(data.status === 'ERROR'){
+                setErrmsg(data.message)
+            }else{
+                setSuccessmsg(data.message)
                 localStorage.setItem('token', data.token)
                 navigate('/')
-            }else{
-                alert('User not found')
             }
-            console.log(data)
         } catch (error) {
             console.log(error)
         }
@@ -53,7 +59,8 @@ function Login() {
 
                         <label htmlFor="password" className='password-label'>Password<Link to={'/forgot-password'}>Forgot Password?</Link></label>
                         <input type="password" id='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='********'/>
-
+                        {errmsg && <p className='errmsg'>{errmsg}</p>}
+                        {successmsg && <p className='successmsg'>{successmsg}</p>}
                         <button className='btn login-btn'>
                             Login
                             {/* icon */}

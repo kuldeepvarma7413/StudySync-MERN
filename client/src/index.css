@@ -17,7 +17,7 @@ button{
     padding: 10px 20px;
 }
 
-input{
+input, select, textarea{
     border: none;
     outline: none;
 }

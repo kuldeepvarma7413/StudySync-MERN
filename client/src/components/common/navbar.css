@@ -48,7 +48,7 @@
   align-items: center;
 }
 
-.nav__link {
+.nav__link{
   color: white;
   font-weight: var(--font-semi-bold);
   transition: color 0.4s;
@@ -64,6 +64,7 @@
 
 .nav__link.signup{
   background-color: #3A2645;
+  color: white;
   border-radius: 24px;
 }
 

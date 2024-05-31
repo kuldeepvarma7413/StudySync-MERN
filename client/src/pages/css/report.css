@@ -1,0 +1,60 @@
+.report-page {
+  background-color: #efe5ff;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 20px auto;
+  border-radius: 24px;
+  box-shadow: 0 2px 5px #efe5ff;
+}
+
+.report-page h1 {
+  color: #4e3366;
+  margin-bottom: 1rem;
+}
+
+.report-page label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4e3366;
+}
+
+.report-page input,
+.report-page select,
+.report-page textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.report-page textarea {
+  height: 10rem;
+}
+
+.report-page button {
+  background-color: #4e3366;
+  color: #fff;
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.report-page button:hover {
+  background-color: #3f274d;
+}
+
+
+@media screen and (max-width: 666px) {
+  .report-page {
+    margin: 0;
+    border-radius: 0px;
+  } 
+}

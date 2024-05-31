@@ -34,6 +34,7 @@ const Navbar = () => {
   };
 
   const Logout = () => {
+    handleProfileMenuClick()
     console.log("Logout");
     localStorage.removeItem("token");
     setAuthenticated(false);
@@ -145,9 +146,9 @@ const Navbar = () => {
                 <>
                   <img src={userImage} className="user-image" onClick={handleProfileMenuClick}/>
                   <ul className={`profile-menu ${profileMenu ? "show" : ""}`} >
-                    <li><NavLink to='/profile'>Profile</NavLink></li>
-                    <li><NavLink to='/report'>Report</NavLink></li>
-                    <li><NavLink onClick={Logout} className="nav_link">
+                    <li><NavLink to='/profile' onClick={()=>{handleProfileMenuClick(); closeMenuOnMobile();}}>Profile</NavLink></li>
+                    <li><NavLink to='/report' onClick={()=>{handleProfileMenuClick(); closeMenuOnMobile();}}>Report</NavLink></li>
+                    <li><NavLink onClick={()=>{Logout(); handleProfileMenuClick(); closeMenuOnMobile();}} className="nav_link">
                       Logout
                     </NavLink></li>
                   </ul>

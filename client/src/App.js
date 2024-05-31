@@ -10,6 +10,8 @@ import Resources from "./pages/Resources";
 import "./App.css";
 import Upload from "./pages/Upload";
 import FileView from "./pages/FileView";
+import Report from "./pages/Report";
+import EmailVerification from "./pages/EmailVerification";
 
 function App() {
   return (
@@ -28,8 +30,10 @@ function App() {
                 <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/upload" element={<Upload />} />
+                <Route path="/report" element={<Report />} />
                 {/* sub routes */}
                 <Route path="/resources/view" element = {<FileView />}/> 
+                <Route path="/users/:id/verify/:token" element = {<EmailVerification />}/> 
               </Routes>
             </div>
           }

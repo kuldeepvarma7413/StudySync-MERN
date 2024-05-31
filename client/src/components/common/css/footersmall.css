@@ -43,6 +43,10 @@
     font-size: 14px;
 }
 
+.footer-small ul li a{
+    color: white;
+}
+
 .footer-small p{
     font-size: 12px;
 }

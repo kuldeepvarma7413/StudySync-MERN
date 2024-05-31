@@ -145,7 +145,7 @@ function Landing() {
           <div>
             <p className='description'>StudySync is your ultimate companion for academic success. Whether you're a college student or a university enthusiast, this app is designed to help you excel in your studies. With StudySync, you can access a wealth of comprehensive notes and resources on a wide range of subjects right at your fingertips.</p>
           </div>
-          <a className='btn download-btn'><img src={PlayStore} alt="" /></a>
+          <a className='btn download-btn' onClick={()=>alert("App in progress")}><img src={PlayStore} alt="" /></a>
         </section>
         <section className="testimonials">
 
