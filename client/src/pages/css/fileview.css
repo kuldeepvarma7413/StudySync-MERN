@@ -12,7 +12,7 @@
     position: relative;
 }
 
-canvas{
+.fileview canvas{
     width: 100% !important;
     height: auto !important;
 }

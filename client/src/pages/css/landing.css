@@ -1,4 +1,4 @@
-section{
+.landing-page section{
     margin: 0px 120px;
     letter-spacing: 0.2px;
     word-spacing: 0.5px;
@@ -169,7 +169,7 @@ section{
         padding: 50px 20px;
     }
 
-    section{
+    .landing-page section{
         margin: 0px 30px;
     }
 
@@ -189,7 +189,7 @@ section{
         padding: 50px 20px;
     }
 
-    section{
+    .landing-page section{
         margin: 0px 20px;
     }
 
