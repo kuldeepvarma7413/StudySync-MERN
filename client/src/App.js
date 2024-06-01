@@ -12,6 +12,7 @@ import Upload from "./pages/Upload";
 import FileView from "./pages/FileView";
 import Report from "./pages/Report";
 import EmailVerification from "./pages/EmailVerification";
+import Practice from "./pages/Practice";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/resources" element={<Resources />} />
+                <Route path="/code-editor" element={<Practice />} />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/report" element={<Report />} />
                 {/* sub routes */}

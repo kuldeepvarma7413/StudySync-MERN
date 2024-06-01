@@ -58,15 +58,18 @@ const Navbar = () => {
         item.classList.add('selected');
       });
     });
-  };
-  
+  };  
 
   // container style
   const location = useLocation();
 
-  const containerStyle = location.pathname === "/"
+  const containerStyle = (location.pathname === "/")
     ? { background: 'linear-gradient(rgba(78, 51, 102, 0.8), rgba(78, 51, 102, 0.5), rgba(78, 51, 102, 0.02))' }
     : { background: 'none' };
+
+  const menuItemStyle = (location.pathname === "/code-editor")
+  ? { color: 'white' }
+  : { color: '#4e3366' };
 
   return (
     <header className="header">
@@ -82,9 +85,10 @@ const Navbar = () => {
           <ul className="nav__list">
             <li className="nav__item">
               <NavLink
-                to="/practice"
+                to="/code-editor"
                 className="nav__link"
                 onClick={closeMenuOnMobile}
+                style={menuItemStyle}
               >
                 Practice
               </NavLink>
@@ -94,6 +98,7 @@ const Navbar = () => {
                 to="/discuss"
                 className="nav__link"
                 onClick={closeMenuOnMobile}
+                style={menuItemStyle}
               >
                 Discuss
               </NavLink>
@@ -106,6 +111,7 @@ const Navbar = () => {
                 to="/upload"
                 className="nav__link"
                 onClick={closeMenuOnMobile}
+                style={menuItemStyle}
               >
                 Upload
               </NavLink>
@@ -115,6 +121,7 @@ const Navbar = () => {
                     to="/resources"
                     className="nav__link"
                     onClick={closeMenuOnMobile}
+                    style={menuItemStyle}
                   >
                     Resources
                   </NavLink>
@@ -125,7 +132,8 @@ const Navbar = () => {
                 <li className="nav__item">
                   <AnchorLink href="#download"
                   className="nav__link"
-                  onClick={closeMenuOnMobile}>
+                  onClick={closeMenuOnMobile}
+                  style={menuItemStyle}>
                     Download
                   </AnchorLink>
                 </li>
@@ -134,6 +142,7 @@ const Navbar = () => {
                     to="/our-team"
                     className="nav__link"
                     onClick={closeMenuOnMobile}
+                    style={menuItemStyle}
                   >
                     Our Team
                   </NavLink>
@@ -141,7 +150,7 @@ const Navbar = () => {
               </>
             )
           }
-            <li className="nav__item userProfile">
+            <li className="userProfile">
               {authenticated ? (
                 <>
                   <img src={userImage} className="user-image" onClick={handleProfileMenuClick}/>

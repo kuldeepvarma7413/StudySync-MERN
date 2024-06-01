@@ -1,0 +1,13 @@
+.language-selector{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+    width: fit-content;
+    margin-bottom: 15px;
+}
+
+.language-version{
+    color: rgb(102, 102, 102);
+    font-size: small;
+}
