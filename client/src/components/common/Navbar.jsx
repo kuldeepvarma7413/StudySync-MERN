@@ -58,7 +58,14 @@ const Navbar = () => {
         item.classList.add('selected');
       });
     });
-  };  
+
+    // add selected class based on window.location
+    const currentPath = window.location.pathname;
+    const currentNavItem = document.querySelector(`.nav__item a[href="${currentPath}"]`);
+    if (currentNavItem) {
+      currentNavItem.parentElement.classList.add('selected');
+    }
+  };
 
   // container style
   const location = useLocation();
@@ -164,10 +171,10 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <NavLink to="/login" className="nav__link nav__cta">
+                  <NavLink to="/login" className="nav__link nav__cta btn" style={menuItemStyle} >
                     Login
                   </NavLink>
-                  <NavLink to="/signup" className="nav__link nav__cta signup">
+                  <NavLink to="/signup" className="nav__link nav__cta signup btn">
                     Sign Up
                   </NavLink>
                 </>

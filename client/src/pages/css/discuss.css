@@ -1,0 +1,57 @@
+.discuss {
+    padding: 20px 80px;
+}
+
+.discuss .section-1, .section-2 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.section-1 p, .section-2 p {
+    font-weight: 500;
+}
+
+.ask-btn {
+    background-color: #4E3366;
+    color: white;
+    font-weight: 700;
+}
+
+.search-filter-div {
+    display: flex;
+    justify-content: right;
+    gap: 20px;
+}
+
+.search-filter-div .search {
+    background-color: #EFE5FF;
+    border-radius: 24px;
+    padding: 5px 15px;
+    width: 300px;
+}
+
+.search-filter-div .filters {
+    background-color: #EFE5FF;
+    border-radius: 24px;
+}
+
+.search-filter-div .filters input {
+    display: none;
+    font-size: 14px;
+}
+
+.search-filter-div label {
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 24px;
+    transition: background 0.5s;
+    font-size: 14px;
+    color: #4E3366;
+    font-weight: 500;
+}
+
+.search-filter-div .filters input:checked + label {
+    background-color: #4E3366;
+    color: white;
+}

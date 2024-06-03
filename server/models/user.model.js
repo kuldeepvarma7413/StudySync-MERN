@@ -6,8 +6,15 @@ const User = new mongoose.Schema({
     password: {type: String, required: true},
     deleted : {type: Boolean, default: false},
     verified : {type: Boolean, default: false},
-}, {collection: 'user-data'});
+    role: {type: String, default: 'user'},
+    createdAt: {type: Date, default: new Date()},
+    updatedAt: {type: Date, default: new Date()},
+    photo: {type: String},
+    answers: {type: [mongoose.Schema.Types.ObjectId], ref: 'Answer'},
+    questions: {type: [mongoose.Schema.Types.ObjectId], ref: 'Question'},
+}, {collection: 'users'});
 
+// username: {type: String, required: true, unique: true},
 const model = mongoose.model('UserData', User);
 
 module.exports = model;
