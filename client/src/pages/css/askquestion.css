@@ -1,0 +1,68 @@
+.ask-question {
+    padding: 20px 80px;
+}
+
+.arrow{
+    cursor: pointer;
+    background-color: #4E3366;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 24px;
+}
+
+.input-div{
+    padding: 10px 50px;
+    background-color: #FCFCFC;
+    border-radius: 24px;
+    margin: auto;
+    min-width: 500px;
+    max-width: 800px;
+    position: relative;
+}
+
+.ask-question .overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(32, 23, 40, 0.5);
+    /* display: none; */
+    justify-content: center;
+    border-radius: 24px;
+    cursor: not-allowed;
+    align-items: center;
+}
+
+.input-div textarea{
+    width: 96.5%;
+    row-gap: 2px;
+    min-height: auto;
+    background-color: #EFE5FF;
+    font-size: 16px;
+}
+
+.input-top{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+    font-size: 20px;
+}
+
+.tags-instructions{
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: red;
+}
+
+.ask-question .submit-btn{
+    background-color: #4E3366;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    margin: 20px auto;
+}
+
+.ask-question .btn:hover, .arrow:hover{
+    background-color: #3A2645;
+}

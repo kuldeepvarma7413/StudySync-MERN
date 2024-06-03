@@ -13,6 +13,8 @@ import FileView from "./pages/FileView";
 import Report from "./pages/Report";
 import EmailVerification from "./pages/EmailVerification";
 import Practice from "./pages/Practice";
+import Discuss from "./pages/Discuss";
+import AskQuestion from "./pages/AskQuestion";
 
 function App() {
   return (
@@ -33,8 +35,10 @@ function App() {
                 <Route path="/code-editor" element={<Practice />} />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/report" element={<Report />} />
+                <Route path="/discuss" element={<Discuss />} />
                 {/* sub routes */}
-                <Route path="/resources/view" element = {<FileView />}/> 
+                <Route path="/resources/view" element = {<FileView />}/>
+                <Route path="/discuss/ask-question" element = {<AskQuestion />}/>
                 <Route path="/users/:id/verify/:token" element = {<EmailVerification />}/> 
               </Routes>
             </div>
