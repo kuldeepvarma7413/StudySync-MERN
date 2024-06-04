@@ -21,6 +21,10 @@ const questionSchema = new mongoose.Schema({
         ref: userSchema,
         default: [],
     },
+    views: {
+        type: Number,
+        default: 0,
+    },
     downvotes: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: userSchema,

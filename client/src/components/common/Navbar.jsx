@@ -9,7 +9,7 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
-  const userImage = "https://www.w3schools.com/howto/img_avatar.png";
+  const [userImage, setUserImage] = useState("");
   // snackbar
   const [SnackbarType, setSnackBarType] = useState('false');
   const [message, setMessage]=useState('');
@@ -22,6 +22,28 @@ const Navbar = () => {
     }
     addSelectedClass();
   }, []);
+
+  useEffect(() => {
+    
+    if (authenticated) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      fetch(`/api/users/${user._id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "OK") {
+            console.log(data.user.photo);
+            setUserImage(data.user.photo);
+          }
+        });
+    }
+  }, [authenticated]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
