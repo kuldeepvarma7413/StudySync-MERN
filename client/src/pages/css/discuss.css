@@ -2,7 +2,7 @@
     padding: 20px 80px;
 }
 
-.discuss .section-1, .section-2 {
+.discuss .section-1, .discuss .section-2, .discuss .section-3 {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
@@ -49,9 +49,16 @@
     font-size: 14px;
     color: #4E3366;
     font-weight: 500;
+    user-select: none;
 }
 
 .search-filter-div .filters input:checked + label {
     background-color: #4E3366;
     color: white;
+}
+
+.section-3.questions{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }

@@ -38,6 +38,7 @@ function Login() {
             }else{
                 setSuccessmsg(data.message)
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('user', JSON.stringify(data.user))
                 navigate('/')
             }
         } catch (error) {
