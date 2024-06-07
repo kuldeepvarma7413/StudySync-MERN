@@ -30,6 +30,7 @@ jobs:
       - name: client install
         run: |
           cd client
+          export CI=false
           npm install
           npm run build
           cp -r ./build ../server/public
