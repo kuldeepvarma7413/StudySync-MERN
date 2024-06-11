@@ -33,7 +33,6 @@ function QuestionView() {
       .then((res) => res.json())
       .then((data) => {
         setQuestion(data);
-        console.log(data);
         setIsLoading(false);
       });
   }, []);
@@ -49,7 +48,6 @@ function QuestionView() {
       .then((res) => res.json())
       .then((data) => {
         setAnswers(data);
-        console.log(data);
         setIsAnswerLoading(false);
       });
   }, []);
@@ -84,7 +82,6 @@ function QuestionView() {
             .then((res) => res.json())
             .then((data) => {
               setAnswers(data);
-              console.log(data);
             });
         }
       });
@@ -116,7 +113,7 @@ function QuestionView() {
               </div>
               <div className="details">
                 <h3>
-                  <NavLink>{question.title}</NavLink>
+                  <NavLink className="question-title">{question.title}</NavLink>
                 </h3>
                 <p className="description">{question.description}</p>
                 <div className="bottom">

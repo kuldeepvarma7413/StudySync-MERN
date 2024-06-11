@@ -1,5 +1,6 @@
 import React from "react";
 import "./css/question.css";
+import { NavLink } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
 import { BiSolidUpvote } from "react-icons/bi";
 import { FaReply } from "react-icons/fa";
@@ -26,7 +27,7 @@ function Question({ question }) {
         </div>
       </div>
       <div className="details">
-        <h3>{question.title}</h3>
+        <h3><NavLink to={`view-question/${question._id}`}>{question.title}</NavLink></h3>
         <p>{question.description}</p>
         <div className="bottom">
           <div className="tags">
