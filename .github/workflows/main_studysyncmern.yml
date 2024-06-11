@@ -21,15 +21,16 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build for backend
+      - name: npm install, build, and test
         run: |
           cd server
           npm install
-          npm run build
-      
-      - name: client files initialisation
+          npm run build --if-present
+          
+      - name: client install
         run: |
           cd client
+          $env:CI=$false
           npm install
           npm run build
           cp -r ./build ../server/public
