@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -19,30 +19,19 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '18.x'
 
       - name: npm install, build, and test
         run: |
-          cd server
           npm install
           npm run build --if-present
-          
-      - name: client install
-        run: |
-          cd client
-          export CI=false
-          npm install
-          npm run build
-          cp -r ./build ../server/public
-
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
+          npm run test --if-present
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: release.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,20 +47,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C0789E41F22B435280144E7EBCEB6DA0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_88B71CD4838A44719CD5E96B6D4C41D4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F065BAE644E5459DA94891693696DFCC }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4EC8035B612947DE83FBD0C5D323BE1D }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6A571D27565A4DBDAD8361FEC66B8A8B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_417FE0DB89D741F582AAE23166099B08 }}
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
         with:
           app-name: 'studysyncmern'
           slot-name: 'Production'
