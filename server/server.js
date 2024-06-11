@@ -14,6 +14,7 @@ const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
 const reportRouter = require("./routes/reportRouter");
 const questionRouter = require("./routes/questionRouter");
+const answerRouter = require("./routes/answerRouter");
 const userRouter = require("./routes/userRouter");
 
 const port = process.env.PORT || 5000;
@@ -46,6 +47,7 @@ mongoose
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
     app.use('/questions', questionRouter);
+    app.use('/answers', answerRouter);
     app.use("/subscribe", subscribeRouter);
     app.use("/report", requireAuth,reportRouter);
 

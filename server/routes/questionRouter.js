@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 
     // To populate user and answers fields for each question, you need to do it manually
     for (let question of questions) {
-        question.user = await User.findById(question.user).select('photo email');
+      question.user = await User.findById(question.user).select("photo email");
       question.answers = await Answer.find({ question: question._id });
     }
 
@@ -27,10 +27,10 @@ router.get("/", async (req, res) => {
 // get question by id
 router.get("/:id", async (req, res) => {
   try {
-    const question = await Question.findById(req.params.id);
-    // return user details with question not only user id
-    question.populate("user").populate("answers").execPopulate();
-
+    let question = await Question.findById(req.params.id).lean();
+    question.user = await User.findById(question.user).select("photo email");
+    question.answers = await Answer.find({ question: question._id });
+    
     res.json(question);
   } catch (err) {
     res.status(400).json("Error: " + err);

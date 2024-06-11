@@ -1,6 +1,11 @@
 .question-card .details h3 a {
   display: block;
   font-size: 20px;
+  color: #4E3366;
+}
+
+.question-card .details .question-title{
+    cursor: text;
 }
 
 .question-card .details p.description{
