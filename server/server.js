@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 // middleware
 const requireAuth = require("./middleware/auth");
@@ -52,6 +53,11 @@ mongoose
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");
     });
+
+    app.use(express.static("../client/build"));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+    })
 
     app.listen(port, (err) => {
       if (err) throw err;
