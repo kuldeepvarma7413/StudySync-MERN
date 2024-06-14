@@ -22,7 +22,7 @@ function Login() {
         setErrmsg('')
         setSuccessmsg('')
         try {
-            const response = await fetch(`api/auth/login`, {
+            const response = await fetch(`https://studysync-uunh.onrender.com/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

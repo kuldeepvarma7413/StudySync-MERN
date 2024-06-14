@@ -16,7 +16,7 @@ function Report() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("/api/report", {
+    fetch("https://studysync-uunh.onrender.com/report", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
