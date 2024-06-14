@@ -43,7 +43,7 @@ function AskQuestion() {
   const handleSubmit = () => {
     if (isTitle && isDescription && isTags && tag.length > 0) {
       // send request if all fields are unblocked (all fields have content) and also check tags in end
-      fetch(`/api/questions/add`, {
+      fetch(`https://studysync-uunh.onrender.com/questions/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

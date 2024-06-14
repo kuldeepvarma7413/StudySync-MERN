@@ -23,7 +23,7 @@ function QuestionView() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/api/questions/${questionId}`, {
+    fetch(`https://studysync-uunh.onrender.com/questions/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function QuestionView() {
   }, []);
   useEffect(() => {
     setIsAnswerLoading(true);
-    fetch(`/api/answers/${questionId}`, {
+    fetch(`https://studysync-uunh.onrender.com/answers/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ function QuestionView() {
   const handlePostAnswer = (e) => {
     e.preventDefault();
     if (answerDescription.length === 0) return alert("Please write something");
-    fetch(`/api/answers/add`, {
+    fetch(`https://studysync-uunh.onrender.com/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ function QuestionView() {
         console.log(data);
         if (data.status === "OK") {
           changeAnswerDescription("");
-          fetch(`/api/answers/${questionId}`, {
+          fetch(`https://studysync-uunh.onrender.com/answers/${questionId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

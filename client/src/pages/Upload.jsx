@@ -85,8 +85,8 @@ function Upload() {
 
     fetch(
       filetype === true
-        ? "/api/content/add-pdffile"
-        : "/api/content/add-cafile",
+        ? "https://studysync-uunh.onrender.com/content/add-pdffile"
+        : "https://studysync-uunh.onrender.com/content/add-cafile",
       {
         method: "POST",
         body: formData,
@@ -119,7 +119,7 @@ function Upload() {
 
   // fetch courses
   useEffect(() => {
-    fetch("/api/courses", {
+    fetch("https://studysync-uunh.onrender.com/courses", {
       headers: {
         authorization:
           "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),

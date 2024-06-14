@@ -27,7 +27,7 @@ const Navbar = () => {
     
     if (authenticated) {
       const user = JSON.parse(localStorage.getItem('user'));
-      fetch(`/api/users/${user._id}`, {
+      fetch(`https://studysync-uunh.onrender.com/users/${user._id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
