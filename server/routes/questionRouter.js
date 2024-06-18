@@ -8,9 +8,18 @@ const requireAuth = require("../middleware/auth");
 // get all questions
 router.get("/", async (req, res) => {
   try {
-    const questions = await Question.find();
+    const questions = await Question.find().lean();
+    // Now questions is an array of plain JavaScript objects
+
+    // To populate user and answers fields for each question, you need to do it manually
+    for (let question of questions) {
+      question.user = await User.findById(question.user).select("photo email");
+      question.answers = await Answer.find({ question: question._id });
+    }
+
     res.json(questions);
   } catch (err) {
+    console.log(err);
     res.status(400).json("Error: " + err);
   }
 });
@@ -18,7 +27,10 @@ router.get("/", async (req, res) => {
 // get question by id
 router.get("/:id", async (req, res) => {
   try {
-    const question = await Question.findById(req.params.id);
+    let question = await Question.findById(req.params.id).lean();
+    question.user = await User.findById(question.user).select("photo email");
+    question.answers = await Answer.find({ question: question._id });
+    
     res.json(question);
   } catch (err) {
     res.status(400).json("Error: " + err);
@@ -28,9 +40,9 @@ router.get("/:id", async (req, res) => {
 // add question
 router.post("/add", requireAuth, async (req, res) => {
   try {
-    const user = await User.findById(req.user);
-    const { title, description, tags } = req.body;
-    console.log(req.body);
+    const user = await User.findOne({ email: req.user.email });
+    const { title, description, tag } = req.body;
+    const tags = tag.split(",");
     const newQuestion = new Question({
       title,
       description,
@@ -38,13 +50,12 @@ router.post("/add", requireAuth, async (req, res) => {
       user: user._id,
     });
     await newQuestion.save();
-    console.log(newQuestion);
     user.questions.push(newQuestion._id);
-    console.log(user);
     await user.save();
     console.log("Question added!");
-    res.json("Question added!");
+    res.json({ status: "OK", message: "Question added successfully" });
   } catch (err) {
+    console.log(err);
     res.status(400).json("Error: " + err);
   }
 });

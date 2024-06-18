@@ -122,7 +122,7 @@ router.post("/login", async (req, res) => {
       { name: user.name, email: user.email, accountType: user.accountType},
       process.env.JWT_SECRET
     ); // Generate JWT
-    res.json({ status: "OK", token, message: "User logged in successfully" });
+    res.json({ status: "OK", token, user, message: "User logged in successfully" });
   } catch (err) {
     console.error(err); // Log the error for debugging
     res.json({ status: "ERROR", error: "Login failed" }); // Generic error message

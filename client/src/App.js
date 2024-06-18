@@ -16,6 +16,7 @@ import Practice from "./pages/Practice";
 import Discuss from "./pages/Discuss";
 import AskQuestion from "./pages/AskQuestion";
 import GoogleSuccess from "./pages/GoogleSuccess";
+import QuestionView from "./pages/QuestionView";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/report" element={<Report />} />
                 <Route path="/discuss" element={<Discuss />} />
+                <Route path="/discuss/view-question/:id" element={<QuestionView />} />
                 {/* sub routes */}
                 <Route path="/resources/view" element = {<FileView />}/>
                 <Route path="/discuss/ask-question" element = {<AskQuestion />}/>

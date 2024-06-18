@@ -1,5 +1,15 @@
 .ask-question {
     padding: 20px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pathline{
+    display: flex;
+    gap: 10px;
+    justify-content: start;
+    width: 100%;
 }
 
 .arrow{

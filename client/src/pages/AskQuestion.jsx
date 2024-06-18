@@ -13,7 +13,7 @@ function AskQuestion() {
   // values
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
+  const [tag, setTags] = useState("");
 
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
@@ -41,9 +41,9 @@ function AskQuestion() {
   };
 
   const handleSubmit = () => {
-    if (isTitle && isDescription && isTags && tags.length > 0) {
+    if (isTitle && isDescription && isTags && tag.length > 0) {
       // send request if all fields are unblocked (all fields have content) and also check tags in end
-      fetch("/questions/add", {
+      fetch(`https://studysync-uunh.onrender.com/questions/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,20 +52,21 @@ function AskQuestion() {
         body: JSON.stringify({
           title,
           description,
-          tags,
+          tag,
         }),
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.error) {
-            setMessage(data.error);
-            setSnackBarType("error");
-            snackbarRef.current.show();
-          } else {
+          if (data.status === "OK") {
             setMessage("Question added successfully");
             setSnackBarType("success");
             snackbarRef.current.show();
+            // stop for 1 second
+            setTimeout(() => {}, 1000);
             window.location.href = "/discuss";
+          }else{
+            // throw exception
+            throw new Error("Failed to add question");
           }
         })
         .catch((error) => {
@@ -138,7 +139,7 @@ function AskQuestion() {
               type="text"
               rows={1}
               id="title"
-              value={tags}
+              value={tag}
               onChange={(e) => setTags(e.target.value)}
               placeholder="Enter tags here"
             />

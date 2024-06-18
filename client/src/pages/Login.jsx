@@ -16,31 +16,32 @@ function Login() {
   const [errmsg, setErrmsg] = useState("");
   const [successmsg, setSuccessmsg] = useState("");
 
-  async function loginUser(e) {
-    e.preventDefault();
-    setErrmsg("");
-    setSuccessmsg("");
-    try {
-      const response = await fetch(`api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      const data = await response.json();
-      if (data.status === "ERROR") {
-        setErrmsg(data.message);
-      } else {
-        setSuccessmsg(data.message);
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
+    async function loginUser(e) {
+        e.preventDefault()
+        setErrmsg('')
+        setSuccessmsg('')
+        try {
+            const response = await fetch(`https://studysync-uunh.onrender.com/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            })
+            const data = await response.json()
+            if(data.status === 'ERROR'){
+                setErrmsg(data.message)
+            }else{
+                setSuccessmsg(data.message)
+                localStorage.setItem('token', data.token)
+                navigate('/')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
   }
 

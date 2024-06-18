@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 // middleware
 const requireAuth = require("./middleware/auth");
@@ -15,6 +16,7 @@ const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
 const reportRouter = require("./routes/reportRouter");
 const questionRouter = require("./routes/questionRouter");
+const answerRouter = require("./routes/answerRouter");
 
 const port = process.env.PORT || 5000;
 
@@ -47,6 +49,7 @@ mongoose
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
     app.use('/questions', questionRouter);
+    app.use('/answers', answerRouter);
     app.use("/subscribe", subscribeRouter);
     app.use("/report", requireAuth,reportRouter);
 
@@ -54,6 +57,11 @@ mongoose
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");
     });
+
+    app.use(express.static("../client/build"));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+    })
 
     app.listen(port, (err) => {
       if (err) throw err;

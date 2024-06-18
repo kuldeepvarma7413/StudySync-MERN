@@ -28,7 +28,7 @@ function Footer() {
       return;
     }
 
-    fetch(`api/subscribe`, {
+    fetch(`https://studysync-uunh.onrender.com/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

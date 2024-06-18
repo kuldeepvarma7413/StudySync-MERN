@@ -13,6 +13,7 @@ const Navbar = () => {
   const [userImage, setUserImage] = useState(
     "https://www.w3schools.com/howto/img_avatar.png"
   );
+  
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
   const [message, setMessage] = useState("");
@@ -22,6 +23,28 @@ const Navbar = () => {
     addSelectedClass();
     fetchData();
   }, []);
+
+  useEffect(() => {
+    
+    if (authenticated) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      fetch(`https://studysync-uunh.onrender.com/users/${user._id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "OK") {
+            console.log(data.user.photo);
+            setUserImage(data.user.photo);
+          }
+        });
+    }
+  }, [authenticated]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
