@@ -1,31 +1,20 @@
 const express = require("express");
 const router = express.Router();
-
-const Question = require("../models/question.model");
 const User = require("../models/user.model");
-const Answer = require("../models/answer.model");
-const requireAuth = require("../middleware/auth");
 
-// get all users
+// get user by email and account type
 router.get("/", async (req, res) => {
+  const { email, accountType } = req.query;
   try {
-    const users = await User.find().lean();
-    res.json(users);
+    console.log(email, accountType);
+    const user = await User.findOne({ email: email, accountType: accountType });
+    if (!user) {
+      return res.json({ status: "ERROR", message: "User not found" });
+    }
+    return res.json({ status: "OK", user });
   } catch (err) {
-    console.log(err);
-    res.status(400).json("Error: " + err);
-  }
-});
-
-// get user by id
-router.get("/:id", async (req, res) => {
-  try {
-    console.log("hii");
-    const user = await User.findById(req.params.id);
-    res.json({ status: "OK", user });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json("Error: " + err);
+    console.error(err);
+    return res.json({ status: "ERROR", message: "Server error" });
   }
 });
 

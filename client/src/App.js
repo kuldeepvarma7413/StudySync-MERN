@@ -15,6 +15,7 @@ import EmailVerification from "./pages/EmailVerification";
 import Practice from "./pages/Practice";
 import Discuss from "./pages/Discuss";
 import AskQuestion from "./pages/AskQuestion";
+import GoogleSuccess from "./pages/GoogleSuccess";
 import QuestionView from "./pages/QuestionView";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/resources/view" element = {<FileView />}/>
                 <Route path="/discuss/ask-question" element = {<AskQuestion />}/>
                 <Route path="/users/:id/verify/:token" element = {<EmailVerification />}/> 
+                <Route path="/google-auth-success/:token" element = {<GoogleSuccess />}/> 
               </Routes>
             </div>
           }

@@ -8,14 +8,15 @@ const path = require("path");
 const requireAuth = require("./middleware/auth");
 
 // routers
+const requestRouter = require("./routes/requestRouter");
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 const contentRouter = require("./routes/contentRouter");
 const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
 const reportRouter = require("./routes/reportRouter");
 const questionRouter = require("./routes/questionRouter");
 const answerRouter = require("./routes/answerRouter");
-const userRouter = require("./routes/userRouter");
 
 const port = process.env.PORT || 5000;
 
@@ -42,8 +43,9 @@ mongoose
     });
     
     // routes
+    app.use("/request", requestRouter);
     app.use("/auth", authRouter);
-    app.use("/users", requireAuth, userRouter);
+    app.use("/user", userRouter);
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
     app.use('/questions', questionRouter);

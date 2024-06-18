@@ -21,10 +21,11 @@
 }
 
 .input-div{
-    padding: 10px 50px;
+    padding: 10px 0px;
     background-color: #FCFCFC;
     border-radius: 24px;
-    width: 800px;
+    margin: auto;
+    width: 80%;
     position: relative;
 }
 
@@ -43,21 +44,22 @@
 }
 
 .input-div textarea{
-    width: 96.5%;
     row-gap: 2px;
     min-height: auto;
     background-color: #EFE5FF;
     font-size: 16px;
+    margin: 0px 20px;
 }
 
 .input-top{
     display: flex;
     justify-content: space-between;
-    margin: 10px 0px;
+    margin: 10px 20px;
     font-size: 20px;
 }
 
 .tags-instructions{
+    margin: 0px 20px;
     margin-bottom: 5px;
     font-size: 12px;
     color: red;
