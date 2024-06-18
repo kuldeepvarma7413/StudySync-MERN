@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
-import "./footer.css";
+import "./css/footer.css";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaTelegramPlane } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
@@ -28,7 +28,7 @@ function Footer() {
       return;
     }
 
-    fetch(`https://studysync-uunh.onrender.com/subscribe`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

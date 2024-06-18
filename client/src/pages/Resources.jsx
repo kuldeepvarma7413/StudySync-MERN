@@ -45,7 +45,7 @@ function Resources() {
     }
 
     if (fileType === "ppt") {
-      fetch(`https://studysync-uunh.onrender.com/content/pdffiles${queryParams}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdffiles${queryParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function Resources() {
         });
     } else {
       // ca
-      fetch(`https://studysync-uunh.onrender.com/content/cafiles${queryParams}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/cafiles${queryParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ function Resources() {
 
   useEffect(() => {
     // fetch courses
-    fetch("https://studysync-uunh.onrender.com/courses", {
+    fetch("${process.env.REACT_APP_BACKEND_URL}/courses", {
       headers: {
         authorization:
           "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),

@@ -14,7 +14,7 @@ function EmailVerification() {
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `https://studysync-uunh.onrender.com/auth/${param.id}/verify/${param.token}`;
+				const url = `${process.env.REACT_APP_BACKEND_URL}/auth/${param.id}/verify/${param.token}`;
 				fetch(url).then(res=>res.json()).then(data=>{
                     if(data.status === 200){
                         setValidUrl(true);

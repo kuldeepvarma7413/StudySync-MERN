@@ -18,12 +18,16 @@ function QuestionView() {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
 
+  const [votes, setVotes] = useState(0);
+  const [voted, setVoted] = useState(false);
+  const [downvoted, setDownvoted] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isAnswerLoading, setIsAnswerLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`https://studysync-uunh.onrender.com/questions/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -33,12 +37,13 @@ function QuestionView() {
       .then((res) => res.json())
       .then((data) => {
         setQuestion(data);
+        setVotes(data.upvotes.length);
         setIsLoading(false);
       });
   }, []);
   useEffect(() => {
     setIsAnswerLoading(true);
-    fetch(`https://studysync-uunh.onrender.com/answers/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +61,7 @@ function QuestionView() {
   const handlePostAnswer = (e) => {
     e.preventDefault();
     if (answerDescription.length === 0) return alert("Please write something");
-    fetch(`https://studysync-uunh.onrender.com/answers/add`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +77,7 @@ function QuestionView() {
         console.log(data);
         if (data.status === "OK") {
           changeAnswerDescription("");
-          fetch(`https://studysync-uunh.onrender.com/answers/${questionId}`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -87,29 +92,81 @@ function QuestionView() {
       });
   };
 
+  // upvote and downvote
+
+  // const addVote = () => {
+  //   if (votes == question.upvotes.length) {
+  //     setVotes(votes + 1);
+  //     setVoted(true);
+  //     setDownvoted(false);
+  //   } else if (votes - 1 == question.upvotes.length) {
+  //     setVotes(votes - 1);
+  //     setVoted(false);
+  //     setDownvoted(false);
+  //   } else if (votes == question.upvotes.length - 1) {
+  //     setVotes(votes + 2);
+  //     setVoted(true);
+  //     setDownvoted(false);
+  //   } else {
+  //     return;
+  //   }
+  // };
+
+  // const removeVote = () => {
+  //   // if already upvoted remove that vote and -1 vote else -1 vote
+  //   if (votes == question.upvotes.length) {
+  //     setVotes(votes - 1);
+  //     setVoted(false);
+  //     setDownvoted(true);
+  //   } else if (votes + 1 == question.upvotes.length) {
+  //     setVotes(votes + 1);
+  //     setVoted(false);
+  //     setDownvoted(false);
+  //   } else if (votes == question.upvotes.length + 1) {
+  //     setVotes(votes - 2);
+  //     setVoted(false);
+  //     setDownvoted(true);
+  //   } else {
+  //     return;
+  //   }
+  // };
+
   return (
     <>
       <div className="question-view">
         {isLoading && <p className="loader"></p>}
         {!isLoading && (
           <>
+            <p className="pathline">
+              <NavLink to={"/discuss"}>Discuss</NavLink> &gt;
+              <NavLink>{questionId}</NavLink>
+            </p>
             <div className="question-card">
               <div className="analysis">
+                <img src={question.user.photo} alt="user image" />
                 <div className="data-analysis">
                   <span>
-                    <FaRegEye />
-                    <p>{question.views}</p>
+                    {/* <FaRegEye /> */}
+                    <p>{question.views} views</p>
                   </span>
                   <span>
-                    <FaReply />
-                    <p>{question.answers.length}</p>
+                    {/* <FaReply /> */}
+                    <p>{question.answers.length} answers</p>
                   </span>
                 </div>
-                <div className="analysis-action">
-                  <BiSolidUpvote className="upvote" />
-                  <p>{question.upvotes.length}</p>
-                  <BiSolidUpvote className="downvote" />
-                </div>
+                {/* <div className="analysis-action">
+                  <BiSolidUpvote
+                    className="upvote"
+                    onClick={addVote}
+                    style={voted && { color: "#4E3366" }}
+                  />
+                  <p>{votes}</p>
+                  <BiSolidUpvote
+                    className="downvote"
+                    onClick={removeVote}
+                    style={downvoted && { color: "#4E3366" }}
+                  />
+                </div> */}
               </div>
               <div className="details">
                 <h3>
@@ -123,10 +180,7 @@ function QuestionView() {
                     })}
                   </div>
                   <p>
-                    <span>
-                      <img src={question.user.photo} alt="user image" />
-                      {question.user.email}
-                    </span>
+                    <span>{question.user.email}</span>
                     <p>asked {timeAgo(question.createdAt)}</p>
                   </p>
                 </div>
@@ -136,18 +190,19 @@ function QuestionView() {
             <p className="answers-title">Answers</p>
             {/* all answers */}
             {isAnswerLoading && <p className="loader loader-small"></p>}
-            {answers && (
+            {answers.length > 0 && (
+              <>
               <div className="answers">
                 {answers.map((answer, index) => {
                   return (
                     <div className="question-card answer-card">
                       <div className="analysis">
                         <img src={answer.user.photo} alt="user image" />
-                        <div className="analysis-action">
+                        {/* <div className="analysis-action">
                           <BiSolidUpvote className="upvote" />
                           <p>{answer.upvotes.length}</p>
                           <BiSolidUpvote className="downvote" />
-                        </div>
+                        </div> */}
                       </div>
                       <div className="details">
                         <p className="description">{answer.description}</p>
@@ -160,6 +215,7 @@ function QuestionView() {
                   );
                 })}
                 {/* reply */}
+              </div>
                 <form>
                   <div className="reply">
                     <textarea
@@ -168,10 +224,12 @@ function QuestionView() {
                       required={true}
                       onChange={(e) => changeAnswerDescription(e.target.value)}
                     ></textarea>
-                    <button onClick={(e)=>handlePostAnswer(e)}>Post Answer</button>
+                    <button onClick={(e) => handlePostAnswer(e)}>
+                      Post Answer
+                    </button>
                   </div>
                 </form>
-              </div>
+                </>
             )}
           </>
         )}

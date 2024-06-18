@@ -20,7 +20,7 @@ function Signup() {
     setErrmsg("");
     setSuccessmsg("");
     try {
-      const response = await fetch(`https://studysync-uunh.onrender.com/auth/register`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,7 +8,7 @@ function Discuss() {
     const [questions, setQuestions] = useState([])
 
     useEffect(() => {
-        fetch('https://studysync-uunh.onrender.com/questions',{
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/questions`,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

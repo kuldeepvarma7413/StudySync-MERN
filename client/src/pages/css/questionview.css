@@ -4,6 +4,13 @@
   color: #4E3366;
 }
 
+.question-card .data-analysis{
+    flex-direction: column;
+}
+.question-card .data-analysis span{
+    flex-direction: row;
+}
+
 .question-card .details .question-title{
     cursor: text;
 }
@@ -53,14 +60,19 @@
 
 .question-view .question-card .analysis-action{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     font-size: 30px;
     gap: 5px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .question-view .question-card .analysis-action p{
-    font-size: 24px;
+    font-size: 20px;
+}
+
+.question-view .question-card .analysis-action svg{
+    font-size: 20px;
 }
 
 .question-view .question-card .analysis-action svg:hover{
@@ -93,7 +105,7 @@
     flex-direction: column;
     gap: 20px;
     justify-content: center;
-    align-items: center;
+    align-items: end;
 }
 
 .question-view .answers-title{
@@ -101,6 +113,7 @@
     color: #4E3366;
     font-weight: 500;
     margin-left: 50px;
+    width: 100%;
 }
 
 .question-view .reply{
@@ -108,17 +121,18 @@
     flex-direction: row;
     justify-content: right;
     gap: 10px;
-    margin-left: 50px;
     width: 100%;
 }
 
 .question-view form{
-    width: 75%;
+    width: 100%;
+    margin-top: 20px;
+    max-width: 1000px;
 }
 
 .question-view .reply textarea{
     width: 100%;
-    height: 100px;
+    height: 40px;
     padding: 10px;
     font-size: 16px;
     background-color: #EFE5FF;
@@ -141,11 +155,7 @@
 }
 
 .answer-card{
-    width: 700px;
-}
-
-.answer-card .analysis{
-    flex-direction: row;
+    width: 80%;
 }
 
 .answer-card .analysis-action{
