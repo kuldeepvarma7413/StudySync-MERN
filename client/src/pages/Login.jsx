@@ -1,88 +1,114 @@
-import React, { useState } from 'react'
-import './css/Login.css'
-import Logo from '../images/logo.png'
-import Character from '../images/Character-sitting-chair.png'
-import Cactus from '../images/cactus.png'
+import React, { useState } from "react";
+import "./css/Login.css";
+import Logo from "../images/logo.png";
+import Character from "../images/Character-sitting-chair.png";
+import Cactus from "../images/cactus.png";
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  // input values for email and password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-    // input values for email and password
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const navigate = useNavigate()
+  // msgs
+  const [errmsg, setErrmsg] = useState("");
+  const [successmsg, setSuccessmsg] = useState("");
 
-    // msgs
-    const [errmsg, setErrmsg] = useState('')
-    const [successmsg, setSuccessmsg] = useState('')
-
-    async function loginUser(e) {
-        e.preventDefault()
-        setErrmsg('')
-        setSuccessmsg('')
-        try {
-            const response = await fetch(`api/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            })
-            const data = await response.json()
-            if(data.status === 'ERROR'){
-                setErrmsg(data.message)
-            }else{
-                setSuccessmsg(data.message)
-                localStorage.setItem('token', data.token)
-                navigate('/')
-            }
-        } catch (error) {
-            console.log(error)
-        }
+  async function loginUser(e) {
+    e.preventDefault();
+    setErrmsg("");
+    setSuccessmsg("");
+    try {
+      const response = await fetch(`api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const data = await response.json();
+      if (data.status === "ERROR") {
+        setErrmsg(data.message);
+      } else {
+        setSuccessmsg(data.message);
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
     }
+  }
 
+  function navigateURL(url) {
+    window.location.href = url;
+  }
+
+  async function auth() {
+    const response = await fetch("http://localhost:5000/request", {
+      method: "POST",
+    });
+    const data = await response.json();
+    navigateURL(data.url);
+  }
 
   return (
-    <div className='login-container'>
-        <div className='login-container-main'>
-            <div className="left-side">
-                <div className='form-container'>
-                    <img src={Logo} alt="" className='logo-login'/>
+    <div className="login-container">
+      <div className="login-container-main">
+        <div className="left-side">
+          <div className="form-container">
+            <img src={Logo} alt="" className="logo-login" />
 
-                    <form onSubmit={loginUser}>
-                        <label htmlFor="email">Email</label>
-                        <input type="text" id='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='example@gmail.com' />
+            <form onSubmit={loginUser}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@gmail.com"
+              />
 
-                        <label htmlFor="password" className='password-label'>Password<Link to={'/forgot-password'}>Forgot Password?</Link></label>
-                        <input type="password" id='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='********'/>
-                        {errmsg && <p className='errmsg'>{errmsg}</p>}
-                        {successmsg && <p className='successmsg'>{successmsg}</p>}
-                        <button className='btn login-btn'>
-                            Login
-                            {/* icon */}
-                        </button>
-                    </form>
+              <label htmlFor="password" className="password-label">
+                Password<Link to={"/forgot-password"}>Forgot Password?</Link>
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="********"
+              />
+              {errmsg && <p className="errmsg">{errmsg}</p>}
+              {successmsg && <p className="successmsg">{successmsg}</p>}
+              <button className="btn login-btn">
+                Login
+                {/* icon */}
+              </button>
+            </form>
 
-                    <p>or continue with</p>
+            <p>or continue with</p>
 
-                    <button className='btn google-btn'>
-                        <FcGoogle size={22}/>
-                    </button>
+            <button className="btn google-btn" onClick={auth}>
+              <FcGoogle size={22} />
+            </button>
 
-                    <p className='login-line'>Don't have an account yet? <a href='/signup'>Sign up for free</a></p>
-                </div>
-            </div>
-            <div className="right-side">
-                <img src={Cactus} alt="" className='cactus'/>
-                <img src={Character} alt="" className='character'/>
-            </div>
+            <p className="login-line">
+              Don't have an account yet? <a href="/signup">Sign up for free</a>
+            </p>
+          </div>
         </div>
+        <div className="right-side">
+          <img src={Cactus} alt="" className="cactus" />
+          <img src={Character} alt="" className="character" />
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

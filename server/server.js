@@ -7,7 +7,9 @@ const mongoose = require("mongoose");
 const requireAuth = require("./middleware/auth");
 
 // routers
-const userRouter = require("./routes/authRouter");
+const requestRouter = require("./routes/requestRouter");
+const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 const contentRouter = require("./routes/contentRouter");
 const courseRouter = require("./routes/courseRouter");
 const subscribeRouter = require("./routes/subscribeRouter");
@@ -39,7 +41,9 @@ mongoose
     });
     
     // routes
-    app.use("/auth", userRouter);
+    app.use("/request", requestRouter);
+    app.use("/auth", authRouter);
+    app.use("/user", userRouter);
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
     app.use('/questions', questionRouter);
