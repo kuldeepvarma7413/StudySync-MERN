@@ -134,7 +134,7 @@ router.post("/login", async (req, res) => {
 const oAuth2Client = new OAuth2Client({
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri: "http://localhost:5000/auth"
+  redirectUri: `${process.env.REACT_APP_BACKEND_URL}/auth`
 });
 
 async function getUserData(access_token) {
@@ -165,13 +165,13 @@ router.get("/", async (req, res) => {
         { name: newUser.name, email: newUser.email, accountType: newUser.accountType},
         process.env.JWT_SECRET
       );
-      return res.redirect(`${process.env.CLIENT_URL}/google-auth-success/${token}`);
+      return res.redirect(`${process.env.BASE_URL}/google-auth-success/${token}`);
     }else{
         const token = jwt.sign(
           { name: user.name, email: user.email, accountType: user.accountType},
           process.env.JWT_SECRET
           ); // Generate JWT
-      return res.redirect(`${process.env.CLIENT_URL}/google-auth-success/${token}`);
+      return res.redirect(`${process.env.BASE_URL}/google-auth-success/${token}`);
     }
   } catch (err) {
     console.log("Error with signing in with google " + err);

@@ -26,11 +26,16 @@ router.get("/", async (req, res) => {
 
 // get question by id
 router.get("/:id", async (req, res) => {
+  console.log("fetching question");
   try {
     let question = await Question.findById(req.params.id).lean();
+    // increase views count
+    question.views += 1;
+    await Question.findByIdAndUpdate(req.params.id, { views: question.views });
+
     question.user = await User.findById(question.user).select("photo email");
     question.answers = await Answer.find({ question: question._id });
-    
+
     res.json(question);
   } catch (err) {
     res.status(400).json("Error: " + err);

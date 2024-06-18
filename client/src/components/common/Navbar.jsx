@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { IoClose, IoMenu } from "react-icons/io5";
 import AnchorLink from "react-anchor-link-smooth-scroll";
-import "./navbar.css";
+import "./css/navbar.css";
 import Logo from "../../images/logo.png";
 import { jwtDecode } from "jwt-decode";
 
@@ -28,7 +28,7 @@ const Navbar = () => {
     
     if (authenticated) {
       const user = JSON.parse(localStorage.getItem('user'));
-      fetch(`https://studysync-uunh.onrender.com/users/${user._id}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${user._id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const Navbar = () => {
       const decoded = jwtDecode(token);
       // fetch user data and store in local storage
       try {
-        const res = await fetch(`http://localhost:5000/user/?email=${decoded.email}&accountType=${decoded.accountType}`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/?email=${decoded.email}&accountType=${decoded.accountType}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -86,6 +86,7 @@ const Navbar = () => {
     handleProfileMenuClick();
     setAuthenticated(false);
     localStorage.removeItem("token");
+    window.location.href = "/";
     // show snackbar
     setMessage("Log out successful");
     setSnackBarType("success");

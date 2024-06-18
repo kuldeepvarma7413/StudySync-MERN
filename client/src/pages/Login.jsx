@@ -21,7 +21,7 @@ function Login() {
         setErrmsg('')
         setSuccessmsg('')
         try {
-            const response = await fetch(`https://studysync-uunh.onrender.com/auth/login`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,14 +43,14 @@ function Login() {
             console.log(error)
         }
     }
-  }
 
   function navigateURL(url) {
     window.location.href = url;
   }
 
   async function auth() {
-    const response = await fetch("http://localhost:5000/request", {
+    console.log(process.env.REACT_APP_BACKEND_URL)
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/request`, {
       method: "POST",
     });
     const data = await response.json();

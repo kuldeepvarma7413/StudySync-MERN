@@ -7,7 +7,7 @@ function Dashboard() {
 
     const navigate = useNavigate()    
     async function populateCode(){
-        const response = await fetch(`https://studysync-uunh.onrender.com/`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/`, {
             method: 'GET',
             headers: {
                 'x-access-token': localStorage.getItem('token')

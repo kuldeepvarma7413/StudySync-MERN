@@ -8,12 +8,12 @@
 }
 
 .question-card .analysis {
-  width: 150px;
+  width: 70px;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-direction: column;
 }
 
@@ -33,7 +33,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
 }
 
 .question-card .data-analysis span {
@@ -72,8 +72,9 @@
 
 .question-card .details .bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   align-items: center;
+  gap: 10px;
 }
 
 .question-card .details .bottom p {
