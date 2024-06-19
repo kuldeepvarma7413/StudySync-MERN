@@ -9,9 +9,7 @@ const requireAuth = require("../middleware/auth");
 router.get("/", async (req, res) => {
   try {
     const questions = await Question.find().lean();
-    // Now questions is an array of plain JavaScript objects
 
-    // To populate user and answers fields for each question, you need to do it manually
     for (let question of questions) {
       question.user = await User.findById(question.user).select("photo email");
       question.answers = await Answer.find({ question: question._id });
@@ -65,35 +63,73 @@ router.post("/add", requireAuth, async (req, res) => {
   }
 });
 
-// update question
-router.post("/update/:id", requireAuth, async (req, res) => {
+// upvote question
+router.post("/addvote/:id", requireAuth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
-    const { title, description, tags } = req.body;
-    question.title = title;
-    question.description = description;
-    question.tags = tags;
-    await question.save();
-    res.json("Question updated!");
+    const user = await User.findOne({ email: req.user.email });
+    // console.log(question, user);
+    if (!question.upvotes.includes(user._id)) {
+      question.upvotes.push(user._id);
+      await question.save();
+    } else {
+      return res.json({ status: "OK", message: "Already upvoted!" });
+    }
+    return res.json({ status: "OK", message: "Upvoted!" });
   } catch (err) {
-    res.status(400).json("Error: " + err);
+    return res.status(400).json({ status: "ERROR", message: "Error: " + err });
   }
 });
 
-// delete question
-router.delete("/:id", requireAuth, async (req, res) => {
+// downvote question
+router.post("/removevote/:id", requireAuth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
-    const user = await User.findById(question.user);
-    user.questions = user.questions.filter(
-      (ques) => ques.toString() !== req.params.id
-    );
-    await user.save();
-    await question.delete();
-    res.json("Question deleted!");
+    const user = await User.findOne({ email: req.user.email });
+
+    if (question.upvotes.includes(user._id)) {
+      question.upvotes = question.upvotes.filter(
+        (upvote) => upvote.toString() !== user._id.toString()
+      );
+      await question.save();
+    } else {
+      return res.json({ status: "OK", message: "Not voted yet!" });
+    }
+    res.json({ status: "OK", message: "Upvote removed!" });
   } catch (err) {
-    res.status(400).json("Error: " + err);
+    res.status(400).json({ status: "ERROR", message: "Error: " + err });
   }
 });
+
+// update question
+// router.post("/update/:id", requireAuth, async (req, res) => {
+//   try {
+//     const question = await Question.findById(req.params.id);
+//     const { title, description, tags } = req.body;
+//     question.title = title;
+//     question.description = description;
+//     question.tags = tags;
+//     await question.save();
+//     res.json("Question updated!");
+//   } catch (err) {
+//     res.status(400).json("Error: " + err);
+//   }
+// });
+
+// delete question
+// router.delete("/:id", requireAuth, async (req, res) => {
+//   try {
+//     const question = await Question.findById(req.params.id);
+//     const user = await User.findById(question.user);
+//     user.questions = user.questions.filter(
+//       (ques) => ques.toString() !== req.params.id
+//     );
+//     await user.save();
+//     await question.delete();
+//     res.json("Question deleted!");
+//   } catch (err) {
+//     res.status(400).json("Error: " + err);
+//   }
+// });
 
 module.exports = router;

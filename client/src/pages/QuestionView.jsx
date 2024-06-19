@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FooterSmall from "../components/common/FooterSmall";
-import { FaRegEye } from "react-icons/fa";
 import { BiSolidUpvote } from "react-icons/bi";
-import { FaReply } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "../components/cards/css/question.css";
 import "./css/questionview.css";
+import Answer from "../components/cards/Answer";
+import timeAgo from "../utils/timeAgo";
+// import { FaRegEye } from "react-icons/fa";
+// import { FaReply } from "react-icons/fa";
 
 function QuestionView() {
   const param = useParams();
@@ -20,7 +22,6 @@ function QuestionView() {
 
   const [votes, setVotes] = useState(0);
   const [voted, setVoted] = useState(false);
-  const [downvoted, setDownvoted] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isAnswerLoading, setIsAnswerLoading] = useState(true);
@@ -38,6 +39,12 @@ function QuestionView() {
       .then((data) => {
         setQuestion(data);
         setVotes(data.upvotes.length);
+        // if user has already upvoted
+        if (
+          data.upvotes.includes(JSON.parse(localStorage.getItem("user"))._id)
+        ) {
+          setVoted(true);
+        }
         setIsLoading(false);
       });
   }, []);
@@ -92,44 +99,64 @@ function QuestionView() {
       });
   };
 
-  // upvote and downvote
-
-  // const addVote = () => {
-  //   if (votes == question.upvotes.length) {
-  //     setVotes(votes + 1);
-  //     setVoted(true);
-  //     setDownvoted(false);
-  //   } else if (votes - 1 == question.upvotes.length) {
-  //     setVotes(votes - 1);
-  //     setVoted(false);
-  //     setDownvoted(false);
-  //   } else if (votes == question.upvotes.length - 1) {
-  //     setVotes(votes + 2);
-  //     setVoted(true);
-  //     setDownvoted(false);
-  //   } else {
-  //     return;
-  //   }
-  // };
-
-  // const removeVote = () => {
-  //   // if already upvoted remove that vote and -1 vote else -1 vote
-  //   if (votes == question.upvotes.length) {
-  //     setVotes(votes - 1);
-  //     setVoted(false);
-  //     setDownvoted(true);
-  //   } else if (votes + 1 == question.upvotes.length) {
-  //     setVotes(votes + 1);
-  //     setVoted(false);
-  //     setDownvoted(false);
-  //   } else if (votes == question.upvotes.length + 1) {
-  //     setVotes(votes - 2);
-  //     setVoted(false);
-  //     setDownvoted(true);
-  //   } else {
-  //     return;
-  //   }
-  // };
+  // upvote and remove upvote
+  const addVote = async () => {
+    if (!voted) {
+      // Upvote
+      setVotes((prevVotes) => prevVotes + 1);
+      setVoted(true);
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/questions/addvote/${questionId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        const data = await res.json();
+        if (data.status !== "OK") {
+          console.log("upvoted error");
+          setVotes((prevVotes) => prevVotes - 1);
+          setVoted(false);
+        }
+      } catch (err) {
+        console.log(err);
+        console.log("upvoted error 2");
+        setVotes((prevVotes) => prevVotes - 1);
+        setVoted(false);
+      }
+    } else {
+      // remove upvote
+      setVotes((prevVotes) => prevVotes - 1);
+      setVoted(false);
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/questions/removevote/${questionId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        const data = await res.json();
+        if (data.status !== "OK") {
+          console.log("downvoted error");
+          setVotes((prevVotes) => prevVotes + 1);
+          setVoted(true);
+        }
+      } catch (err) {
+        console.log(err);
+        console.log("downvoted error 2");
+        setVotes((prevVotes) => prevVotes + 1);
+        setVoted(true);
+      }
+    }
+  };
 
   return (
     <>
@@ -154,19 +181,19 @@ function QuestionView() {
                     <p>{question.answers.length} answers</p>
                   </span>
                 </div>
-                {/* <div className="analysis-action">
+                <div className="analysis-action">
                   <BiSolidUpvote
                     className="upvote"
                     onClick={addVote}
                     style={voted && { color: "#4E3366" }}
                   />
                   <p>{votes}</p>
-                  <BiSolidUpvote
+                  {/* <BiSolidUpvote
                     className="downvote"
                     onClick={removeVote}
                     style={downvoted && { color: "#4E3366" }}
-                  />
-                </div> */}
+                  /> */}
+                </div>
               </div>
               <div className="details">
                 <h3>
@@ -192,71 +219,33 @@ function QuestionView() {
             {isAnswerLoading && <p className="loader loader-small"></p>}
             {answers.length > 0 && (
               <>
-              <div className="answers">
-                {answers.map((answer, index) => {
-                  return (
-                    <div className="question-card answer-card">
-                      <div className="analysis">
-                        <img src={answer.user.photo} alt="user image" />
-                        {/* <div className="analysis-action">
-                          <BiSolidUpvote className="upvote" />
-                          <p>{answer.upvotes.length}</p>
-                          <BiSolidUpvote className="downvote" />
-                        </div> */}
-                      </div>
-                      <div className="details">
-                        <p className="description">{answer.description}</p>
-                        <div className="bottom">
-                          <p>Replied {timeAgo(answer.createdAt)}</p>
-                          <p>by {answer.user.email}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-                {/* reply */}
-              </div>
-                <form>
-                  <div className="reply">
-                    <textarea
-                      placeholder="Write your answer here"
-                      value={answerDescription}
-                      required={true}
-                      onChange={(e) => changeAnswerDescription(e.target.value)}
-                    ></textarea>
-                    <button onClick={(e) => handlePostAnswer(e)}>
-                      Post Answer
-                    </button>
-                  </div>
-                </form>
-                </>
+                <div className="answers">
+                  {answers.map((answer, index) => (
+                    <Answer key={index} answer={answer} />
+                  ))}
+                </div>
+              </>
             )}
+            {/* reply */}
+            <form>
+              <div className="reply">
+                <textarea
+                  placeholder="Write your answer here"
+                  value={answerDescription}
+                  required={true}
+                  onChange={(e) => changeAnswerDescription(e.target.value)}
+                ></textarea>
+                <button onClick={(e) => handlePostAnswer(e)}>
+                  Post Answer
+                </button>
+              </div>
+            </form>
           </>
         )}
       </div>
       <FooterSmall />
     </>
   );
-}
-
-function timeAgo(timestamp) {
-  const now = new Date();
-  const pastDate = new Date(timestamp);
-  const timeDifference = now.getTime() - pastDate.getTime();
-  const seconds = Math.floor(timeDifference / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) {
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  } else if (hours > 0) {
-    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-  } else if (minutes > 0) {
-    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-  } else {
-    return `${seconds} second${seconds > 1 ? "s" : ""} ago`;
-  }
 }
 
 export default QuestionView;

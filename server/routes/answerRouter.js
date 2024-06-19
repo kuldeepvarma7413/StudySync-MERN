@@ -25,7 +25,7 @@ router.post("/add", requireAuth, async (req, res) => {
     const user = await User.findOne({ email: req.user.email });
     const { description, questionId } = req.body;
     const newAnswer = new Answer({
-        description,
+      description,
       user: user._id,
       question: questionId,
     });
@@ -37,6 +37,53 @@ router.post("/add", requireAuth, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json("Error: " + err);
+  }
+});
+
+// upvote answer
+router.post("/addvote/:id", requireAuth, async (req, res) => {
+  console.log(req.params.id, req.user.email);
+  try {
+    const answer = await Answer.findById(req.params.id);
+    const user = await User.findOne({ email: req.user.email });
+    // console.log(user, answer);
+    // add vote in answer
+    if (!answer.upvotes.includes(user._id)) {
+      answer.upvotes.push(user._id);
+      await answer.save();
+    } else {
+      return res.json({ status: "OK", message: "Already upvoted!" });
+    }
+
+    return res.json({ status: "OK", message: "Upvoted answer successfully" });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(400)
+      .json({ status: "ERROR", error: "Failed to upvote answer" });
+  }
+});
+
+// downvote answer
+router.post("/removevote/:id", requireAuth, async (req, res) => {
+  console.log(req.params.id, req.user.email);
+  try {
+    const answer = await Answer.findById(req.params.id);
+    const user = await User.findOne({ email: req.user.email });
+
+    // remove vote from answer
+    if (answer.upvotes.includes(user._id)) {
+      answer.upvotes = answer.upvotes.filter(
+        (id) => id.toString() !== user._id.toString()
+      );
+      await answer.save();
+    } else {
+      return res.json({ status: "OK", message: "Not voted yet!" });
+    }
+
+    return res.json({ status: "OK", message: "Upvote removed!" });
+  } catch (err) {
+    return res.status(400).json({ status: "ERROR", message: "Error: " + err });
   }
 });
 

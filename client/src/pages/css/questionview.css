@@ -2,6 +2,7 @@
   display: block;
   font-size: 20px;
   color: #4E3366;
+  text-align: justify;
 }
 
 .question-card .data-analysis{
@@ -36,7 +37,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     position: relative;
 }
@@ -154,14 +155,15 @@
     background-color: #3A2545;
 }
 
-.answer-card{
-    width: 80%;
-}
-
-.answer-card .analysis-action{
-    margin-top: 0px !important;
-}
-
-.answer-card .details{
-    justify-content: start;
+@media screen and (min-width: 320px) and (max-width: 480px){
+    .question-card{
+        padding: 10px;
+        width: -webkit-fill-available;
+    }
+    .question-card .details h3 a{
+        font-size: 16px;
+    }
+    .question-card .details .bottom p{
+        font-size: 10px;
+    }
 }

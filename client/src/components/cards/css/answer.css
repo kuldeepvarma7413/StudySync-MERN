@@ -1,0 +1,11 @@
+.answer-card{
+    width: 80%;
+}
+
+.answer-card .analysis-action{
+    margin-top: 0px !important;
+}
+
+.answer-card .details{
+    justify-content: start;
+}
