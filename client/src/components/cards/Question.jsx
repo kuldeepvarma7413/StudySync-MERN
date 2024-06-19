@@ -10,7 +10,6 @@ function Question({ question }) {
     <div className="question-card">
       <div className="analysis">
         <img src={question.user.photo} alt="user image" />
-        <p>{question.user.email}</p>
         <div className="data-analysis">
           <span>
             <FaRegEye />
@@ -27,7 +26,11 @@ function Question({ question }) {
         </div>
       </div>
       <div className="details">
-        <h3><NavLink to={`view-question/${question._id}`}>{question.title}</NavLink></h3>
+        <h3>
+          <NavLink to={`view-question/${question._id}`}>
+            {question.title}
+          </NavLink>
+        </h3>
         <p>{question.description}</p>
         <div className="bottom">
           <div className="tags">
@@ -35,7 +38,10 @@ function Question({ question }) {
               return <p key={index}>{tag}</p>;
             })}
           </div>
-          <p>asked {timeAgo(question.createdAt)}</p>
+          <div className="asked-by">
+            <p>{question.user.email}</p>
+            <p> asked {timeAgo(question.createdAt)}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -61,4 +61,58 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questions .loader{
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #4E3366;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+    .discuss {
+        padding: 20px 20px;
+    }
+
+    .discuss .discuss .section-2, .discuss .section-3 {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-filter-div {
+        flex-direction: column-reverse;
+        align-items: end;
+        gap: 10px;
+    }
+
+    .search-filter-div .search {
+        width: 100%;
+    }
+
+    .search-filter-div .filters {
+        width: fit-content;
+        flex-direction: row;
+    }
+
+    .section-3.questions{
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .discuss .section-1{
+        flex-direction: row;
+    }
+    
+    .discuss .section-2{
+        flex-direction: column-reverse;
+    }
+    
 }
