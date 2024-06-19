@@ -76,7 +76,7 @@ function Resources() {
 
   useEffect(() => {
     // fetch courses
-    fetch("${process.env.REACT_APP_BACKEND_URL}/courses", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
       headers: {
         authorization:
           "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
