@@ -16,7 +16,7 @@ function Report() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("${process.env.REACT_APP_BACKEND_URL}/report", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/report`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
