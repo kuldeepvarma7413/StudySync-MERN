@@ -23,7 +23,12 @@ router.post("/register", async (req, res) => {
     // Hash password using bcrypt before saving
     const hashedPassword = await bcrypt.hash(password, 10); // Adjust cost factor as needed
 
-    let user = await User.create({ name, email, password: hashedPassword, accountType: "custom" }); // Create new user
+    let user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      accountType: "custom",
+    }); // Create new user
 
     const token = new Token({
       user: user._id,
@@ -80,7 +85,11 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body; // Destructure request body
 
   try {
-    const user = await User.findOne({ email: email, accountType: "custom", isDeleted: false }); // Find user by email
+    const user = await User.findOne({
+      email: email,
+      accountType: "custom",
+      isDeleted: false,
+    }); // Find user by email
 
     if (!user) {
       return res
@@ -119,10 +128,15 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { name: user.name, email: user.email, accountType: user.accountType},
+      { name: user.name, email: user.email, accountType: user.accountType },
       process.env.JWT_SECRET
     ); // Generate JWT
-    res.json({ status: "OK", token, user, message: "User logged in successfully" });
+    res.json({
+      status: "OK",
+      token,
+      user,
+      message: "User logged in successfully",
+    });
   } catch (err) {
     console.error(err); // Log the error for debugging
     res.json({ status: "ERROR", error: "Login failed" }); // Generic error message
@@ -134,7 +148,7 @@ router.post("/login", async (req, res) => {
 const oAuth2Client = new OAuth2Client({
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri: `${process.env.REACT_APP_BACKEND_URL}/auth`
+  redirectUri: `${process.env.REACT_APP_BACKEND_URL}/auth`,
 });
 
 async function getUserData(access_token) {
@@ -155,26 +169,111 @@ router.get("/", async (req, res) => {
     const GoogleUser = oAuth2Client.credentials;
 
     const userData = await getUserData(GoogleUser.access_token);
-    console.log(userData)
+    console.log(userData);
     // check if user exists
-    const user = await User.findOne({ email: userData.email, accountType: "google", isDeleted: false });
+    const user = await User.findOne({
+      email: userData.email,
+      accountType: "google",
+      isDeleted: false,
+    });
     if (!user) {
       // create user
-      let newUser = await User.create({ name: userData.name, email: userData.email, accountType: "google", verified: true, photo: userData.picture});
+      let newUser = await User.create({
+        name: userData.name,
+        email: userData.email,
+        accountType: "google",
+        verified: true,
+        photo: userData.picture,
+      });
       const token = jwt.sign(
-        { name: newUser.name, email: newUser.email, accountType: newUser.accountType},
+        {
+          name: newUser.name,
+          email: newUser.email,
+          accountType: newUser.accountType,
+        },
         process.env.JWT_SECRET
       );
-      return res.redirect(`${process.env.BASE_URL}/google-auth-success/${token}`);
-    }else{
-        const token = jwt.sign(
-          { name: user.name, email: user.email, accountType: user.accountType},
-          process.env.JWT_SECRET
-          ); // Generate JWT
-      return res.redirect(`${process.env.BASE_URL}/google-auth-success/${token}`);
+      return res.redirect(
+        `${process.env.BASE_URL}/google-auth-success/${token}`
+      );
+    } else {
+      const token = jwt.sign(
+        { name: user.name, email: user.email, accountType: user.accountType },
+        process.env.JWT_SECRET
+      ); // Generate JWT
+      return res.redirect(
+        `${process.env.BASE_URL}/google-auth-success/${token}`
+      );
     }
   } catch (err) {
     console.log("Error with signing in with google " + err);
+  }
+});
+
+// forget password route
+router.post("/forget-password/:email", async (req, res) => {
+  const email = req.params.email;
+  try {
+    const user = await User.findOne({ email, accountType: "custom" });
+    if (!user) {
+      return res.json({ status: "ERROR", message: "User not found" });
+    } else {
+      const token = new Token({
+        user: user._id,
+        token: crypto.randomBytes(16).toString("hex"),
+      }); // Generate token
+      await token.save();
+      const url = `${process.env.BASE_URL}/forgot-password/${user._id}/${token.token}`; // Verification link
+
+      await sendEmail({
+        email: user.email,
+        subject: "Reset Password",
+        text: `Click this link to reset your password: ${url}`,
+      }); // Send verification email
+
+      res.json({
+        status: "OK",
+        message: "Password reset link sent successfully, Please Verify.",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.json({ status: "ERROR", error: "Failed to send reset password link" });
+  }
+});
+
+// set password route
+router.post("/set-password/:id/:reqtoken", async (req, res) => {
+  const { id, reqtoken } = req.params;
+  const { password } = req.body;
+  console.log(id, reqtoken, password)
+  try {
+    const user = await User.findOne({ _id: id, accountType: "custom" });
+    if (!user) {
+      return res.json({ status: "ERROR", message: "User not found" });
+    }
+    const token = await Token.findOne({ token: reqtoken, user: user._id });
+    if (!token) {
+      return res.json({ status: "ERROR", message: "Invalid or Expired Link" });
+    }
+    // Hash password using bcrypt before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // check password should not be same as previous password
+    if (await bcrypt.compare(password, user.password)) {
+      return res.json({
+        status: "ERROR",
+        message: "Password should not be same as previous password",
+      });
+    }
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { password: hashedPassword }
+    );
+    await Token.deleteOne({ _id: token._id });
+    res.json({ status: "OK", message: "Password reset successfully" });
+  } catch (err) {
+    console.error(err);
+    res.json({ status: "ERROR", error: "Failed to reset password" });
   }
 });
 

@@ -24,28 +24,6 @@ const Navbar = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    
-    if (authenticated) {
-      const user = JSON.parse(localStorage.getItem('user'));
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${user._id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.status === "OK") {
-            console.log(data.user.photo);
-            setUserImage(data.user.photo);
-          }
-        });
-    }
-  }, [authenticated]);
-
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -86,6 +64,7 @@ const Navbar = () => {
     handleProfileMenuClick();
     setAuthenticated(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.href = "/";
     // show snackbar
     setMessage("Log out successful");

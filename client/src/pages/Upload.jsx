@@ -46,11 +46,29 @@ function Upload() {
   // courses
   const [courses, setcourses] = useState([]);
 
+  // validate files
+  const validateFiles = (files) => {
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+    const invalidFiles = files.filter(file => !validTypes.includes(file.type));
+
+    if (invalidFiles.length > 0) {
+      alert('Only image files (JPEG, PNG, GIF) and PDFs are allowed.');
+      return false;
+    }
+    return true;
+  };
+
   // submition
   const handleSubmit = (e) => {
     e.preventDefault();
     if (files.length === 0) {
       setMessage("No file selected");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
+    if (!validateFiles(files)) {
+      setMessage("Select only image files (JPEG, PNG, GIF) and PDFs.");
       setSnackBarType("error");
       snackbarRef.current.show();
       return;
