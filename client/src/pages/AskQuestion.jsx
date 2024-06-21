@@ -3,6 +3,7 @@ import "./css/askquestion.css";
 import { FaArrowRight } from "react-icons/fa";
 import FooterSmall from "../components/common/FooterSmall";
 import SnackbarCustom from "../components/common/SnackbarCustom";
+import { NavLink } from "react-router-dom";
 
 function AskQuestion() {
   // input validation
@@ -90,7 +91,7 @@ function AskQuestion() {
   return (
     <>
       <div className="ask-question">
-        <p className="pathline">Discuss &gt; Ask Question</p>
+        <p className="pathline"><NavLink to={'/discuss'}>Discuss</NavLink> &gt;<NavLink>Ask Question</NavLink></p>
         <div className="inputs">
           {/* title */}
           <div className="input-div">

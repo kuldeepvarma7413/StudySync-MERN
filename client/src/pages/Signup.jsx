@@ -4,12 +4,16 @@ import Logo from "../images/logo.png";
 import Character from "../images/Character-sitting-chair.png";
 import Cactus from "../images/cactus.png";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
+import validatePassword from "../utils/validatePassword";
+import validateEmail from "../utils/validateEmail";
 
 function Signup() {
   // input values for email and password
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   // msgs
   const [errmsg, setErrmsg] = useState("");
@@ -19,18 +23,36 @@ function Signup() {
     e.preventDefault();
     setErrmsg("");
     setSuccessmsg("");
+    if (!name || !email || !password) {
+      setErrmsg("Please fill all the fields");
+      return;
+    }
+    const validateE = validateEmail(email);
+    if (validateE.status === false) {
+      setErrmsg(validateE.message);
+      return;
+    }
+    const validate = validatePassword(password);
+    if (validate.status === false) {
+      setErrmsg(validate.message);
+      return;
+    }
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }
+      );
       const data = await response.json();
       if (data.status === "ERROR") {
         setErrmsg(data.error);
@@ -40,6 +62,21 @@ function Signup() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function navigateURL(url) {
+    window.location.href = url;
+  }
+
+  async function auth() {
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/request`,
+      {
+        method: "POST",
+      }
+    );
+    const data = await response.json();
+    navigateURL(data.url);
   }
 
   return (
@@ -88,7 +125,7 @@ function Signup() {
 
             <p>or continue with</p>
 
-            <button className="btn google-btn">
+            <button className="btn google-btn" onClick={auth}>
               <FcGoogle size={22} />
             </button>
 

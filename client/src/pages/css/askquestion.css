@@ -76,3 +76,25 @@
 .ask-question .btn:hover, .arrow:hover{
     background-color: #3A2645;
 }
+
+@media screen and (max-width: 768px) {
+    .ask-question {
+        padding: 10px 20px;
+    }
+    .input-div textarea{
+        margin: 0px 10px;
+    }
+    .input-div{
+        width: 100%;
+    }
+    .input-top{
+        margin: 5px 15px;
+        font-size: 16px;
+    }
+    .ask-question textarea{
+        font-size: 14px;
+    }
+    .tags-instructions{
+        margin: 0px 15px;
+    }   
+}
