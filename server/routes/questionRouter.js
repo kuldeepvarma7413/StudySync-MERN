@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     const questions = await Question.find().lean();
 
     for (let question of questions) {
-      question.user = await User.findById(question.user).select("photo email");
+      question.user = await User.findById(question.user).select("photo email username");
       question.answers = await Answer.find({ question: question._id });
     }
 
@@ -31,7 +31,7 @@ router.get("/:id", async (req, res) => {
     question.views += 1;
     await Question.findByIdAndUpdate(req.params.id, { views: question.views });
 
-    question.user = await User.findById(question.user).select("photo email");
+    question.user = await User.findById(question.user).select("photo email username");
     question.answers = await Answer.find({ question: question._id });
 
     res.json(question);

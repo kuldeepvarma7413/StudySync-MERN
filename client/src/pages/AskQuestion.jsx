@@ -4,6 +4,7 @@ import { FaArrowRight } from "react-icons/fa";
 import FooterSmall from "../components/common/FooterSmall";
 import SnackbarCustom from "../components/common/SnackbarCustom";
 import { NavLink } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function AskQuestion() {
   // input validation
@@ -48,7 +49,7 @@ function AskQuestion() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: "Bearer " + localStorage.getItem("token"),
+          authorization: "Bearer " + Cookies.get("token"),
         },
         body: JSON.stringify({
           title,

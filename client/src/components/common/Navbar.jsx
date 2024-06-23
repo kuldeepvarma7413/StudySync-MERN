@@ -5,10 +5,14 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 import "./css/navbar.css";
 import Logo from "../../images/logo.png";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 const Navbar = () => {
-  const [showMenu, setShowMenu] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
   const [userImage, setUserImage] = useState(
     "https://www.w3schools.com/howto/img_avatar.png"
@@ -21,8 +25,11 @@ const Navbar = () => {
 
   useEffect(() => {
     addSelectedClass();
-    fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [authenticated]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -35,7 +42,7 @@ const Navbar = () => {
   };
 
   async function fetchData() {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (token) {
       setAuthenticated(true);
       // decode token and get user data
@@ -62,14 +69,11 @@ const Navbar = () => {
 
   const Logout = () => {
     handleProfileMenuClick();
-    setAuthenticated(false);
-    localStorage.removeItem("token");
+    // redirect to home using navigate
+    Cookies.remove("token");
     localStorage.removeItem("user");
-    window.location.href = "/";
-    // show snackbar
-    setMessage("Log out successful");
-    setSnackBarType("success");
-    snackbarRef.current.show();
+    navigate("/");
+    setAuthenticated(false);
   };
 
   const handleProfileMenuClick = () => {

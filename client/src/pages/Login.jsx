@@ -5,6 +5,7 @@ import Character from "../images/Character-sitting-chair.png";
 import Cactus from "../images/cactus.png";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function Login() {
   // input values for email and password
@@ -36,7 +37,8 @@ function Login() {
                 setErrmsg(data.message)
             }else{
                 setSuccessmsg(data.message)
-                localStorage.setItem('token', data.token)
+                // add in cookies
+                Cookies.set('token', data.token)
                 navigate('/')
             }
         } catch (error) {

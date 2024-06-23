@@ -1,22 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./css/question.css";
 import "./css/answer.css";
 import timeAgo from "../../utils/timeAgo";
 import { BiSolidUpvote } from "react-icons/bi";
+import Cookies from "js-cookie";
+import SnackbarCustom from "../common/SnackbarCustom";
 
 function Answer({ answer }) {
   const [voted, setVoted] = React.useState(false);
   const [votes, setVotes] = React.useState(answer.upvotes.length);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // snack bar
+  const snackbarRef = useRef(null);
+  const [snackBarType, setSnackBarType] = useState("false");
+  const [message, setMessage] = useState("");
+
   // if user already upvoted
   useEffect(() => {
-    if (answer.upvotes.includes(JSON.parse(localStorage.getItem("user"))._id)) {
+    if ( user &&  answer.upvotes.includes(user._id)) {
       setVoted(true);
     }
   }, []);
 
   // upvote and remove upvote
   const addVote = async () => {
+    if(!user){
+      setSnackBarType("error");
+      setMessage("Please login to upvote");
+      snackbarRef.current.show();
+      return;
+    }
     if (!voted) {
       // Upvote
       setVotes((prevVotes) => prevVotes + 1);
@@ -28,7 +43,7 @@ function Answer({ answer }) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + Cookies.get("token"),
             },
           }
         );
@@ -55,7 +70,7 @@ function Answer({ answer }) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + Cookies.get("token"),
             },
           }
         );
@@ -76,6 +91,7 @@ function Answer({ answer }) {
 
   return (
     <div className="question-card answer-card">
+      <SnackbarCustom ref={snackbarRef} type={snackBarType} message={message} />
       <div className="analysis">
         <img src={answer.user.photo} alt="user image" />
         <div className="analysis-action">
@@ -96,7 +112,7 @@ function Answer({ answer }) {
         <p className="description">{answer.description}</p>
         <div className="bottom">
           <p>Replied {timeAgo(answer.createdAt)}</p>
-          <p>by {answer.user.email}</p>
+          <p>by <u>{answer.user.username}</u></p>
         </div>
       </div>
     </div>

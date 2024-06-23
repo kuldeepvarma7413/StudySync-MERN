@@ -4,13 +4,16 @@ const Question = require("../models/question.model");
 const User = require("../models/user.model");
 const Answer = require("../models/answer.model");
 const requireAuth = require("../middleware/auth");
+const sendEmail = require("../utils/sendEmail");
 
 // get answers by question id
 router.get("/:id", requireAuth, async (req, res) => {
   try {
     const answers = await Answer.find({ question: req.params.id }).lean();
     for (let answer of answers) {
-      answer.user = await User.findById(answer.user).select("photo email");
+      answer.user = await User.findById(answer.user).select(
+        "photo email username"
+      );
     }
     res.json(answers);
   } catch (err) {
@@ -33,10 +36,20 @@ router.post("/add", requireAuth, async (req, res) => {
     user.answers.push(newAnswer._id);
     await user.save();
     console.log("Answer added!");
+    // send mail to user
+    const question = await Question.findById(questionId).lean();
+    question.user = await User.findById(question.user).select("email username");
+    await sendEmail({
+      email: question.user.email,
+      subject: "New Answer",
+      text: `Hello ${question.user.username},\n\nYour question has been answered by ${user.username}.\n
+      Click here ${process.env.BASE_URL}/discuss/view-question/${questionId}\n\nThanks,\nTeam StudySync`,
+    });
+
     res.json({ status: "OK", message: "Answer added successfully" });
   } catch (err) {
     console.log(err);
-    res.status(400).json("Error: " + err);
+    res.status(400).json({ status: "ERROR", error: "Failed to add answer" });
   }
 });
 

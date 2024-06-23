@@ -6,6 +6,7 @@ import { useDropzone } from "react-dropzone";
 import { RxCross2 } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 import Select from "react-select";
+import Cookies from "js-cookie";
 import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function Upload() {
@@ -110,7 +111,7 @@ function Upload() {
         body: formData,
         headers: {
           authorization:
-            "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
+            "Bearer " + Cookies.get("token").replace("Bearer ", ""),
         },
       }
     )
@@ -140,7 +141,7 @@ function Upload() {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
       headers: {
         authorization:
-          "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
+          "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
     })
       .then((res) => res.json())
@@ -238,7 +239,7 @@ function Upload() {
                     option.courseCode + ": " + option.courseTitle
                   }
                   getOptionValue={(option) => option.courseCode}
-                  onChange={(e) => setCourseCode(e.value)}
+                  onChange={(e) => setCourseCode(e.courseCode.toString()) }
                 />
                 <span className="course-unavailable">
                   *If course is not in list, please report us.{" "}
