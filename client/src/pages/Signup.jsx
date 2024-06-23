@@ -7,10 +7,12 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import validatePassword from "../utils/validatePassword";
 import validateEmail from "../utils/validateEmail";
+import validateUsername from "../utils/validateUsername";
 
 function Signup() {
   // input values for email and password
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ function Signup() {
     e.preventDefault();
     setErrmsg("");
     setSuccessmsg("");
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !username) {
       setErrmsg("Please fill all the fields");
       return;
     }
@@ -38,6 +40,12 @@ function Signup() {
       return;
     }
 
+    const validateU = validateUsername(username);
+    if (validateU.status === false) {
+      setErrmsg(validateU.message);
+      return;
+    }
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
@@ -48,6 +56,7 @@ function Signup() {
           },
           body: JSON.stringify({
             name,
+            username,
             email,
             password,
           }),
@@ -94,6 +103,15 @@ function Signup() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="your name"
+              />
+              
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="your username"
               />
 
               <label htmlFor="email">Email</label>

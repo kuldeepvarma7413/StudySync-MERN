@@ -15,6 +15,7 @@
     "dotenv": "^16.4.5",
     "frame": "^1.0.0-alpha.2",
     "http-proxy-middleware": "^3.0.0",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "pdf-merger-js": "^5.1.1",
     "react": "^18.3.1",

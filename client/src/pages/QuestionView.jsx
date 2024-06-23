@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import FooterSmall from "../components/common/FooterSmall";
 import { BiSolidUpvote } from "react-icons/bi";
@@ -7,11 +7,20 @@ import "../components/cards/css/question.css";
 import "./css/questionview.css";
 import Answer from "../components/cards/Answer";
 import timeAgo from "../utils/timeAgo";
+import Cookies from "js-cookie";
+import SnackbarCustom from "../components/common/SnackbarCustom";
 // import { FaRegEye } from "react-icons/fa";
 // import { FaReply } from "react-icons/fa";
 
 function QuestionView() {
   const param = useParams();
+
+  // snackbar
+  const [SnackbarType, setSnackBarType] = useState("false");
+  const [message, setMessage] = useState("");
+  const snackbarRef = useRef(null);
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const questionId = param.id;
 
@@ -32,7 +41,7 @@ function QuestionView() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
+        authorization: "Bearer " + Cookies.get("token"),
       },
     })
       .then((res) => res.json())
@@ -40,9 +49,7 @@ function QuestionView() {
         setQuestion(data);
         setVotes(data.upvotes.length);
         // if user has already upvoted
-        if (
-          data.upvotes.includes(JSON.parse(localStorage.getItem("user"))._id)
-        ) {
+        if (user && data.upvotes.includes(user._id)) {
           setVoted(true);
         }
         setIsLoading(false);
@@ -54,7 +61,7 @@ function QuestionView() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
+        authorization: "Bearer " + Cookies.get("token"),
       },
     })
       .then((res) => res.json())
@@ -67,12 +74,24 @@ function QuestionView() {
   //   post answer
   const handlePostAnswer = (e) => {
     e.preventDefault();
-    if (answerDescription.length === 0) return alert("Please write something");
+    if(!user){
+      setMessage("Please login to post an answer");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
+
+    if (answerDescription.length === 0){
+      setMessage("Please write an answer");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    };
     fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
+        authorization: "Bearer " + Cookies.get("token"),
       },
       body: JSON.stringify({
         description: answerDescription,
@@ -88,19 +107,29 @@ function QuestionView() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + Cookies.get("token"),
             },
           })
             .then((res) => res.json())
             .then((data) => {
               setAnswers(data);
             });
+        } else {
+          setMessage(data.error);
+          setSnackBarType("error");
+          snackbarRef.current.show();
         }
       });
   };
 
   // upvote and remove upvote
   const addVote = async () => {
+    if (!user) {
+      setMessage("Please login to upvote the question");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
     if (!voted) {
       // Upvote
       setVotes((prevVotes) => prevVotes + 1);
@@ -112,19 +141,17 @@ function QuestionView() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + Cookies.get("token"),
             },
           }
         );
         const data = await res.json();
         if (data.status !== "OK") {
-          console.log("upvoted error");
           setVotes((prevVotes) => prevVotes - 1);
           setVoted(false);
         }
       } catch (err) {
         console.log(err);
-        console.log("upvoted error 2");
         setVotes((prevVotes) => prevVotes - 1);
         setVoted(false);
       }
@@ -139,7 +166,7 @@ function QuestionView() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              authorization: "Bearer " + Cookies.get("token"),
             },
           }
         );
@@ -161,6 +188,11 @@ function QuestionView() {
   return (
     <>
       <div className="question-view">
+        <SnackbarCustom
+          ref={snackbarRef}
+          message={message}
+          type={SnackbarType}
+        />
         {isLoading && <p className="loader"></p>}
         {!isLoading && (
           <>
@@ -207,7 +239,7 @@ function QuestionView() {
                     })}
                   </div>
                   <p>
-                    <span>{question.user.email}</span>
+                    <span><u>{question.user.username}</u></span>
                     <p>asked {timeAgo(question.createdAt)}</p>
                   </p>
                 </div>

@@ -1,10 +1,11 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 function GoogleSuccess() {
     const param = useParams();
     // save token to local storage and redirect to home route
-    localStorage.setItem("token", param.token);
+    Cookies.set("token", param.token);
     window.location.href = "/";
   return (
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '30px'}}>

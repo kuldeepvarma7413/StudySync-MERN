@@ -4,6 +4,7 @@ import FileCard from "../components/cards/FileCard";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import FooterSmall from "../components/common/FooterSmall";
+import Cookies from "js-cookie";
 
 function Resources() {
   // filters
@@ -49,7 +50,7 @@ function Resources() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       })
         .then((res) => res.json())
@@ -63,7 +64,7 @@ function Resources() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       })
         .then((res) => res.json())
@@ -79,7 +80,7 @@ function Resources() {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
       headers: {
         authorization:
-          "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
+          "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
     })
       .then((res) => res.json())

@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
 
 // add course
 router.post('/add-course', async (req, res) => {
+    console.log("req.body")
     try {
         const course = new Course({
             courseCode: req.body.courseCode,

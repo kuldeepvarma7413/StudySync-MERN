@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./css/discuss.css";
 import { NavLink } from "react-router-dom";
 import Question from "../components/cards/Question";
+import Cookies from "js-cookie";
 
 function Discuss() {
   const [totalQues, setTotalQues] = useState(0);
@@ -14,7 +15,7 @@ function Discuss() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
+        authorization: "Bearer " + Cookies.get("token"),
       },
     })
       .then((res) => res.json())

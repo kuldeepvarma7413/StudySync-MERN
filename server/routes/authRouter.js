@@ -12,7 +12,7 @@ const { url } = require("inspector");
 
 // Registration route
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body; // Destructure request body
+  const { name, username, email, password } = req.body; // Destructure request body
 
   try {
     let existingUser = await User.findOne({ email }); // Check for existing user
@@ -20,14 +20,20 @@ router.post("/register", async (req, res) => {
       return res.json({ status: "ERROR", error: "Duplicate email found" });
     }
 
+    // Check for existing username
+    let existingUsername = await User.findOne({ username: username.toLowerCase() });
+    if (existingUsername) {
+      return res.json({ status: "ERROR", error: "Duplicate username found" });
+    }
+
     // Hash password using bcrypt before saving
     const hashedPassword = await bcrypt.hash(password, 10); // Adjust cost factor as needed
 
     let user = await User.create({
       name,
+      username: username.toLowerCase(),
       email,
       password: hashedPassword,
-      accountType: "custom",
     }); // Create new user
 
     const token = new Token({
@@ -180,6 +186,7 @@ router.get("/", async (req, res) => {
       // create user
       let newUser = await User.create({
         name: userData.name,
+        username: (userData.email.split("@")[0] + (Math.floor(Math.random() * 1000) + 1000)).substring(0, 20).toLowerCase(),
         email: userData.email,
         accountType: "google",
         verified: true,
@@ -218,6 +225,14 @@ router.post("/forget-password/:email", async (req, res) => {
     if (!user) {
       return res.json({ status: "ERROR", message: "User not found" });
     } else {
+
+      // check already token exists
+      let t = await Token.findOne({ user: user._id });
+      if (t) {
+        // delete existing token
+        await Token.deleteOne({ _id: t._id });
+      }
+
       const token = new Token({
         user: user._id,
         token: crypto.randomBytes(16).toString("hex"),

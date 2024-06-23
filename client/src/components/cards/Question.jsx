@@ -6,6 +6,7 @@ import { BiSolidUpvote } from "react-icons/bi";
 import { FaReply } from "react-icons/fa";
 
 function Question({ question }) {
+  console.log(question)
   return (
     <div className="question-card">
       <div className="analysis">
@@ -39,7 +40,7 @@ function Question({ question }) {
             })}
           </div>
           <div className="asked-by">
-            <p>{question.user.email}</p>
+            <p><u>{question.user.username}</u></p>
             <p> asked {timeAgo(question.createdAt)}</p>
           </div>
         </div>

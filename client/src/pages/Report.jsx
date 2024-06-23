@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import FooterSmall from "../components/common/FooterSmall";
 import "./css/report.css";
+import Cookies from "js-cookie";
 import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function Report() {
@@ -20,7 +21,7 @@ function Report() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token").replace("Bearer ", ""),
+        authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
       body: JSON.stringify({ subject, bugOrFeature, description }),
     })
