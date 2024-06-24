@@ -20,6 +20,7 @@ import QuestionView from "./pages/QuestionView";
 import ForgetPassword from "./pages/ForgetPassword";
 import NewPassword from "./pages/NewPassword";
 import Cookies from "js-cookie";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
                 ) : (
                   "Unauthorized Access"
                 )}
+                <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/code-editor" element={<Practice />} />
                 <Route path="/discuss" element={<Discuss />} />

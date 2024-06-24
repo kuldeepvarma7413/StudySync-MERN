@@ -10,6 +10,7 @@ import validateEmail from "../utils/validateEmail";
 import validateUsername from "../utils/validateUsername";
 
 function Signup() {
+  document.title = "Sign Up | StudySync";
   // input values for email and password
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");

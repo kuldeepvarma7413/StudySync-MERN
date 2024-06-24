@@ -11,6 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 function FileView() {
+  document.title = "File | StudySync";
   const file = useLocation().state.file;
   const dateObject = new Date(file.createdAt);
 

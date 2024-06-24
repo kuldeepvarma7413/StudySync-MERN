@@ -4,6 +4,7 @@ import {jwtDecode} from 'jwt-decode'
 
 
 function Dashboard() {
+    document.title = "Dashboard | StudySync";
 
     const navigate = useNavigate()    
     async function populateCode(){

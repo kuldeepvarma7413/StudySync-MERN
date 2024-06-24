@@ -8,6 +8,8 @@ import "./css/verifyemail.css";
 
 
 function EmailVerification() {
+	document.title = "Verify Email | StudySync";
+
     const [validUrl, setValidUrl] = useState(true);
 	const param = useParams();
 

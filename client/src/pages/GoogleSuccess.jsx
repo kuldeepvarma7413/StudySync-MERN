@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 function GoogleSuccess() {
+  document.title = "Success | StudySync";
     const param = useParams();
     // save token to local storage and redirect to home route
     Cookies.set("token", param.token);

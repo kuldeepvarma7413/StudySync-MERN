@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function Upload() {
+  document.title = "Upload | StudySync";
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
   const [message, setMessage] = useState("");

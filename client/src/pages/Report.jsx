@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function Report() {
+  document.title = "Report | StudySync";
+  
   const [subject, setSubject] = useState("");
   const [bugOrFeature, setBugOrFeature] = useState("bug");
   const [description, setDescription] = useState("");

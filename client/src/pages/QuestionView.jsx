@@ -13,6 +13,8 @@ import SnackbarCustom from "../components/common/SnackbarCustom";
 // import { FaReply } from "react-icons/fa";
 
 function QuestionView() {
+  document.title = "Question | StudySync";
+  
   const param = useParams();
 
   // snackbar

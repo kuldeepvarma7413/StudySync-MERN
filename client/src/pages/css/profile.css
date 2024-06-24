@@ -1,0 +1,58 @@
+.profile-container{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    /* justify-content: center; */
+    margin-top: 50px;
+    margin: 50px 150px;
+    height: 450px;
+}
+
+.profile-container .left-section{
+    width: 30%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    background-color: #F9F9F9;
+    border-radius: 10px;
+}
+
+.profile-container .left-section img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 30px;
+    border: 1px solid black;
+}
+
+.profile-container .left-section h2{
+    margin-top: 10px;
+    color: #4E3366;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.profile-container .left-section p{
+    /* margin-top: 10px; */
+    font-weight: 500;
+    font-size: 10px;
+}
+
+.profile-container .left-section .upvote{
+    margin-top: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-container .left-section .upvote .upvoteIcon{
+    font-size: 16px;
+}
+
+.profile-container .left-section .profile-views{
+    font-size: 12px;
+    margin-top: 3px;
+}
