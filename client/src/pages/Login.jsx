@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 
 function Login() {
+  document.title = "Login | StudySync";
   // input values for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

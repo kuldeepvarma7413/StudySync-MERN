@@ -7,6 +7,7 @@ import FooterSmall from "../components/common/FooterSmall";
 import Cookies from "js-cookie";
 
 function Resources() {
+  document.title = "Resources | StudySync";
   // filters
   const [fileType, setFileType] = useState("ppt");
   const [subjectFilter, setSubjectFilter] = useState("");

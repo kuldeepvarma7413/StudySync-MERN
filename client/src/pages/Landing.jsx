@@ -7,6 +7,8 @@ import StepCard from "../components/cards/StepCard";
 import Footer from "../components/common/Footer";
 
 function Landing() {
+  document.title = "Home | StudySync";
+
   const fCardData = [
     {
       icon: "coverage",
@@ -113,10 +115,10 @@ function Landing() {
         clearTimeout(fetchTimeout);
       })
       .catch((error) => {
-        if (error.name === 'AbortError') {
-          console.log('Fetch request timed out');
+        if (error.name === "AbortError") {
+          console.log("Fetch request timed out");
         } else {
-          console.log('Fetch request failed', error);
+          console.log("Fetch request failed", error);
         }
         setServerLoading(true);
         clearInterval(timer);

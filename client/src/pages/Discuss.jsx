@@ -5,6 +5,7 @@ import Question from "../components/cards/Question";
 import Cookies from "js-cookie";
 
 function Discuss() {
+  document.title = "Discuss | StudySync";
   const [totalQues, setTotalQues] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

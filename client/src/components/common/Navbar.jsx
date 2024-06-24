@@ -17,6 +17,7 @@ const Navbar = () => {
   const [userImage, setUserImage] = useState(
     "https://www.w3schools.com/howto/img_avatar.png"
   );
+  const user = JSON.parse(localStorage.getItem("user"));
   
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
@@ -207,7 +208,7 @@ const Navbar = () => {
                   <ul className={`profile-menu ${profileMenu ? "show" : ""}`}>
                     <li>
                       <NavLink
-                        to="/profile"
+                        to={`/profile/${user._id}`}
                         onClick={() => {
                           handleProfileMenuClick();
                           closeMenuOnMobile();

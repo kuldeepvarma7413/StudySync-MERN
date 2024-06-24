@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
 
 function AskQuestion() {
+  document.title = "Ask Question | StudySync";
   // input validation
   const [isTitle, setIsTitle] = useState(true);
   const [isDescription, setIsDescription] = useState(false);

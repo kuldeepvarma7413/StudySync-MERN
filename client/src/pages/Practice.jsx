@@ -5,6 +5,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./editorTheme";
 
 function Practice() {
+  document.title = "Practice | StudySync";
+
   return (
     <ChakraProvider theme={theme}>
       <div className="code-editor-div">

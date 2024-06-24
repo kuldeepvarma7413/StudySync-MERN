@@ -2,6 +2,7 @@ import React from 'react'
 import './css/our-team.css'
 
 function OurTeam() {
+  document.title = "Our Team | StudySync";
   return (
     <>
         <div className="our-team">

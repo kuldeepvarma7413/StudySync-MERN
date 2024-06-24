@@ -3,6 +3,7 @@ import "./css/forgetpassword.css";
 import Snackbar from "../components/common/SnackbarCustom";
 
 function ForgetPassword() {
+  document.title = "Forget Password | StudySync";
   const [email, setEmail] = useState("");
 
   // snackbar

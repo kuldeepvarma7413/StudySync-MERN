@@ -4,6 +4,8 @@ import "./css/newpassword.css";
 import { useParams } from "react-router-dom";
 
 function NewPassword() {
+  document.title = "New Password | StudySync";
+  
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
