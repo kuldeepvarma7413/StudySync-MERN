@@ -37,7 +37,7 @@ mongoose
     app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
     // Serve static files from the React app
-    app.use(express.static(path.join(__dirname, "../client/build")));
+    app.use(express.static(path.join(__dirname, "client/build")));
 
     app.use((req, res, next) => {
       console.log(req.method, req.path);
@@ -60,9 +60,9 @@ mongoose
       res.send("Hello from StudySync Server!");
     });
 
-    // handle rest of the routes
+    // Serve the React app for all other routes
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client/build/index.html"));
+      res.sendFile(path.join(__dirname, "client/build", "index.html"));
     });
 
     app.listen(port, (err) => {
