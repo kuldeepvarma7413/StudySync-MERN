@@ -32,12 +32,18 @@ jobs:
           npm install
           $env:CI = "false"
           npm run build
-          
+
+      - name: Move build files to server directory
+        run: |
+          cd ..
+          mkdir -p server/client/build
+          mv client/build/* server/client/build
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: .
+          path: ./server
 
   deploy:
     runs-on: ubuntu-latest
