@@ -16,18 +16,6 @@ function OurTeam() {
                 <a href="https://www.linkedin.com/in/kul-deep-varma-4150bb225/">LinkedIn</a>
                 <a href="https://github.com/kuldeepvarma7413">Github</a>
             </div>
-            {/* <div className="team-member">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" />
-            <h2>Jane Doe</h2>
-            <p>Designer</p>
-            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-            </div>
-            <div className="team-member">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" />
-            <h2>Mike Ross</h2>
-            <p>Developer</p>
-            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-            </div> */}
         </div>
     </>
   )

@@ -7,6 +7,7 @@ import Logo from "../../images/logo.png";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 
 const Navbar = () => {
@@ -14,9 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
-  const [userImage, setUserImage] = useState(
-    "https://www.w3schools.com/howto/img_avatar.png"
-  );
+  const [userImage, setUserImage] = useState();
   const user = JSON.parse(localStorage.getItem("user"));
   
   // snackbar
@@ -71,10 +70,11 @@ const Navbar = () => {
   const Logout = () => {
     handleProfileMenuClick();
     // redirect to home using navigate
+    navigate("/");
+    window.location.reload();
+    setAuthenticated(false);
     Cookies.remove("token");
     localStorage.removeItem("user");
-    navigate("/");
-    setAuthenticated(false);
   };
 
   const handleProfileMenuClick = () => {
@@ -176,14 +176,14 @@ const Navbar = () => {
             ) : (
               <>
                 <li className="nav__item">
-                  <AnchorLink
-                    href="#download"
+                  <Link
+                    to={'/#download'}
                     className="nav__link"
                     onClick={closeMenuOnMobile}
                     style={menuItemStyle}
                   >
                     Download
-                  </AnchorLink>
+                  </Link>
                 </li>
                 <li className="nav__item">
                   <NavLink

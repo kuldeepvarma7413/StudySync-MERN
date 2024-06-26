@@ -32,36 +32,38 @@ mongoose
     app.use(cors());
 
     // routes which handle file uploads
-    
-    app.use(express.json({ limit: "50mb"}));
+
+    app.use(express.json({ limit: "50mb" }));
     app.use(express.urlencoded({ limit: "50mb", extended: true }));
-    
+
+    // Serve static files from the React app
+    app.use(express.static(path.join(__dirname, "../client/build")));
+
     app.use((req, res, next) => {
       console.log(req.method, req.path);
-      console.log(`Request Size: ${req.headers['content-length']} bytes`)
+      console.log(`Request Size: ${req.headers["content-length"]} bytes`);
       next();
     });
-    
+
     // routes
     app.use("/request", requestRouter);
     app.use("/auth", authRouter);
     app.use("/user", userRouter);
     app.use("/content", requireAuth, contentRouter);
     app.use("/courses", requireAuth, courseRouter);
-    app.use('/questions', questionRouter);
-    app.use('/answers', answerRouter);
+    app.use("/questions", questionRouter);
+    app.use("/answers", answerRouter);
     app.use("/subscribe", subscribeRouter);
-    app.use("/report", requireAuth,reportRouter);
-
+    app.use("/report", requireAuth, reportRouter);
 
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");
     });
 
-    // app.use(express.static("../client/build"));
-    // app.get("*", (req, res) => {
-    //   res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-    // })
+    // handle rest of the routes
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../client/build/index.html"));
+    });
 
     app.listen(port, (err) => {
       if (err) throw err;

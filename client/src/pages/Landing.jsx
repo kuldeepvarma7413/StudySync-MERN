@@ -120,7 +120,7 @@ function Landing() {
         } else {
           console.log("Fetch request failed", error);
         }
-        setServerLoading(true);
+        setServerLoading(false);
         clearInterval(timer);
         clearTimeout(fetchTimeout);
       });
@@ -129,9 +129,10 @@ function Landing() {
     return () => {
       clearInterval(timer);
       clearTimeout(fetchTimeout);
+      window.location.reload();
       controller.abort();
     };
-  }, []);
+  }, [serverLoading]);
 
   return (
     <>

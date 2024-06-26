@@ -6,12 +6,14 @@
     margin-top: 50px;
     margin: 50px 150px;
     height: 450px;
+    gap: 30px;
 }
 
 .profile-container .left-section{
-    width: 30%;
+    width: 25%;
+    min-width: 200px;
     display: flex;
-    height: 100%;
+    height: -webkit-fill-available;
     flex-direction: column;
     align-items: center;
     justify-content: start;
@@ -35,7 +37,7 @@
 }
 
 .profile-container .left-section p{
-    /* margin-top: 10px; */
+    margin-top: 5px;
     font-weight: 500;
     font-size: 10px;
 }
@@ -54,5 +56,60 @@
 
 .profile-container .left-section .profile-views{
     font-size: 12px;
-    margin-top: 3px;
+    margin-top: 5px;
+}
+
+.profile-container .right-section{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-container .right-section .nav-items{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.profile-container .right-section .nav-items a{
+    text-decoration: none;
+    color: #4E3366;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 5px 20px;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.profile-container .right-section .nav-items .selected{
+    background-color: #4E3366;
+    color: white;
+}
+
+/* content */
+
+.profile-container .content{
+    width: 100%;
+    height: -webkit-fill-available;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #F9F9F9;
+}
+
+/* my profile */
+
+.profile-container .content .profile{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 20px;
+    width: 400px;
+}
+
+.profile-container .content .profile p{
+    display: flex;
+    justify-content: space-between;
 }

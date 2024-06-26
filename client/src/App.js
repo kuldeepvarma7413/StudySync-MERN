@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -23,6 +23,16 @@ import Cookies from "js-cookie";
 import Profile from "./pages/Profile";
 
 function App() {
+  const [isAutheticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (Cookies.get("token")) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  },[window.location.pathname]);
+
   return (
     <Router>
       <Routes>
@@ -35,7 +45,7 @@ function App() {
               <Navbar />
               <Routes>
                 <Route path="/" element={<Landing />} />
-                {Cookies.get("token") ? (
+                {isAutheticated ? (
                   <>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/resources" element={<Resources />} />
