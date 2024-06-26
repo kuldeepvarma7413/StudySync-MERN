@@ -30,20 +30,13 @@ jobs:
         run: |
           cd client
           npm install
-          $env:CI = "false"
-          npm run build
-
-      - name: Move build files to server directory
-        run: |
-          cd ..
-          mkdir -p server/client/build
-          mv client/build/* server/client/build
+          CI=false npm run build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: ./server
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -64,5 +57,5 @@ jobs:
         with:
           app-name: 'StudySyncMern'
           slot-name: 'Production'
-          package: './server'
+          package: '.'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C4334FBD55174D5682CD32F5BA5C4152 }}
