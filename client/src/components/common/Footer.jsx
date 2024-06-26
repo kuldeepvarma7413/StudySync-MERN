@@ -28,7 +28,7 @@ function Footer() {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/subscribe`, {
+    fetch(`/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

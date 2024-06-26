@@ -29,7 +29,7 @@ function ForgetPassword() {
       setLoading(true);
       try{
           const res = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/auth/forget-password/${email}`,
+            `/auth/forget-password/${email}`,
             {
               method: "POST",
               headers: {

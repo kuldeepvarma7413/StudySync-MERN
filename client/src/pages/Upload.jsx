@@ -50,11 +50,18 @@ function Upload() {
 
   // validate files
   const validateFiles = (files) => {
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-    const invalidFiles = files.filter(file => !validTypes.includes(file.type));
+    const validTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "application/pdf",
+    ];
+    const invalidFiles = files.filter(
+      (file) => !validTypes.includes(file.type)
+    );
 
     if (invalidFiles.length > 0) {
-      alert('Only image files (JPEG, PNG, GIF) and PDFs are allowed.');
+      alert("Only image files (JPEG, PNG, GIF) and PDFs are allowed.");
       return false;
     }
     return true;
@@ -105,8 +112,8 @@ function Upload() {
 
     fetch(
       filetype === true
-        ? `${process.env.REACT_APP_BACKEND_URL}/content/add-pdffile`
-        : `${process.env.REACT_APP_BACKEND_URL}/content/add-cafile`,
+        ? `/content/add-pdffile`
+        : `/content/add-cafile`,
       {
         method: "POST",
         body: formData,
@@ -139,10 +146,9 @@ function Upload() {
 
   // fetch courses
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+    fetch(`/courses`, {
       headers: {
-        authorization:
-          "Bearer " + Cookies.get("token").replace("Bearer ", ""),
+        authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
     })
       .then((res) => res.json())
@@ -234,13 +240,15 @@ function Upload() {
               />
               <span>
                 <Select
-                  value={courseCode}
+                  value={courses.find(
+                    (course) => course.courseCode === courseCode
+                  )}
                   options={courses}
                   getOptionLabel={(option) =>
                     option.courseCode + ": " + option.courseTitle
                   }
                   getOptionValue={(option) => option.courseCode}
-                  onChange={(e) => setCourseCode(e.courseCode.toString()) }
+                  onChange={(e) => setCourseCode(e.courseCode.toString())}
                 />
                 <span className="course-unavailable">
                   *If course is not in list, please report us.{" "}

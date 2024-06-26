@@ -38,7 +38,7 @@ function Answer({ answer }) {
       setVoted(true);
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/answers/addvote/${answer._id}`,
+          `/answers/addvote/${answer._id}`,
           {
             method: "POST",
             headers: {
@@ -65,7 +65,7 @@ function Answer({ answer }) {
       setVoted(false);
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/answers/removevote/${answer._id}`,
+          `/answers/removevote/${answer._id}`,
           {
             method: "POST",
             headers: {

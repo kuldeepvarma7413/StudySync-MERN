@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 const { isErrored } = require("nodemailer/lib/xoauth2");
+const Answer = require("../models/answer.model");
+const Question = require("../models/question.model");
 
 // get user by email and account type
 router.get("/", async (req, res) => {
@@ -30,10 +32,12 @@ router.get("/:id", async (req, res) => {
     // calculate total upvotes on question and answers
     let totalUpvotes = 0;
     for(var i = 0; i < user.questions.length; i++){
-      totalUpvotes += user.questions[i].upvotes.length;
+      const question = await Question.findById(user.questions[i]._id);
+      totalUpvotes += question.upvotes.length;
     }
     for(var i = 0; i < user.answers.length; i++){
-      totalUpvotes += user.answers[i].upvotes.length;
+      const answer = await Answer.findById(user.answers[i]._id);
+      totalUpvotes += answer.upvotes.length;
     }
     const data = {
       name: user.name,
@@ -45,6 +49,7 @@ router.get("/:id", async (req, res) => {
       totalUpvotes,
       status: user.isDeleted ? "Deleted" : "Active",
       lastUpdated: user.updatedAt,
+      createdAt: user.createdAt,
     };
     return res.json({ status: "OK", data });
   } catch (err) {

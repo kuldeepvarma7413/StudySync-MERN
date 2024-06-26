@@ -108,7 +108,7 @@ function Landing() {
       controller.abort();
     }, 40000); // 40 seconds
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/`, { signal })
+    fetch(`/`, { signal })
       .then(() => {
         setServerLoading(false);
         clearInterval(timer);
@@ -120,7 +120,7 @@ function Landing() {
         } else {
           console.log("Fetch request failed", error);
         }
-        setServerLoading(true);
+        setServerLoading(false);
         clearInterval(timer);
         clearTimeout(fetchTimeout);
       });
@@ -129,9 +129,10 @@ function Landing() {
     return () => {
       clearInterval(timer);
       clearTimeout(fetchTimeout);
+      window.location.reload();
       controller.abort();
     };
-  }, []);
+  }, [serverLoading]);
 
   return (
     <>

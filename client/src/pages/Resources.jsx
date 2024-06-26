@@ -47,7 +47,7 @@ function Resources() {
     }
 
     if (fileType === "ppt") {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdffiles${queryParams}`, {
+      fetch(`/content/pdffiles${queryParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ function Resources() {
         });
     } else {
       // ca
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/cafiles${queryParams}`, {
+      fetch(`/content/cafiles${queryParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ function Resources() {
 
   useEffect(() => {
     // fetch courses
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+    fetch(`/courses`, {
       headers: {
         authorization:
           "Bearer " + Cookies.get("token").replace("Bearer ", ""),
