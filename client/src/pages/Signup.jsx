@@ -49,7 +49,7 @@ function Signup() {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
+        `/auth/register`,
         {
           method: "POST",
           headers: {
@@ -80,7 +80,7 @@ function Signup() {
 
   async function auth() {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/request`,
+      `/request`,
       {
         method: "POST",
       }

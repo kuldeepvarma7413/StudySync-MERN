@@ -30,7 +30,7 @@ function NewPassword() {
     }
     // Send backend request
     const res = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/set-password/${userId}/${token}`,
+      `/auth/set-password/${userId}/${token}`,
       {
         method: "POST",
         headers: {

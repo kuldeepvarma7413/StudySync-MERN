@@ -108,7 +108,7 @@ function Landing() {
       controller.abort();
     }, 40000); // 40 seconds
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/`, { signal })
+    fetch(`/`, { signal })
       .then(() => {
         setServerLoading(false);
         clearInterval(timer);

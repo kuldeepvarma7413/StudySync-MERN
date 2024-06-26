@@ -13,7 +13,7 @@ function Profile() {
     const getUser = async () => {
       try {
         let res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/user/${params.id}`
+          `/user/${params.id}`
         );
         res = await res.json();
         setUser(res.data);

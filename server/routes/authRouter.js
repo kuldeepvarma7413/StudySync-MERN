@@ -154,7 +154,7 @@ router.post("/login", async (req, res) => {
 const oAuth2Client = new OAuth2Client({
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri: `${process.env.REACT_APP_BACKEND_URL}/auth`,
+  redirectUri: `/auth`,
 });
 
 async function getUserData(access_token) {

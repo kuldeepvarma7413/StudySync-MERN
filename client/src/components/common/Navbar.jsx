@@ -49,7 +49,7 @@ const Navbar = () => {
       const decoded = jwtDecode(token);
       // fetch user data and store in local storage
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/?email=${decoded.email}&accountType=${decoded.accountType}`, {
+        const res = await fetch(`/user/?email=${decoded.email}&accountType=${decoded.accountType}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

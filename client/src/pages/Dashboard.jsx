@@ -8,7 +8,7 @@ function Dashboard() {
 
     const navigate = useNavigate()    
     async function populateCode(){
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/`, {
+        const response = await fetch(`/`, {
             method: 'GET',
             headers: {
                 'x-access-token': localStorage.getItem('token')
