@@ -21,7 +21,9 @@ router.post("/register", async (req, res) => {
     }
 
     // Check for existing username
-    let existingUsername = await User.findOne({ username: username.toLowerCase() });
+    let existingUsername = await User.findOne({
+      username: username.toLowerCase(),
+    });
     if (existingUsername) {
       return res.json({ status: "ERROR", error: "Duplicate username found" });
     }
@@ -134,7 +136,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { name: user.name, email: user.email, accountType: user.accountType },
+      { name: user.name, _id: user._id, email: user.email, accountType: user.accountType },
       process.env.JWT_SECRET
     ); // Generate JWT
     res.json({
@@ -186,7 +188,12 @@ router.get("/", async (req, res) => {
       // create user
       let newUser = await User.create({
         name: userData.name,
-        username: (userData.email.split("@")[0] + (Math.floor(Math.random() * 1000) + 1000)).substring(0, 20).toLowerCase(),
+        username: (
+          userData.email.split("@")[0] +
+          (Math.floor(Math.random() * 1000) + 1000)
+        )
+          .substring(0, 20)
+          .toLowerCase(),
         email: userData.email,
         accountType: "google",
         verified: true,
@@ -195,6 +202,7 @@ router.get("/", async (req, res) => {
       const token = jwt.sign(
         {
           name: newUser.name,
+          _id: user._id,
           email: newUser.email,
           accountType: newUser.accountType,
         },
@@ -205,7 +213,7 @@ router.get("/", async (req, res) => {
       );
     } else {
       const token = jwt.sign(
-        { name: user.name, email: user.email, accountType: user.accountType },
+        { name: user.name, _id: user._id, email: user.email, accountType: user.accountType },
         process.env.JWT_SECRET
       ); // Generate JWT
       return res.redirect(
@@ -225,7 +233,6 @@ router.post("/forget-password/:email", async (req, res) => {
     if (!user) {
       return res.json({ status: "ERROR", message: "User not found" });
     } else {
-
       // check already token exists
       let t = await Token.findOne({ user: user._id });
       if (t) {
@@ -261,7 +268,7 @@ router.post("/forget-password/:email", async (req, res) => {
 router.post("/set-password/:id/:reqtoken", async (req, res) => {
   const { id, reqtoken } = req.params;
   const { password } = req.body;
-  console.log(id, reqtoken, password)
+  console.log(id, reqtoken, password);
   try {
     const user = await User.findOne({ _id: id, accountType: "custom" });
     if (!user) {

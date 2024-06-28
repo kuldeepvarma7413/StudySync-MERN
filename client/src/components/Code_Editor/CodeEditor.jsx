@@ -7,8 +7,8 @@ import Output from "./Output";
 
 function CodeEditor() {
   const editorRef = useRef();
-  const [value, setValue] = useState(CODE_SNIPPETS["JavaScript"] || "Write your code here");
-  const [language, setLanguage] = useState('JavaScript');
+  const [value, setValue] = useState(CODE_SNIPPETS["Python"] || "Write your code here");
+  const [language, setLanguage] = useState('Python');
 
   const onMount = (editor) => {
     editorRef.current = editor;

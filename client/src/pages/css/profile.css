@@ -1,115 +1,237 @@
-.profile-container{
-    display: flex;
-    flex-direction: row;
-    /* align-items: center; */
-    /* justify-content: center; */
-    margin-top: 50px;
-    margin: 50px 150px;
-    height: 450px;
-    gap: 30px;
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  /* justify-content: center; */
+  margin-top: 50px;
+  margin: 50px 150px;
+  height: 450px;
+  gap: 30px;
 }
 
-.profile-container .left-section{
-    width: 25%;
-    min-width: 200px;
-    display: flex;
-    height: -webkit-fill-available;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    background-color: #F9F9F9;
-    border-radius: 10px;
+.profile-container .left-section {
+  width: 25%;
+  min-width: 200px;
+  display: flex;
+  height: -webkit-fill-available;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background-color: #f9f9f9;
+  border-radius: 10px;
 }
 
-.profile-container .left-section img{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-top: 30px;
-    border: 1px solid black;
+.profile-container .left-section img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 30px;
+  border: 1px solid black;
 }
 
-.profile-container .left-section h2{
-    margin-top: 10px;
-    color: #4E3366;
-    font-weight: 700;
-    font-size: 20px;
+.profile-container .left-section h2 {
+  margin-top: 10px;
+  color: #4e3366;
+  font-weight: 700;
+  font-size: 20px;
 }
 
-.profile-container .left-section p{
-    margin-top: 5px;
-    font-weight: 500;
-    font-size: 10px;
+.profile-container .left-section p {
+  margin-top: 5px;
+  font-weight: 500;
+  font-size: 10px;
 }
 
-.profile-container .left-section .upvote{
-    margin-top: 10px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.profile-container .left-section .upvote {
+  margin-top: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.profile-container .left-section .upvote .upvoteIcon{
-    font-size: 16px;
+.profile-container .left-section .upvote .upvoteIcon {
+  font-size: 16px;
 }
 
-.profile-container .left-section .profile-views{
-    font-size: 12px;
-    margin-top: 5px;
+.profile-container .left-section .profile-views {
+  font-size: 12px;
+  margin-top: 5px;
 }
 
-.profile-container .right-section{
-    width: 75%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.profile-container .right-section {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.profile-container .right-section .nav-items{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+.profile-container .right-section .nav-items {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
-.profile-container .right-section .nav-items a{
-    text-decoration: none;
-    color: #4E3366;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 5px 20px;
-    border-radius: 24px;
-    transition: 0.3s;
+.profile-container .right-section .nav-items a {
+  text-decoration: none;
+  color: #4e3366;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 20px;
+  border-radius: 24px;
+  transition: 0.3s;
 }
 
-.profile-container .right-section .nav-items .selected{
-    background-color: #4E3366;
-    color: white;
+.profile-container .right-section .nav-items .selected {
+  background-color: #4e3366;
+  color: white;
 }
 
 /* content */
 
-.profile-container .content{
+.profile-container .loader-container{
     width: 100%;
-    height: -webkit-fill-available;
-    margin-top: 10px;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #F9F9F9;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-container .content {
+  width: 100%;
+  height: -webkit-fill-available;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #f9f9f9;
 }
 
 /* my profile */
 
-.profile-container .content .profile{
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    gap: 20px;
-    width: 400px;
+.profile-container .content .profile {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 20px;
+  width: 400px;
 }
 
-.profile-container .content .profile p{
-    display: flex;
-    justify-content: space-between;
+.profile-container .content .profile p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-container .change-password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+  /* width: 500px; */
+  height: 100%;
+}
+
+.profile-container .change-password form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.profile-container .change-password input {
+  width: 300px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  background-color: #efe5ff;
+}
+
+.profile-container .change-password button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #4e3366;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+  display: block;
+  margin: auto;
+}
+
+.profile-container .change-password button:hover {
+  background-color: #6d4c8b;
+}
+
+.profile-container .change-password label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* questions */
+
+.profile-container .content .questions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
+  overflow-x: auto;
+}
+
+.profile-container .content .questions .question {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.profile-container .content .questions .question .question-title {
+  font-size: 14px;
+  color: #4e3366;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.profile-container .content .questions .question .question-description {
+  font-size: 12px;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: black;
+}
+
+.profile-container .content .question-bottom {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  color: black;
+  justify-content: space-between;
+}
+
+.profile-container .loading {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #4e3366;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  top: 40%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

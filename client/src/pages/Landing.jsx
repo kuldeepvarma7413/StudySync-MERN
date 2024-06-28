@@ -93,56 +93,58 @@ function Landing() {
     },
   ];
 
-  const [serverLoading, setServerLoading] = useState(true);
-  const [time, setTime] = useState(40);
+  // turn on server loading when deploying on free hosting
+  // 
+  // const [serverLoading, setServerLoading] = useState(true);
+  // const [time, setTime] = useState(40);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prev) => prev - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTime((prev) => prev - 1);
+  //   }, 1000);
 
-    const controller = new AbortController();
-    const signal = controller.signal;
+  //   const controller = new AbortController();
+  //   const signal = controller.signal;
 
-    const fetchTimeout = setTimeout(() => {
-      controller.abort();
-    }, 40000); // 40 seconds
+  //   const fetchTimeout = setTimeout(() => {
+  //     controller.abort();
+  //   }, 40000); // 40 seconds
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/`, { signal })
-      .then(() => {
-        setServerLoading(false);
-        clearInterval(timer);
-        clearTimeout(fetchTimeout);
-      })
-      .catch((error) => {
-        if (error.name === "AbortError") {
-          console.log("Fetch request timed out");
-        } else {
-          console.log("Fetch request failed", error);
-        }
-        setServerLoading(false);
-        clearInterval(timer);
-        clearTimeout(fetchTimeout);
-      });
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/`, { signal })
+  //     .then(() => {
+  //       setServerLoading(false);
+  //       clearInterval(timer);
+  //       clearTimeout(fetchTimeout);
+  //     })
+  //     .catch((error) => {
+  //       if (error.name === "AbortError") {
+  //         console.log("Fetch request timed out");
+  //       } else {
+  //         console.log("Fetch request failed", error);
+  //       }
+  //       setServerLoading(false);
+  //       clearInterval(timer);
+  //       clearTimeout(fetchTimeout);
+  //     });
 
-    // Cleanup function to clear interval, timeout, and abort fetch if component unmounts
-    return () => {
-      clearInterval(timer);
-      clearTimeout(fetchTimeout);
-      window.location.reload();
-      controller.abort();
-    };
-  }, [serverLoading]);
+  //   // Cleanup function to clear interval, timeout, and abort fetch if component unmounts
+  //   return () => {
+  //     clearInterval(timer);
+  //     clearTimeout(fetchTimeout);
+  //     window.location.reload();
+  //     controller.abort();
+  //   };
+  // }, []);
 
   return (
     <>
-      {serverLoading == true ? (
+      {/* {serverLoading == true ? (
         <div className="server-loading">
           <p>Server is starting...</p>
           <p>Estimated time {time} seconds</p>
         </div>
       ) : (
-        <>
+        <> */}
           <div className="landing-page">
             <section className="landing-content">
               <div className="left-content">
@@ -231,9 +233,9 @@ function Landing() {
               </a>
             </section>
             <section className="testimonials"></section>
-          </div>{" "}
-        </>
-      )}
+          </div>
+        {/* </>
+      )} */}
       <Footer />
     </>
   );

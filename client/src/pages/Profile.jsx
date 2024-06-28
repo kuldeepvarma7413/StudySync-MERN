@@ -1,100 +1,340 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Link,
+  useParams,
+  NavLink,
+  // useNavigate,
+  // useLocation,
+} from "react-router-dom";
 import "./css/profile.css";
 import { BiSolidUpvote } from "react-icons/bi";
 import getDate from "../utils/getDate";
+import validatePassword from "../utils/validatePassword";
+import Cookies from "js-cookie";
+import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function Profile() {
   document.title = "Profile | StudySync";
   const params = useParams();
+  // const navigate = useNavigate();
+  // const location = useLocation();
+
   const [user, setUser] = useState({});
+  const [isUser, setIsUser] = useState(false);
+  const [selectedSection, setSelectedSection] = useState("profile");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  // snackbar
+  const [SnackbarType, setSnackBarType] = useState("false");
+  const [message, setMessage] = useState("");
+  const snackbarRef = useRef(null);
 
   useEffect(() => {
+    setIsLoading(true);
     const getUser = async () => {
       try {
         let res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/user/${params.id}`
+          `${process.env.REACT_APP_BACKEND_URL}/user/${params.id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + Cookies.get("token"),
+            },
+          }
         );
         res = await res.json();
-        setUser(res.data);
+        if (res.status === "OK") {
+          setUser(res.data);
+          setIsUser(res.isUser);
+        } else {
+          console.log(res.message);
+        }
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     };
     getUser();
   }, [params.id]);
 
-  useEffect(() => {
-    // onclick on each nav item and add selected class
-    const addSelectedClass = () => {
-      const navItem = document.querySelectorAll(".nav-item");
-      navItem.forEach((item) => {
-        item.addEventListener("click", () => {
-          navItem.forEach((item) => {
-            item.classList.remove("selected");
-          });
-          item.classList.add("selected");
-        });
-      });
-    };
+  // useEffect(() => {
+  //   const section = new URLSearchParams(location.search).get("section");
+  //   if (section) {
+  //     setSelectedSection(section);
+  //     console.log("setting section", section);
+  //   }
+  // }, [location.search]);
 
-    addSelectedClass();
-  }, []);
+  const handleSectionChange = (section) => {
+    setSelectedSection(section);
+    console.log("changing section", section);
+    // not working
+    // navigate(`${location.pathname}?section=${section}`);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setMessage("Passwords do not match.");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
+
+    const validationError = validatePassword(newPassword);
+    if (validationError.status === false) {
+      setMessage(validationError.message);
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
+
+    if (oldPassword === newPassword) {
+      setMessage("New password cannot be same as old password.");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/user/change-password/${params.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + Cookies.get("token"),
+          },
+          body: JSON.stringify({
+            oldPassword,
+            newPassword,
+          }),
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      if (data.success === "OK") {
+        setMessage("Password updated successfully");
+        setSnackBarType("success");
+        snackbarRef.current.show();
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        setMessage(data.message);
+        setSnackBarType("error");
+        snackbarRef.current.show();
+      }
+    } catch (err) {
+      setMessage("Error updating password.");
+      setSnackBarType("error");
+      snackbarRef.current.show();
+    }
+  };
 
   return (
     <>
-      {user != null ? (
+      {user ? (
         <div className="profile-container">
           <section className="left-section">
-            <img src={user.profilePic} alt="profile-pic" />
-            <h2>{user.name}</h2>
-            <p className="username">@{user.username}</p>
-            <p className="upvote">
-              {user.totalUpvotes}
-              <BiSolidUpvote className="upvoteIcon" />
-            </p>
-            <p className="profile-views">20 views</p>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                <img src={user.profilePic} alt="profile-pic" />
+                <h2>{user.name}</h2>
+                <p className="username">@{user.username}</p>
+                <p className="upvote">
+                  {user.totalUpvotes}
+                  <BiSolidUpvote className="upvoteIcon" />
+                </p>
+              </>
+            )}
           </section>
           <section className="right-section">
             <div className="nav-items">
-              <Link className="nav-item selected">Profile</Link>
-              <Link className="nav-item">Change Password</Link>
-              <Link className="nav-item">Questions</Link>
-              <Link className="nav-item">Answers</Link>
+              <Link
+                className={`nav-item ${
+                  selectedSection === "profile" ? "selected" : ""
+                }`}
+                onClick={() => handleSectionChange("profile")}
+              >
+                Profile
+              </Link>
+              {isUser && (
+                <>
+                  <Link
+                    className={`nav-item ${
+                      selectedSection === "changePassword" ? "selected" : ""
+                    }`}
+                    onClick={() => handleSectionChange("changePassword")}
+                  >
+                    Change Password
+                  </Link>
+                  <Link
+                    className={`nav-item ${
+                      selectedSection === "questions" ? "selected" : ""
+                    }`}
+                    onClick={() => handleSectionChange("questions")}
+                  >
+                    Questions
+                  </Link>
+                  <Link
+                    className={`nav-item ${
+                      selectedSection === "answers" ? "selected" : ""
+                    }`}
+                    onClick={() => handleSectionChange("answers")}
+                  >
+                    Answers
+                  </Link>
+                </>
+              )}
             </div>
             <div className="content">
-              <div className="profile">
-                <p>
-                  <span>Name:</span> {user.name}
-                </p>
-                <p>
-                  <span>Username:</span> {user.username}
-                </p>
-                <p>
-                  <span>Email:</span> {user.email}
-                </p>
-                <p>
-                  <span>Status:</span> {user.status}
-                </p>
-                <p>
-                  <span>Total Questions:</span> {user.totalQuestions}
-                </p>
-                <p>
-                  <span>Total Answers:</span> {user.totalAnswers}
-                </p>
-                <p>
-                  <span>User Since:</span> {getDate(user.createdAt)}
-                </p>
-                <p>
-                  <span>Last Updated:</span> {getDate(user.lastUpdated)}
-                </p>
-              </div>
+              {isLoading ? (
+                <div className="loader-container">
+                  <p className="loading"></p>
+                </div>
+              ) : (
+                <>
+                  {selectedSection === "profile" && (
+                    <div className="profile">
+                      <p>
+                        <span>Name:</span> {user.name}
+                      </p>
+                      <p>
+                        <span>Username:</span> {user.username}
+                      </p>
+                      <p>
+                        <span>Email:</span> {user.email}
+                      </p>
+                      <p>
+                        <span>Status:</span> {user.status}
+                      </p>
+                      <p>
+                        <span>Total Questions:</span> {user.totalQuestions}
+                      </p>
+                      <p>
+                        <span>Total Answers:</span> {user.totalAnswers}
+                      </p>
+                      <p>
+                        <span>User Since:</span> {getDate(user.createdAt)}
+                      </p>
+                      <p>
+                        <span>Last Updated:</span> {getDate(user.lastUpdated)}
+                      </p>
+                    </div>
+                  )}
+                  {isUser && (
+                    <>
+                      {selectedSection === "changePassword" && (
+                        <div className="change-password">
+                          <form onSubmit={handleSubmit}>
+                            <div>
+                              <label htmlFor="old-password">Old Password</label>
+                              <input
+                                type="password"
+                                id="old-password"
+                                placeholder="********"
+                                value={oldPassword}
+                                onChange={(e) => setOldPassword(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label htmlFor="new-password">New Password</label>
+                              <input
+                                type="password"
+                                id="new-password"
+                                placeholder="********"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label htmlFor="confirm-password">
+                                Confirm Password
+                              </label>
+                              <input
+                                type="password"
+                                id="confirm-password"
+                                placeholder="********"
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                  setConfirmPassword(e.target.value)
+                                }
+                              />
+                            </div>
+                            <button type="submit" className="btn">
+                              Update
+                            </button>
+                          </form>
+                        </div>
+                      )}
+                      {selectedSection === "questions" && (
+                        <div className="questions">
+                          {user.questions && user.questions.length > 0 ? (
+                            user.questions.map((question, index) => (
+                              <div className="question" key={question._id}>
+                                <NavLink
+                                  to={`/discuss/view-question/${question._id}`}
+                                  className="question-title"
+                                >
+                                  {index + 1}. {question.title}
+                                </NavLink>
+                                <p className="question-description">
+                                  {question.description}
+                                </p>
+                                <p className="question-bottom">
+                                  {question.views} views,{" "}
+                                  {question.upvotes.length} upvotes,{" "}
+                                  {question.answers.length} answers{" "}
+                                  <span>{getDate(question.createdAt)}</span>
+                                </p>
+                              </div>
+                            ))
+                          ) : (
+                            <p>No questions found</p>
+                          )}
+                        </div>
+                      )}
+                      {selectedSection === "answers" && (
+                        <div className="questions answers">
+                          {user.answers && user.answers.length > 0 ? (
+                            user.answers.map((answer, index) => (
+                              <div className="question answer" key={answer._id}>
+                                <NavLink
+                                  to={`/discuss/view-question/${answer.question}`}
+                                  className="question-description"
+                                >
+                                  {index + 1}. {answer.description}
+                                </NavLink>
+                                <p className="question-bottom">
+                                  {answer.upvotes.length} upvotes
+                                  <span>{getDate(answer.createdAt)}</span>
+                                </p>
+                              </div>
+                            ))
+                          ) : (
+                            <p>No answers found</p>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </section>
         </div>
       ) : (
-        "Unauthorized Access"
+        "User Not Found"
       )}
+      <SnackbarCustom ref={snackbarRef} message={message} type={SnackbarType} />
     </>
   );
 }

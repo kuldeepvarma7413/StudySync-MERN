@@ -26,6 +26,7 @@ function App() {
   const [isAutheticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    console.log(isAutheticated)
     if (Cookies.get("token")) {
       setIsAuthenticated(true);
     } else {

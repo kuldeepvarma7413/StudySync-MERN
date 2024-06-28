@@ -9,6 +9,8 @@ function Discuss() {
   const [totalQues, setTotalQues] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState("unanswered");
 
   useEffect(() => {
     setIsLoading(true);
@@ -27,6 +29,18 @@ function Discuss() {
       });
   }, []);
 
+  const filteredQuestions = questions.filter((question) => {
+    const matchesSearchQuery = question.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "answered" && question.answers.length > 0) ||
+      (filter === "unanswered" && question.answers.length === 0);
+
+    return matchesSearchQuery && matchesFilter;
+  });
+
   return (
     <div className="discuss">
       <section className="section-1">
@@ -39,32 +53,63 @@ function Discuss() {
       <section className="section-2">
         <p>{totalQues} questions</p>
         <div className="search-filter-div">
-          <input type="search" className="search" placeholder="Search" />
+          <input
+            type="search"
+            className="search"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <div className="filters">
-            {/* <input type="radio" id='active-filter' name='filter' checked='checked' />
-                    <label htmlFor="active-filter">Active</label> */}
+            <input
+              type="radio"
+              id="all-filter"
+              name="filter"
+              value="all"
+              checked={filter === "all"}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+            <label htmlFor="all-filter">All</label>
             <input
               type="radio"
               id="unanswered-filter"
               name="filter"
-              checked={true}
+              value="unanswered"
+              checked={filter === "unanswered"}
+              onChange={(e) => setFilter(e.target.value)}
             />
             <label htmlFor="unanswered-filter">Unanswered</label>
-            <input type="radio" id="answered-filter" name="filter" />
+            <input
+              type="radio"
+              id="answered-filter"
+              name="filter"
+              value="answered"
+              checked={filter === "answered"}
+              onChange={(e) => setFilter(e.target.value)}
+            />
             <label htmlFor="answered-filter">Answered</label>
           </div>
         </div>
       </section>
       {/* questions */}
       <section className="section-3 questions">
-        {isLoading == true ? (
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh'}}><p className="loader loader-small"></p></div>
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "50vh",
+            }}
+          >
+            <p className="loader loader-small"></p>
+          </div>
         ) : (
           <>
-            {questions.map((question, index) => {
-              return <Question key={index} question={question} />;
-            })}
-            {questions.length === 0 && <p>No questions found</p>}
+            {filteredQuestions.map((question, index) => (
+              <Question key={index} question={question} />
+            ))}
+            {filteredQuestions.length === 0 && <p>No questions found</p>}
           </>
         )}
       </section>

@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, Link } from "react-router-dom";
 import { IoClose, IoMenu } from "react-icons/io5";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import "./css/navbar.css";
 import Logo from "../../images/logo.png";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
-
 
 const Navbar = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -17,11 +14,12 @@ const Navbar = () => {
   const [profileMenu, setProfileMenu] = useState(false);
   const [userImage, setUserImage] = useState();
   const user = JSON.parse(localStorage.getItem("user"));
-  
+
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
   const [message, setMessage] = useState("");
   const snackbarRef = useRef(null);
+  const profileMenuRef = useRef(null);
 
   useEffect(() => {
     addSelectedClass();
@@ -30,6 +28,18 @@ const Navbar = () => {
   useEffect(() => {
     fetchData();
   }, [authenticated]);
+
+  useEffect(() => {
+    if (profileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [profileMenu]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -49,13 +59,16 @@ const Navbar = () => {
       const decoded = jwtDecode(token);
       // fetch user data and store in local storage
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/?email=${decoded.email}&accountType=${decoded.accountType}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/user/?email=${decoded.email}&accountType=${decoded.accountType}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await res.json();
         if (data.status === "OK") {
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -79,6 +92,20 @@ const Navbar = () => {
 
   const handleProfileMenuClick = () => {
     setProfileMenu(!profileMenu);
+  };
+
+  const handleClickOutside = (event) => {
+    console.log(profileMenuRef.current);
+    console.log(event.target);
+    // Check if the clicked element is within the profile menu or its trigger
+    if (
+      profileMenuRef.current &&
+      !event.target.classList.contains("user-image") &&
+      !event.target.classList.contains("menu-profile") &&
+      !profileMenuRef.current.contains(event.target)
+    ) {
+      setProfileMenu(false);
+    }
   };
 
   // add selected class when we click on the nav item
@@ -177,7 +204,7 @@ const Navbar = () => {
               <>
                 <li className="nav__item">
                   <Link
-                    to={'/#download'}
+                    to={"/#download"}
                     className="nav__link"
                     onClick={closeMenuOnMobile}
                     style={menuItemStyle}
@@ -204,22 +231,27 @@ const Navbar = () => {
                     src={userImage}
                     className="user-image"
                     onClick={handleProfileMenuClick}
+                    ref={profileMenuRef}
                   />
                   <ul className={`profile-menu ${profileMenu ? "show" : ""}`}>
-                    <li>
-                      <NavLink
-                        to={`/profile/${user._id}`}
-                        onClick={() => {
-                          handleProfileMenuClick();
-                          closeMenuOnMobile();
-                        }}
-                      >
-                        Profile
-                      </NavLink>
-                    </li>
+                    {user && (
+                      <li>
+                        <NavLink
+                          to={`/profile/${user._id}`}
+                          className={"menu-profile"}
+                          onClick={() => {
+                            handleProfileMenuClick();
+                            closeMenuOnMobile();
+                          }}
+                        >
+                          Profile
+                        </NavLink>
+                      </li>
+                    )}
                     <li>
                       <NavLink
                         to="/report"
+                        className={"menu-profile"}
                         onClick={() => {
                           handleProfileMenuClick();
                           closeMenuOnMobile();
@@ -230,12 +262,12 @@ const Navbar = () => {
                     </li>
                     <li>
                       <NavLink
+                        className={"menu-profile"}
                         onClick={() => {
                           Logout();
                           handleProfileMenuClick();
                           closeMenuOnMobile();
                         }}
-                        className="nav_link"
                       >
                         Logout
                       </NavLink>

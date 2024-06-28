@@ -40,7 +40,7 @@ function Question({ question }) {
             })}
           </div>
           <div className="asked-by">
-            <p><u>{question.user.username}</u></p>
+            <NavLink to={`/profile/${question.user._id}`}><u>{question.user.username}</u></NavLink>
             <p> asked {timeAgo(question.createdAt)}</p>
           </div>
         </div>

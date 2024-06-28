@@ -30,7 +30,13 @@ jobs:
         run: |
           cd client
           npm install
+          $env:CI = "false"
           npm run build
+
+      - name: Move build files to server directory
+        run: |
+          mkdir -p server/client/build
+          mv client/build/* server/client/build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3

@@ -44,6 +44,7 @@ function Upload() {
   const [description, setDescription] = useState("");
   const [canumber, setCaNumber] = useState("");
   const [cadate, setCaDate] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   // courses
   const [courses, setcourses] = useState([]);
@@ -67,6 +68,12 @@ function Upload() {
     return true;
   };
 
+  function fillField() {
+    setMessage("Please fill all fields");
+    setSnackBarType("error");
+    snackbarRef.current.show();
+  }
+
   // submition
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,16 +90,13 @@ function Upload() {
       return;
     }
     if (title === "" || courseCode === "") {
-      if (filetype && (unit === "" || description === "")) {
-        setMessage("Please fill all fields");
-        setSnackBarType("error");
-        snackbarRef.current.show();
-      } else if (!filetype && (canumber === "" || cadate === "")) {
-        setMessage("Please fill all fields");
-        setSnackBarType("error");
-        snackbarRef.current.show();
-      }
+      fillField();
       return;
+    }
+    if (filetype && (unit === "" || description === "")) {
+      fillField();
+    } else if (canumber == "" || cadate == "") {
+      fillField();
     }
     const formData = new FormData();
     files.forEach((file) => {
@@ -105,11 +109,21 @@ function Upload() {
       formData.append("description", description);
     } else {
       formData.append("canumber", canumber);
+      // date should not be in future
+      const today = new Date();
+      const date = new Date(cadate);
+      if (date > today) {
+        setMessage("CA Date should not be in future");
+        setSnackBarType("error");
+        snackbarRef.current.show();
+        return;
+      }
       formData.append("cadate", cadate);
     }
     // if filetype is true, then it is a course file
     formData.append("filetype", filetype === true ? "course" : "ca");
 
+    setIsUploading(true);
     fetch(
       filetype === true
         ? `${process.env.REACT_APP_BACKEND_URL}/content/add-pdffile`
@@ -131,7 +145,6 @@ function Upload() {
           snackbarRef.current.show();
           setFiles([]);
           setTitle("");
-          setCourseCode("");
           setUnit("");
           setDescription("");
           setCaNumber("");
@@ -141,6 +154,9 @@ function Upload() {
           setSnackBarType("error");
           snackbarRef.current.show();
         }
+      })
+      .finally(() => {
+        setIsUploading(false);
       });
   };
 
@@ -288,7 +304,7 @@ function Upload() {
               )}
 
               <button className="btn submitbtn" onClick={handleSubmit}>
-                UPLOAD
+                {isUploading ? "Uploading..." : "Upload"}
               </button>
             </div>
           </div>

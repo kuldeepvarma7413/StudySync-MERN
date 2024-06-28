@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 router.use((req, res, next) => {
     var token = req.headers['authorization'];
     console.log("requesting")
-    token = token.replace('Bearer ', '')
     if(token){
+        token = token.replace('Bearer ', '')
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if(err){
                 res.json({status: 'ERROR', error: 'Unauthorized request'})

@@ -241,7 +241,7 @@ function QuestionView() {
                     })}
                   </div>
                   <p>
-                    <span><u>{question.user.username}</u></span>
+                    <NavLink to={`/profile/${question.user._id}`}><u>{question.user.username}</u></NavLink>
                     <p>asked {timeAgo(question.createdAt)}</p>
                   </p>
                 </div>

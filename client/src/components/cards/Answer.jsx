@@ -5,6 +5,7 @@ import timeAgo from "../../utils/timeAgo";
 import { BiSolidUpvote } from "react-icons/bi";
 import Cookies from "js-cookie";
 import SnackbarCustom from "../common/SnackbarCustom";
+import { NavLink } from "react-router-dom";
 
 function Answer({ answer }) {
   const [voted, setVoted] = React.useState(false);
@@ -19,14 +20,14 @@ function Answer({ answer }) {
 
   // if user already upvoted
   useEffect(() => {
-    if ( user &&  answer.upvotes.includes(user._id)) {
+    if (user && answer.upvotes.includes(user._id)) {
       setVoted(true);
     }
   }, []);
 
   // upvote and remove upvote
   const addVote = async () => {
-    if(!user){
+    if (!user) {
       setSnackBarType("error");
       setMessage("Please login to upvote");
       snackbarRef.current.show();
@@ -112,7 +113,12 @@ function Answer({ answer }) {
         <p className="description">{answer.description}</p>
         <div className="bottom">
           <p>Replied {timeAgo(answer.createdAt)}</p>
-          <p>by <u>{answer.user.username}</u></p>
+          <p>
+            by{" "}
+            <NavLink to={`/profile/${answer.user._id}`}>
+              <u>{answer.user.username}</u>
+            </NavLink>
+          </p>
         </div>
       </div>
     </div>
