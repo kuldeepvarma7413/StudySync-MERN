@@ -3,8 +3,8 @@ import {
   Link,
   useParams,
   NavLink,
-  // useNavigate,
-  // useLocation,
+  useNavigate,
+  useLocation,
 } from "react-router-dom";
 import "./css/profile.css";
 import { BiSolidUpvote } from "react-icons/bi";
@@ -16,12 +16,12 @@ import SnackbarCustom from "../components/common/SnackbarCustom";
 function Profile() {
   document.title = "Profile | StudySync";
   const params = useParams();
-  // const navigate = useNavigate();
-  // const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = useState({});
   const [isUser, setIsUser] = useState(false);
-  const [selectedSection, setSelectedSection] = useState("profile");
+  const [selectedSection, setSelectedSection] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -60,21 +60,6 @@ function Profile() {
     };
     getUser();
   }, [params.id]);
-
-  // useEffect(() => {
-  //   const section = new URLSearchParams(location.search).get("section");
-  //   if (section) {
-  //     setSelectedSection(section);
-  //     console.log("setting section", section);
-  //   }
-  // }, [location.search]);
-
-  const handleSectionChange = (section) => {
-    setSelectedSection(section);
-    console.log("changing section", section);
-    // not working
-    // navigate(`${location.pathname}?section=${section}`);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,6 +122,33 @@ function Profile() {
     }
   };
 
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+
+  const query = useQuery();
+
+  useEffect(() => {
+    const section = query.get("section");
+    if (section) {
+      setSelectedSection(section);
+    } else {
+      setSelectedSection("profile");
+      updateQueryParameter("section", "profile");
+    }
+  }, []);
+
+  const updateQueryParameter = (key, value) => {
+    query.set(key, value);
+    navigate(`?${query.toString()}`, { replace: true });
+  };
+
+  useEffect(()=>{
+    if(selectedSection){
+      updateQueryParameter("section", selectedSection);
+    }
+  }, [selectedSection])
+
   return (
     <>
       {user ? (
@@ -147,12 +159,14 @@ function Profile() {
             ) : (
               <>
                 <img src={user.profilePic} alt="profile-pic" />
-                <h2>{user.name}</h2>
-                <p className="username">@{user.username}</p>
-                <p className="upvote">
-                  {user.totalUpvotes}
-                  <BiSolidUpvote className="upvoteIcon" />
-                </p>
+                <div className="profile-analysis">
+                  <h2>{user.name}</h2>
+                  <p className="username">@{user.username}</p>
+                  <p className="upvote">
+                    {user.totalUpvotes}
+                    <BiSolidUpvote className="upvoteIcon" />
+                  </p>
+                </div>
               </>
             )}
           </section>
@@ -162,7 +176,7 @@ function Profile() {
                 className={`nav-item ${
                   selectedSection === "profile" ? "selected" : ""
                 }`}
-                onClick={() => handleSectionChange("profile")}
+                onClick={() => setSelectedSection("profile")}
               >
                 Profile
               </Link>
@@ -172,7 +186,7 @@ function Profile() {
                     className={`nav-item ${
                       selectedSection === "changePassword" ? "selected" : ""
                     }`}
-                    onClick={() => handleSectionChange("changePassword")}
+                    onClick={() => setSelectedSection("changePassword")}
                   >
                     Change Password
                   </Link>
@@ -180,7 +194,7 @@ function Profile() {
                     className={`nav-item ${
                       selectedSection === "questions" ? "selected" : ""
                     }`}
-                    onClick={() => handleSectionChange("questions")}
+                    onClick={() => setSelectedSection("questions")}
                   >
                     Questions
                   </Link>
@@ -188,7 +202,7 @@ function Profile() {
                     className={`nav-item ${
                       selectedSection === "answers" ? "selected" : ""
                     }`}
-                    onClick={() => handleSectionChange("answers")}
+                    onClick={() => setSelectedSection("answers")}
                   >
                     Answers
                   </Link>

@@ -163,7 +163,7 @@
 
 @media screen and (min-width: 320px) and (max-width: 480px){
   .nav {
-    padding: 10px 20px;
+    padding: 2px 20px;
   }
   .nav__list {
     flex-direction: column;

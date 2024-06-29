@@ -25,26 +25,22 @@ const upload = multer({
 
 router.get("/pdffiles", async (req, res) => {
   try {
-    const { subject, uploadedBy, date } = req.query;
-    const filterObject = {};
-    if (subject) {
-      const course = await Course.findOne({ _id: subject });
-      filterObject.courseCode = course.courseCode;
-    }
-    if (uploadedBy == "studysync") {
-      filterObject.uploadedBy = "admin";
-    }
-    if (date) {
-      filterObject.createdAt = {
-        $gte: new Date(date),
-        $lt: new Date(date).setDate(new Date(date).getDate() + 1),
-      };
-    }
-    const pdfFiles = await PDFFile.find(filterObject);
+    const pdfFiles = await PDFFile.find().sort({ createdAt: -1 }).lean();
+
+    const updatedFiles = await Promise.all(
+      pdfFiles.map(async (file) => {
+        const course = await Course.findOne({ _id: file.course }).select("courseCode");
+        return {
+          ...file,
+          courseCode: course.courseCode,
+        };
+      })
+    );
+
     res.json({
       status: "OK",
       message: "PDF files fetched successfully",
-      data: pdfFiles,
+      data: updatedFiles,
     });
   } catch (err) {
     console.error(err);
@@ -107,7 +103,7 @@ router.post("/add-pdffile", upload.array("files"), async (req, res) => {
 
     const pdfFile = new PDFFile({
       title: req.body.title,
-      courseCode: req.body.courseCode,
+      course: req.body.courseCode,
       unit: req.body.unit,
       fileUrl: result.secure_url,
       createdAt: Date.now(),
@@ -128,32 +124,39 @@ router.post("/add-pdffile", upload.array("files"), async (req, res) => {
   }
 });
 
+// update pdf file view
+router.put("/pdfview/:id", async (req, res) => {
+  try {
+    const pdfFile = await PDFFile.findOneAndUpdate({ _id: req.params.id}, { $inc: { views: 1 } });
+    res.json({ status: "OK", message: "PDF file view updated" });
+  } catch (err) {
+    res.status(400).json({ status: "ERROR", message: "Error: " + err });
+  }
+});
+
 // CA Files
 
 // get
 
 router.get("/cafiles", async (req, res) => {
   try {
-    const { subject, uploadedBy, date } = req.query;
-    const filterObject = {};
-    if (subject) {
-      const course = await Course.findOne({ _id: subject });
-      filterObject.courseCode = course.courseCode;
-    }
-    if (uploadedBy == "studysync") {
-      filterObject.uploadedBy = "admin";
-    }
-    if (date) {
-      filterObject.createdAt = {
-        $gte: new Date(date),
-        $lt: new Date(date).setDate(new Date(date).getDate() + 1),
-      };
-    }
-    const caFiles = await CAFile.find(filterObject);
+    const caFiles = await CAFile.find().sort({ createdAt: -1 }).lean();
+
+    const updatedFiles = await Promise.all(
+      caFiles.map(async (file) => {
+        const course = await Course.findOne({ _id: file.course }).select("courseCode");
+        console.log(course, file.course)
+        return {
+          ...file,
+          courseCode: course.courseCode,
+        };
+      })
+    );
+
     res.json({
       status: "OK",
       message: "CA files fetched successfully",
-      data: caFiles,
+      data: updatedFiles,
     });
   } catch (err) {
     console.error(err);
@@ -214,7 +217,7 @@ router.post("/add-cafile", upload.array("files"), async (req, res) => {
 
     console.log(req.body);
     const caFile = new CAFile({
-      courseCode: req.body.courseCode,
+      course: req.body.courseCode,
       fileUrl: result.secure_url,
       uploadedBy: req.user.name,
       caNumber: req.body.canumber,
@@ -234,6 +237,18 @@ router.post("/add-cafile", upload.array("files"), async (req, res) => {
   } catch (error) {
     console.error("Error merging files:", error);
     res.status(500).send("An error occurred while merging files.");
+  }
+});
+
+// update ca file view
+router.put("/caview/:id", async (req, res) => {
+  try {
+    const caFile = await CAFile.findById(req.params.id);
+    caFile.views += 1;
+    await caFile.save();
+    res.json({ status: "OK", message: "CA file view updated" });
+  } catch (err) {
+    res.status(400).json({ status: "ERROR", message: "Error: " + err });
   }
 });
 

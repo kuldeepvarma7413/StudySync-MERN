@@ -39,7 +39,7 @@ function Upload() {
   // right side
   const [filetype, setFiletype] = useState(true);
   const [title, setTitle] = useState("");
-  const [courseCode, setCourseCode] = useState("");
+  const [course, setCourse] = useState("");
   const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
   const [canumber, setCaNumber] = useState("");
@@ -89,21 +89,23 @@ function Upload() {
       snackbarRef.current.show();
       return;
     }
-    if (title === "" || courseCode === "") {
+    if (title === "" || course.toString() === "") {
       fillField();
       return;
     }
     if (filetype && (unit === "" || description === "")) {
       fillField();
+      return;
     } else if (canumber == "" || cadate == "") {
       fillField();
+      return;
     }
     const formData = new FormData();
     files.forEach((file) => {
       formData.append("files", file);
     });
     formData.append("title", title);
-    formData.append("courseCode", courseCode);
+    formData.append("courseCode", course);
     if (filetype) {
       formData.append("unit", unit);
       formData.append("description", description);
@@ -257,14 +259,14 @@ function Upload() {
               <span>
                 <Select
                   value={courses.find(
-                    (course) => course.courseCode === courseCode
+                    (course) => course._id === course
                   )}
                   options={courses}
                   getOptionLabel={(option) =>
                     option.courseCode + ": " + option.courseTitle
                   }
-                  getOptionValue={(option) => option.courseCode}
-                  onChange={(e) => setCourseCode(e.courseCode.toString())}
+                  getOptionValue={(option) => option._id}
+                  onChange={(e) => setCourse(e._id.toString())}
                 />
                 <span className="course-unavailable">
                   *If course is not in list, please report us.{" "}

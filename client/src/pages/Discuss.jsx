@@ -3,14 +3,21 @@ import "./css/discuss.css";
 import { NavLink } from "react-router-dom";
 import Question from "../components/cards/Question";
 import Cookies from "js-cookie";
+import ReactPaginate from "react-paginate";
 
 function Discuss() {
   document.title = "Discuss | StudySync";
-  const [totalQues, setTotalQues] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("unanswered");
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10; // Number of questions per page
+
+  // Calculate total pages based on items and items per page
+  const totalPages = Math.ceil(questions.length / itemsPerPage);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,7 +31,12 @@ function Discuss() {
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
-        setTotalQues(data.length);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching questions:", error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, []);
@@ -41,6 +53,19 @@ function Discuss() {
     return matchesSearchQuery && matchesFilter;
   });
 
+  // Logic to slice questions based on current page
+  const indexOfLastQuestion = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstQuestion = indexOfLastQuestion - itemsPerPage;
+  const currentQuestions = filteredQuestions.slice(
+    indexOfFirstQuestion,
+    indexOfLastQuestion
+  );
+
+  // Handle page change
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   return (
     <div className="discuss">
       <section className="section-1">
@@ -51,7 +76,7 @@ function Discuss() {
       </section>
       {/* search and filter */}
       <section className="section-2">
-        <p>{totalQues} questions</p>
+        <p>{currentQuestions.length} questions</p>
         <div className="search-filter-div">
           <input
             type="search"
@@ -106,13 +131,25 @@ function Discuss() {
           </div>
         ) : (
           <>
-            {filteredQuestions.map((question, index) => (
-              <Question key={index} question={question} />
-            ))}
-            {filteredQuestions.length === 0 && <p>No questions found</p>}
+            {currentQuestions.length === 0 ? (
+              <p>No questions found</p>
+            ) : (
+              currentQuestions.map((question, index) => (
+                <Question key={index} question={question} />
+              ))
+            )}
           </>
         )}
       </section>
+      {/* Pagination */}
+      <ReactPaginate
+        pageCount={totalPages}
+        pageRangeDisplayed={5}
+        marginPagesDisplayed={2}
+        onPageChange={handlePageChange}
+        containerClassName="pagination"
+        activeClassName="active"
+      />
     </div>
   );
 }

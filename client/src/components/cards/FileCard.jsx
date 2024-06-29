@@ -3,10 +3,11 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "./css/filecard.css";
 import { useNavigate } from "react-router-dom";
 
-function FileCard(props) {
+function FileCard({file, fileType}) {
   const [loading, setLoading] = useState(true);
 
-  const dateObject = new Date(props.createdAt);
+  const dateObject = new Date(file.createdAt);
+  const dateCaObject = new Date(file.caDate);
   useEffect(() => {
     pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   });
@@ -14,17 +15,17 @@ function FileCard(props) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`view?${props._id}`, {
-      state: { file: props },
+    navigate(`view?${file._id}&fileType=${fileType}`, {
+      state: { file: file},
     });
   };
 
   return (
     <div className="filecard">
       <div className="thumbnail">
-        {props.fileUrl && (
+        {file.fileUrl && (
           <Document
-            file={props.fileUrl}
+            file={file.fileUrl}
             onLoadSuccess={() => setLoading(false)}
           >
             <Page
@@ -38,18 +39,19 @@ function FileCard(props) {
       </div>
       <div className="filecard-content">
         <h3 onClick={handleNavigate} className="filecard-title">
-          {props.unit
-            ? props.title
-            : "CA " + props.caNumber + " " + props.courseCode}
+          {file.unit
+            ? file.title
+            : "CA " + file.caNumber + " " + file.courseCode + " " + dateCaObject.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
         </h3>
-        <p className="coursename">{props.courseCode}</p>
+        <p className="coursename">{file.courseCode}</p>
         <p className="filecard-text">
-          Uploaded by {props.uploadedBy}
+          Uploaded by {file.uploadedBy}
           <br />
           on {dateObject.toLocaleString()}
         </p>
         <p className="filecard-text">
-          Views: {props.views} Likes: {props.likes}
+          Views: {file.views} 
+          {/* Likes: {file.likes} */}
         </p>
       </div>
     </div>

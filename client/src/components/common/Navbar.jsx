@@ -113,7 +113,6 @@ const Navbar = () => {
     const navItem = document.querySelectorAll(".nav__item");
     navItem.forEach((item) => {
       item.addEventListener("click", () => {
-        console.log("clicked");
         navItem.forEach((item) => item.classList.remove("selected"));
         item.classList.add("selected");
       });

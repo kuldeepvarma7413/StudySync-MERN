@@ -36,6 +36,16 @@
     color: #4E3366;
 }
 
+.fileview-header{
+    width: 92%;
+    margin: auto;
+}
+
+.fileview-header .analysis{
+    display: flex;
+    justify-content: space-between;
+}
+
 
 /* image loader */
 

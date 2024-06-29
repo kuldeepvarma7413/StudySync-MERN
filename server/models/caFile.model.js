@@ -2,10 +2,10 @@
 const mongoose = require('mongoose');
 
 const caFileSchema = new mongoose.Schema({
-    courseCode: {
-        type: String,
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
         required: true,
-        maxlength: 20
     },
     fileUrl: {
         type: String,
