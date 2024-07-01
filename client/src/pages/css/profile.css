@@ -59,6 +59,15 @@
   margin-top: 5px;
 }
 
+.profile-container .left-section .edit-profile{
+  margin-top: 10px;
+  background-color: #4e3366;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 25px;
+}
+
 .profile-container .profile-analysis{
   display: flex;
   flex-direction: column;

@@ -96,7 +96,7 @@ function Upload() {
     if (filetype && (unit === "" || description === "")) {
       fillField();
       return;
-    } else if (canumber == "" || cadate == "") {
+    } else if (canumber === "" || cadate === "") {
       fillField();
       return;
     }
@@ -105,7 +105,7 @@ function Upload() {
       formData.append("files", file);
     });
     formData.append("title", title);
-    formData.append("courseCode", course);
+    formData.append("course", course);
     if (filetype) {
       formData.append("unit", unit);
       formData.append("description", description);

@@ -143,11 +143,11 @@ function Profile() {
     navigate(`?${query.toString()}`, { replace: true });
   };
 
-  useEffect(()=>{
-    if(selectedSection){
+  useEffect(() => {
+    if (selectedSection) {
       updateQueryParameter("section", selectedSection);
     }
-  }, [selectedSection])
+  }, [selectedSection]);
 
   return (
     <>
@@ -167,6 +167,17 @@ function Profile() {
                     <BiSolidUpvote className="upvoteIcon" />
                   </p>
                 </div>
+                {isUser && (
+                  <button
+                    className="btn edit-profile"
+                    onClick={() =>
+                      alert("Edit profile feature is not available yet.")
+                      // navigate("edit-profile", { state: { user }, replace: true })
+                    }
+                  >
+                    Edit
+                  </button>
+                )}
               </>
             )}
           </section>

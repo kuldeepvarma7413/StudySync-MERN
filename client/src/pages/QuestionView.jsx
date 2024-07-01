@@ -14,7 +14,7 @@ import SnackbarCustom from "../components/common/SnackbarCustom";
 
 function QuestionView() {
   document.title = "Question | StudySync";
-  
+
   const param = useParams();
 
   // snackbar
@@ -36,6 +36,7 @@ function QuestionView() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isAnswerLoading, setIsAnswerLoading] = useState(true);
+  const [isPosting, setIsPosting] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -76,19 +77,21 @@ function QuestionView() {
   //   post answer
   const handlePostAnswer = (e) => {
     e.preventDefault();
-    if(!user){
+    if (!user) {
       setMessage("Please login to post an answer");
       setSnackBarType("error");
       snackbarRef.current.show();
       return;
     }
 
-    if (answerDescription.length === 0){
+    if (answerDescription.length === 0) {
       setMessage("Please write an answer");
       setSnackBarType("error");
       snackbarRef.current.show();
       return;
-    };
+    }
+
+    setIsPosting(true);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
       method: "POST",
       headers: {
@@ -102,7 +105,6 @@ function QuestionView() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.status === "OK") {
           changeAnswerDescription("");
           fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
@@ -121,6 +123,9 @@ function QuestionView() {
           setSnackBarType("error");
           snackbarRef.current.show();
         }
+      })
+      .finally(() => {
+        setIsPosting(false);
       });
   };
 
@@ -241,7 +246,9 @@ function QuestionView() {
                     })}
                   </div>
                   <p>
-                    <NavLink to={`/profile/${question.user._id}`}><u>{question.user.username}</u></NavLink>
+                    <NavLink to={`/profile/${question.user._id}`}>
+                      <u>{question.user.username}</u>
+                    </NavLink>
                     <p>asked {timeAgo(question.createdAt)}</p>
                   </p>
                 </div>
@@ -269,8 +276,11 @@ function QuestionView() {
                   required={true}
                   onChange={(e) => changeAnswerDescription(e.target.value)}
                 ></textarea>
-                <button onClick={(e) => handlePostAnswer(e)}>
-                  Post Answer
+                <button
+                  onClick={(e) => handlePostAnswer(e)}
+                  disabled={isPosting ? true : false}
+                >
+                  {isPosting ? "Posting..." : "Post Answer"}
                 </button>
               </div>
             </form>

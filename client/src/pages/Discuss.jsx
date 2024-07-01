@@ -10,7 +10,7 @@ function Discuss() {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("unanswered");
+  const [filter, setFilter] = useState("all");
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(0);

@@ -13,7 +13,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 function FileView() {
   document.title = "File | StudySync";
-  const file = useLocation().state.file;;
+  const file = useLocation().state.file;
   const dateObject = new Date(file.createdAt);
 
   const fileType = new URLSearchParams(useLocation().search).get("fileType");
@@ -25,13 +25,16 @@ function FileView() {
   // increment view
   useEffect(() => {
     if (fileType === "ppt") {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdfview/${file._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      });
+      fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/content/pdfview/${file._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
     } else {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/content/caview/${file._id}`, {
         method: "PUT",
@@ -53,7 +56,11 @@ function FileView() {
       <div className="fileview">
         <div className="fileview-content">
           <div className="fileview-header">
-            <h1 className="fileview-title">{file.title}</h1>
+            {fileType == "ppt" ? (
+              <h1 className="fileview-title">{file.title}</h1>
+            ) : (
+              <h1 className="fileview-title">CA {file.caNumber} {file.courseCode}</h1>
+            )}
             <p className="fileview-text analysis">
               <span>
                 Views: {file.views}, Pages: {numPages}

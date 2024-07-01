@@ -35,6 +35,11 @@
   margin-bottom: 5px;
   color: #4E3366;
   cursor: pointer;
+  /* fix one line */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .filecard-text {

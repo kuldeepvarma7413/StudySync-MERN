@@ -21,6 +21,7 @@ import ForgetPassword from "./pages/ForgetPassword";
 import NewPassword from "./pages/NewPassword";
 import Cookies from "js-cookie";
 import Profile from "./pages/Profile";
+import EditProfile from "./components/profile/EditProfile";
 
 function App() {
   const [isAutheticated, setIsAuthenticated] = useState(false);
@@ -31,7 +32,7 @@ function App() {
     } else {
       setIsAuthenticated(false);
     }
-  },[window.location.pathname]);
+  }, [window.location.pathname]);
 
   return (
     <Router>
@@ -60,6 +61,10 @@ function App() {
                   "Unauthorized Access"
                 )}
                 <Route path="/profile/:id" element={<Profile />} />
+                <Route
+                  path="/profile/:id/edit-profile"
+                  element={<Profile content={<EditProfile />} />}
+                />
                 <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/code-editor" element={<Practice />} />
                 <Route path="/discuss" element={<Discuss />} />
