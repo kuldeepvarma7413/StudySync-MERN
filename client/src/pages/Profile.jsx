@@ -12,6 +12,7 @@ import getDate from "../utils/getDate";
 import validatePassword from "../utils/validatePassword";
 import Cookies from "js-cookie";
 import SnackbarCustom from "../components/common/SnackbarCustom";
+import EditProfile from "../components/profile/EditProfile";
 
 function Profile() {
   document.title = "Profile | StudySync";
@@ -27,6 +28,7 @@ function Profile() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
+  const [editingProfile, setEditingProfile] = useState(false);
 
   // snackbar
   const [SnackbarType, setSnackBarType] = useState("false");
@@ -102,7 +104,6 @@ function Profile() {
         }
       );
       const data = await res.json();
-      console.log(data);
       if (data.success === "OK") {
         setMessage("Password updated successfully");
         setSnackBarType("success");
@@ -149,6 +150,27 @@ function Profile() {
     }
   }, [selectedSection]);
 
+  // close edit profile
+  const handleClose = () => {
+    setEditingProfile(false);
+  };
+
+  // profile updated, open snackbar
+  const handleProfileEdited = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    setSnackBarType("success");
+    setMessage("Profile Updated Successfully");
+    snackbarRef.current.show();
+    setEditingProfile(false);
+  };
+
+  // error while updating profile
+  const handleEditError = (message) => {
+    setSnackBarType("error");
+    setMessage(message);
+    snackbarRef.current.show();
+  };
+
   return (
     <>
       {user ? (
@@ -158,7 +180,14 @@ function Profile() {
               <p>Loading...</p>
             ) : (
               <>
-                <img src={user.profilePic} alt="profile-pic" />
+                <img loading="lazy"
+                  src={
+                    user.profilePic
+                      ? user.profilePic
+                      : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"
+                  }
+                  alt="profile-pic"
+                />
                 <div className="profile-analysis">
                   <h2>{user.name}</h2>
                   <p className="username">@{user.username}</p>
@@ -168,15 +197,22 @@ function Profile() {
                   </p>
                 </div>
                 {isUser && (
-                  <button
-                    className="btn edit-profile"
-                    onClick={() =>
-                      alert("Edit profile feature is not available yet.")
-                      // navigate("edit-profile", { state: { user }, replace: true })
-                    }
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      className="btn edit-profile"
+                      onClick={() => setEditingProfile(!editingProfile)}
+                    >
+                      Edit
+                    </button>
+                    {editingProfile ? (
+                      <EditProfile
+                        user={user}
+                        close={handleClose}
+                        onSuccess={handleProfileEdited}
+                        onError={handleEditError}
+                      />
+                    ) : null}
+                  </>
                 )}
               </>
             )}

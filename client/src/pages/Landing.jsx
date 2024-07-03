@@ -162,7 +162,7 @@ function Landing() {
               </div>
               <div className="right-content">
                 {/* standing man image */}
-                <img src={standingMan} alt="" />
+                <img loading="lazy" src={standingMan} alt="" />
               </div>
             </section>
             {/* about */}

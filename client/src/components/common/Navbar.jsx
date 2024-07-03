@@ -226,8 +226,8 @@ const Navbar = () => {
             <li className="userProfile">
               {authenticated ? (
                 <>
-                  <img
-                    src={userImage}
+                  <img loading="lazy"
+                    src={userImage ? userImage : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"}
                     className="user-image"
                     onClick={handleProfileMenuClick}
                     ref={profileMenuRef}

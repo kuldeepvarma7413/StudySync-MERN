@@ -177,9 +177,14 @@ label{
         padding: auto 0px;
         width: 300px;
     }
-
+    
     .login-container-main .left-side form{
         width: 300px;
     }
 }
 
+@media screen and (max-width:390px){
+    .login-container-main .left-side form{
+        width: 275px;
+    }
+}
