@@ -26,13 +26,14 @@ mongoose
   .then(() => {
     console.log("Connected to MongoDB");
 
+    const db = mongoose.connection.useDb('studysync');
+
     const app = express();
 
     // middleware
     app.use(cors());
 
     // routes which handle file uploads
-
     app.use(express.json({ limit: "50mb" }));
     app.use(express.urlencoded({ limit: "50mb", extended: true }));
 

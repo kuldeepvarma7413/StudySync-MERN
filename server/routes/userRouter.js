@@ -6,6 +6,7 @@ const Answer = require("../models/answer.model");
 const Question = require("../models/question.model");
 const requireAuth = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
+const cloudinary = require("cloudinary").v2;
 
 // get user by email and account type
 router.get("/", requireAuth, async (req, res) => {
@@ -49,7 +50,7 @@ router.get("/:id", requireAuth, async (req, res) => {
     let answers = await Answer.find({ user: id });
 
     let isUser = false;
-    if(req.user._id == id){
+    if (req.user._id == id) {
       isUser = true;
     }
 
@@ -74,18 +75,20 @@ router.get("/:id", requireAuth, async (req, res) => {
   }
 });
 
-
 // change password
 router.post("/change-password/:id", requireAuth, async (req, res) => {
-  console.log("id ",req.params.id);
+  console.log("id ", req.params.id);
   const { oldPassword, newPassword } = req.body;
   try {
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
       return res.json({ status: "ERROR", message: "User not found" });
     }
-    if(user.accountType !== "custom"){
-      return res.json({ status: "ERROR", message: "Can't set password to google account" });
+    if (user.accountType !== "custom") {
+      return res.json({
+        status: "ERROR",
+        message: "Can't set password to google account",
+      });
     }
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
@@ -110,5 +113,70 @@ router.post("/change-password/:id", requireAuth, async (req, res) => {
   }
 });
 
+// username availibility
+router.post("/check-username", requireAuth, async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const user = await User.findOne({ username: username });
+    if (user) {
+      return res.json({ status: "OK", available: false });
+    }
+    return res.json({ status: "OK", available: true });
+  } catch (err) {
+    console.error(err);
+    return res.json({ status: "ERROR" });
+  }
+});
+
+const multer = require('multer');
+
+const upload = multer();
+
+// update user (name, username, profilephoto)
+router.post("/update", requireAuth, upload.none(), async (req, res) => {
+  const { name, username, profilePic } = req.body;
+  const user = await User.findById(req.user._id);
+
+  try {
+    // validate data
+    if (name == "" || username == "" || profilePic == null) {
+      return res.json({ status: "ERROR", message: "All fields are required" });
+    }
+    // username validation by regex
+    if (!/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/.test(username)) {
+      return res.json({ status: "ERROR", message: "Invalid username" });
+    }
+
+    // remove previous profile photo from cloudinary if there is any
+    if (user.photo) {
+      const public_id = "profile-photos/"+user.photo.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(public_id);
+    }
+    // upload profile photo on cloudinary
+    const result = await cloudinary.uploader.upload(profilePic, {
+      folder: "profile-photos",
+      public_id: `${user._id}-${Date.now()}`,
+      width: 200,
+      height: 200,
+    });
+
+    // update user
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { name, username, photo: result.secure_url }
+    );
+
+    const updatedUser = await User.findOne({ _id: user._id });
+    res.json({
+      status: "OK",
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    res.json({ status: "ERROR", message: "Failed to update profile" });
+  }
+});
 
 module.exports = router;
