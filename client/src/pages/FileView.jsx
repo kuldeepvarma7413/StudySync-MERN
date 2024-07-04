@@ -26,7 +26,7 @@ function FileView() {
   useEffect(() => {
     if (fileType === "ppt") {
       fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/content/pdfview/${file._id}`,
+        `/content/pdfview/${file._id}`,
         {
           method: "PUT",
           headers: {
@@ -36,7 +36,7 @@ function FileView() {
         }
       );
     } else {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/caview/${file._id}`, {
+      fetch(`/content/caview/${file._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

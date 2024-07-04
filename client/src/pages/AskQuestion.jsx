@@ -46,7 +46,7 @@ function AskQuestion() {
   const handleSubmit = () => {
     if (isTitle && isDescription && isTags && tag.length > 0) {
       // send request if all fields are unblocked (all fields have content) and also check tags in end
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/add`, {
+      fetch(`/questions/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

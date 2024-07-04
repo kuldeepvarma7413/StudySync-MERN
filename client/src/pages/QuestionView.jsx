@@ -40,7 +40,7 @@ function QuestionView() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/${questionId}`, {
+    fetch(`/questions/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function QuestionView() {
   }, []);
   useEffect(() => {
     setIsAnswerLoading(true);
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
+    fetch(`/answers/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ function QuestionView() {
     }
 
     setIsPosting(true);
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
+    fetch(`/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +107,7 @@ function QuestionView() {
       .then((data) => {
         if (data.status === "OK") {
           changeAnswerDescription("");
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
+          fetch(`/answers/${questionId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -143,7 +143,7 @@ function QuestionView() {
       setVoted(true);
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/questions/addvote/${questionId}`,
+          `/questions/addvote/${questionId}`,
           {
             method: "POST",
             headers: {
@@ -168,7 +168,7 @@ function QuestionView() {
       setVoted(false);
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/questions/removevote/${questionId}`,
+          `/questions/removevote/${questionId}`,
           {
             method: "POST",
             headers: {

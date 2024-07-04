@@ -175,3 +175,13 @@
         gap: 20px;
     }
 }
+
+
+/* add css for responsiveness of upload section */
+/* @media only screen and (max-device-width: 500px) {
+    .upload-container form .container{
+        width: 250px;
+        height: fit-content;
+        min-height: 300px;
+    }
+} */

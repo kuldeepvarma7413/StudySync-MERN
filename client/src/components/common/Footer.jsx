@@ -8,6 +8,7 @@ import { FaTwitter } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import Logo from "../../images/logo.png";
 import SnackbarCustom from "./SnackbarCustom";
+import { NavLink } from "react-router-dom";
 
 function Footer() {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ function Footer() {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/subscribe`, {
+    fetch(`/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,11 +73,11 @@ function Footer() {
         <div className="site-links">
           <p className="title">Site Links</p>
           <div className="links">
-            <a href="">Resources</a>
-            <a href="">Discuss</a>
-            <a href="">Practice</a>
-            <a href="">Download</a>
-            <a href="">Our Team</a>
+            <NavLink to={'/resources'}>Resources</NavLink>
+            <NavLink to={'/discuss'}>Discuss</NavLink>
+            <NavLink to={'/code-editor'}>Practice</NavLink>
+            <NavLink to={'/#download'}>Download</NavLink>
+            <NavLink to={'/our-team'}>Our Team</NavLink>
           </div>
         </div>
         <div className="our-newsletter">

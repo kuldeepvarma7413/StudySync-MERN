@@ -37,7 +37,7 @@ function Upload() {
   };
 
   // right side
-  const [filetype, setFiletype] = useState(true);
+  const [filetype, setFiletype] = useState(false);
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
   const [unit, setUnit] = useState("");
@@ -93,10 +93,10 @@ function Upload() {
       fillField();
       return;
     }
-    if (filetype && (unit === "" || description === "")) {
+    if (filetype && unit === "") {
       fillField();
       return;
-    } else if (canumber === "" || cadate === "") {
+    } else if ( !filetype && (canumber === "" || cadate === "")) {
       fillField();
       return;
     }
@@ -128,8 +128,8 @@ function Upload() {
     setIsUploading(true);
     fetch(
       filetype === true
-        ? `${process.env.REACT_APP_BACKEND_URL}/content/add-pdffile`
-        : `${process.env.REACT_APP_BACKEND_URL}/content/add-cafile`,
+        ? `/content/add-pdffile`
+        : `/content/add-cafile`,
       {
         method: "POST",
         body: formData,
@@ -164,7 +164,7 @@ function Upload() {
 
   // fetch courses
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+    fetch(`/courses`, {
       headers: {
         authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
@@ -226,18 +226,6 @@ function Upload() {
                 <input
                   type="radio"
                   name="filetype"
-                  id="pdffile"
-                  checked={filetype === true}
-                  onChange={() => setFiletype(!filetype)}
-                />
-                <label htmlFor="pdffile" className={filetype ? "selected" : ""}>
-                  Course File
-                </label>
-              </p>
-              <p>
-                <input
-                  type="radio"
-                  name="filetype"
                   id="cafile"
                   checked={filetype === false}
                   onChange={() => {
@@ -246,6 +234,18 @@ function Upload() {
                 />
                 <label htmlFor="cafile" className={!filetype ? "selected" : ""}>
                   Class Assesment
+                </label>
+              </p>
+              <p>
+                <input
+                  type="radio"
+                  name="filetype"
+                  id="pdffile"
+                  checked={filetype === true}
+                  onChange={() => setFiletype(!filetype)}
+                />
+                <label htmlFor="pdffile" className={filetype ? "selected" : ""}>
+                  Course File
                 </label>
               </p>
             </div>

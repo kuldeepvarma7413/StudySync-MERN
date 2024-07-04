@@ -106,7 +106,7 @@ function Resources() {
       try {
         if (fileType === "ppt") {
           const response = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/content/pdffiles`,
+            `/content/pdffiles`,
             {
               method: "GET",
               headers: {
@@ -120,7 +120,7 @@ function Resources() {
           setFilteredFiles(data.data);
         } else if (fileType === "ca") {
           const response = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/content/cafiles`,
+            `/content/cafiles`,
             {
               method: "GET",
               headers: {
@@ -145,7 +145,7 @@ function Resources() {
 
   // Fetch courses
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+    fetch(`/courses`, {
       headers: {
         authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
@@ -203,7 +203,7 @@ function Resources() {
           <div className="filter">
             <select
               name=""
-              id=""
+              className="course-select"
               value={subjectFilter}
               onChange={(e) => setSubjectFilter(e.target.value)}
             >
