@@ -29,6 +29,7 @@
 
 .question-card{
     padding: 20px 40px;
+    width: -webkit-fill-available;
 }
 
 .question-view{

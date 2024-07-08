@@ -1,6 +1,6 @@
 .filecard {
   width: 250px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
   margin: 0px auto;
   border-radius: 16px;
 }
@@ -45,6 +45,12 @@
 .filecard-text {
   font-size: 14px;
   color: black;
+}
+
+.filecard .bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .filecard canvas{
@@ -97,4 +103,10 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.filecard .download-btn{
+  padding: 2px;
+  font-weight: 700;
+  color: #4E3366;
 }

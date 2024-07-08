@@ -142,16 +142,13 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(
-          `/questions/addvote/${questionId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: "Bearer " + Cookies.get("token"),
-            },
-          }
-        );
+        const res = await fetch(`/questions/addvote/${questionId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + Cookies.get("token"),
+          },
+        });
         const data = await res.json();
         if (data.status !== "OK") {
           setVotes((prevVotes) => prevVotes - 1);
@@ -167,16 +164,13 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(
-          `/questions/removevote/${questionId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: "Bearer " + Cookies.get("token"),
-            },
-          }
-        );
+        const res = await fetch(`/questions/removevote/${questionId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + Cookies.get("token"),
+          },
+        });
         const data = await res.json();
         if (data.status !== "OK") {
           console.log("downvoted error");
@@ -209,7 +203,14 @@ function QuestionView() {
             </p>
             <div className="question-card">
               <div className="analysis">
-                <img src={question.user.photo} alt="user image" />
+                <img
+                  src={
+                    question.user.photo
+                      ? question.user.photo
+                      : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"
+                  }
+                  alt="user image"
+                />
                 <div className="data-analysis">
                   <span>
                     {/* <FaRegEye /> */}
@@ -238,7 +239,11 @@ function QuestionView() {
                 <h3>
                   <NavLink className="question-title">{question.title}</NavLink>
                 </h3>
-                <p className="description">{question.description}</p>
+                <p className="description">
+                  {question.description.split("\n").map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </p>
                 <div className="bottom">
                   <div className="tags">
                     {question.tags.map((tag, index) => {

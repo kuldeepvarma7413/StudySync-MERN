@@ -4,6 +4,7 @@ const router = express.Router();
 const PDFFile = require("../models/pdfFile.model");
 const CAFile = require("../models/caFile.model");
 const Course = require("../models/course.model");
+const User = require("../models/user.model");
 const multer = require("multer");
 const { PDFDocument } = require("pdf-lib");
 const streamifier = require("streamifier");
@@ -103,6 +104,8 @@ router.post("/add-pdffile", upload.array("files"), async (req, res) => {
     const result = await uploadStream();
     console.log(`Uploaded to Cloudinary: ${result.secure_url}`);
 
+    const user = User.findById(req.user.id);
+
     const pdfFile = new PDFFile({
       title: req.body.title,
       course: req.body.course,
@@ -111,7 +114,7 @@ router.post("/add-pdffile", upload.array("files"), async (req, res) => {
       createdAt: Date.now(),
       views: 0,
       likes: 0,
-      uploadedBy: req.user.name,
+      uploadedBy: (user.role === "admin" ? "studysync" : user.username),
     });
 
     const savedPdfFile = await pdfFile.save();

@@ -38,16 +38,13 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(
-          `/answers/addvote/${answer._id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: "Bearer " + Cookies.get("token"),
-            },
-          }
-        );
+        const res = await fetch(`/answers/addvote/${answer._id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + Cookies.get("token"),
+          },
+        });
         const data = await res.json();
         if (data.status !== "OK") {
           console.log("upvoted error");
@@ -65,16 +62,13 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(
-          `/answers/removevote/${answer._id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: "Bearer " + Cookies.get("token"),
-            },
-          }
-        );
+        const res = await fetch(`/answers/removevote/${answer._id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + Cookies.get("token"),
+          },
+        });
         const data = await res.json();
         if (data.status !== "OK") {
           console.log("downvoted error");
@@ -110,7 +104,11 @@ function Answer({ answer }) {
         </div>
       </div>
       <div className="details">
-        <p className="description">{answer.description}</p>
+        <p className="description">
+          {answer.description.split("\n").map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
+        </p>
         <div className="bottom">
           <p>Replied {timeAgo(answer.createdAt)}</p>
           <p>

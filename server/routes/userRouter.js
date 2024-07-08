@@ -129,7 +129,7 @@ router.post("/check-username", requireAuth, async (req, res) => {
   }
 });
 
-const multer = require('multer');
+const multer = require("multer");
 
 const upload = multer();
 
@@ -147,25 +147,31 @@ router.post("/update", requireAuth, upload.none(), async (req, res) => {
     if (!/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/.test(username)) {
       return res.json({ status: "ERROR", message: "Invalid username" });
     }
-
-    // remove previous profile photo from cloudinary if there is any
-    if (user.photo) {
-      const public_id = "profile-photos/"+user.photo.split("/").pop().split(".")[0];
-      await cloudinary.uploader.destroy(public_id);
+    
+    if (user.photo != profilePic) {
+      // remove previous profile photo from cloudinary if there is any
+      if (user.photo) {
+        const public_id =
+        "profile-photos/" + user.photo.split("/").pop().split(".")[0];
+        if(public_id)
+          await cloudinary.uploader.destroy(public_id);
+      }
+      // upload profile photo on cloudinary
+      const result = await cloudinary.uploader.upload(profilePic, {
+        folder: "profile-photos",
+        public_id: `${user._id}-${Date.now()}`,
+        width: 200,
+        height: 200,
+      });
+      
+      await User.findOneAndUpdate(
+        { _id: user._id },
+        { photo: result.secure_url }
+      );
     }
-    // upload profile photo on cloudinary
-    const result = await cloudinary.uploader.upload(profilePic, {
-      folder: "profile-photos",
-      public_id: `${user._id}-${Date.now()}`,
-      width: 200,
-      height: 200,
-    });
 
     // update user
-    await User.findOneAndUpdate(
-      { _id: user._id },
-      { name, username, photo: result.secure_url }
-    );
+    await User.findOneAndUpdate({ _id: user._id }, { name, username, updatedAt: Date.now()});
 
     const updatedUser = await User.findOne({ _id: user._id });
     res.json({

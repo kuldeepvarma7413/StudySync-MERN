@@ -33,6 +33,31 @@ function FileCard({ file, fileType }) {
     });
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(file.fileUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileTitle+'.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error while fetching file', error);
+    }
+  };
+
   return (
     <div className="filecard">
       <div className="thumbnail">
@@ -48,7 +73,11 @@ function FileCard({ file, fileType }) {
         {loading && <div className="loader"></div>}
       </div>
       <div className="filecard-content">
-        <h3 onClick={handleNavigate} className="filecard-title" title={fileTitle}>
+        <h3
+          onClick={handleNavigate}
+          className="filecard-title"
+          title={fileTitle}
+        >
           {fileTitle}
         </h3>
         <p className="coursename">{file.courseCode}</p>
@@ -57,9 +86,10 @@ function FileCard({ file, fileType }) {
           <br />
           on {dateObject.toLocaleString()}
         </p>
-        <p className="filecard-text">
+        <p className="filecard-text bottom">
           Views: {file.views}
           {/* Likes: {file.likes} */}
+          <button onClick={handleDownload} className="btn download-btn">Download</button>
         </p>
       </div>
     </div>
