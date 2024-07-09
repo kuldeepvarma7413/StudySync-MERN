@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/common/Navbar";
 import Landing from "./pages/Landing";
-import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import OurTeam from "./pages/OurTeam";
 import Resources from "./pages/Resources";
 import "./App.css";
@@ -46,20 +46,6 @@ function App() {
               <Navbar />
               <Routes>
                 <Route path="/" element={<Landing />} />
-                {isAutheticated ? (
-                  <>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/resources" element={<Resources />} />
-                    <Route path="/upload" element={<Upload />} />
-                    <Route path="/report" element={<Report />} />
-                    <Route
-                      path="/discuss/ask-question"
-                      element={<AskQuestion />}
-                    />
-                  </>
-                ) : (
-                  "Unauthorized Access"
-                )}
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route
                   path="/profile/:id/edit-profile"
@@ -87,6 +73,32 @@ function App() {
                   path="/google-auth-success/:token"
                   element={<GoogleSuccess />}
                 />
+                <Route
+                  path="/admin"
+                  element={isAutheticated ? <Admin /> : "Unauthorized Access"}
+                />
+                <Route
+                  path="/resources"
+                  element={
+                    isAutheticated ? <Resources /> : "Unauthorized Access"
+                  }
+                />
+                <Route
+                  path="/upload"
+                  element={isAutheticated ? <Upload /> : "Unauthorized Access"}
+                />
+                <Route
+                  path="/report"
+                  element={isAutheticated ? <Report /> : "Unauthorized Access"}
+                />
+                <Route
+                  path="/discuss/ask-question"
+                  element={
+                    isAutheticated ? <AskQuestion /> : "Unauthorized Access"
+                  }
+                />
+
+                <Route path="*" element={"Invalid URL"} />
               </Routes>
             </div>
           }

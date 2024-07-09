@@ -63,6 +63,9 @@
 .question-card .details p {
   font-size: 14px;
   font-weight: 500;
+}
+
+.question-card .line-limit-3{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;

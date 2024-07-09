@@ -30,7 +30,7 @@ function Discuss() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setQuestions(data);
+        setQuestions(data.data);
         setIsLoading(false);
       })
       .catch((error) => {

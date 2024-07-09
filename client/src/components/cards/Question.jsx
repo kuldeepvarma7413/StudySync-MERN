@@ -32,7 +32,7 @@ function Question({ question }) {
             {question.title}
           </NavLink>
         </h3>
-        <p>{question.description}</p>
+        <p className="line-limit-3">{question.description}</p>
         <div className="bottom">
           <div className="tags">
             {question.tags.map((tag, index) => {

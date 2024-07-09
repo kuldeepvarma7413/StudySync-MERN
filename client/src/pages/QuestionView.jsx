@@ -70,6 +70,7 @@ function QuestionView() {
       .then((res) => res.json())
       .then((data) => {
         setAnswers(data);
+        console.log(data)
         setIsAnswerLoading(false);
       });
   }, []);

@@ -19,7 +19,7 @@ function Report() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`/report`, {
+    fetch(`/report/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

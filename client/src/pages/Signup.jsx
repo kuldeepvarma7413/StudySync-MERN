@@ -16,7 +16,7 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // msgs
   const [errmsg, setErrmsg] = useState("");
@@ -48,6 +48,7 @@ function Signup() {
     }
 
     try {
+      setLoading(true);
       const response = await fetch(
         `/auth/register`,
         {
@@ -71,6 +72,8 @@ function Signup() {
       }
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -137,7 +140,7 @@ function Signup() {
               {errmsg && <p className="error-msg">{errmsg}</p>}
               {successmsg && <p className="success-msg">{successmsg}</p>}
               <button className="btn login-btn">
-                Sign up
+                {loading ? "Loading..." : "Sign Up"}
                 {/* icon */}
               </button>
             </form>

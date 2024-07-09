@@ -10,7 +10,7 @@ const cloudinary = require("cloudinary").v2;
 
 // get user by email and account type
 router.get("/", requireAuth, async (req, res) => {
-  const { email, accountType } = req.query;
+  const { email, accountType } = req.user;
   try {
     console.log(email, accountType);
     const user = await User.findOne({ email: email, accountType: accountType });
@@ -18,6 +18,21 @@ router.get("/", requireAuth, async (req, res) => {
       return res.json({ status: "ERROR", message: "User not found" });
     }
     return res.json({ status: "OK", user });
+  } catch (err) {
+    console.error(err);
+    return res.json({ status: "ERROR", message: "Server error" });
+  }
+});
+
+// get all users if admin requested
+router.get("/all", requireAuth, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user.role !== "admin") {
+    return res.json({ status: "ERROR", message: "Unauthorized" });
+  }
+  try {
+    const users = await User.find();
+    return res.json({ status: "OK", users });
   } catch (err) {
     console.error(err);
     return res.json({ status: "ERROR", message: "Server error" });
@@ -74,6 +89,7 @@ router.get("/:id", requireAuth, async (req, res) => {
     return res.json({ status: "ERROR", message: "Server error" });
   }
 });
+
 
 // change password
 router.post("/change-password/:id", requireAuth, async (req, res) => {

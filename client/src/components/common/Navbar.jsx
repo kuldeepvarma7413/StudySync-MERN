@@ -55,20 +55,15 @@ const Navbar = () => {
     const token = Cookies.get("token");
     if (token) {
       setAuthenticated(true);
-      // decode token and get user data
-      const decoded = jwtDecode(token);
       // fetch user data and store in local storage
       try {
-        const res = await fetch(
-          `/user/?email=${decoded.email}&accountType=${decoded.accountType}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`/user/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
         if (data.status === "OK") {
           localStorage.setItem("user", JSON.stringify(data.user));
@@ -95,8 +90,6 @@ const Navbar = () => {
   };
 
   const handleClickOutside = (event) => {
-    console.log(profileMenuRef.current);
-    console.log(event.target);
     // Check if the clicked element is within the profile menu or its trigger
     if (
       profileMenuRef.current &&
@@ -150,6 +143,8 @@ const Navbar = () => {
         <NavLink to="/" className="nav__logo">
           <img src={Logo} alt="Logo" />
         </NavLink>
+
+        {user && user.role === "admin" && <p className="admin-label">Admin</p>}
 
         <div
           className={`nav__menu ${showMenu ? "show-menu" : ""}`}
@@ -226,26 +221,47 @@ const Navbar = () => {
             <li className="userProfile">
               {authenticated ? (
                 <>
-                  <img loading="lazy"
-                    src={userImage ? userImage : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"}
+                  <img
+                    loading="lazy"
+                    src={
+                      userImage
+                        ? userImage
+                        : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"
+                    }
                     className="user-image"
                     onClick={handleProfileMenuClick}
                     ref={profileMenuRef}
                   />
                   <ul className={`profile-menu ${profileMenu ? "show" : ""}`}>
                     {user && (
-                      <li>
-                        <NavLink
-                          to={`/profile/${user._id}`}
-                          className={"menu-profile"}
-                          onClick={() => {
-                            handleProfileMenuClick();
-                            closeMenuOnMobile();
-                          }}
-                        >
-                          Profile
-                        </NavLink>
-                      </li>
+                      <>
+                        {user.role === "admin" && (
+                          <li>
+                            <NavLink
+                              to="/admin"
+                              className={"menu-profile"}
+                              onClick={() => {
+                                handleProfileMenuClick();
+                                closeMenuOnMobile();
+                              }}
+                            >
+                              Admin
+                            </NavLink>
+                          </li>
+                        )}
+                        <li>
+                          <NavLink
+                            to={`/profile/${user._id}`}
+                            className={"menu-profile"}
+                            onClick={() => {
+                              handleProfileMenuClick();
+                              closeMenuOnMobile();
+                            }}
+                          >
+                            Profile
+                          </NavLink>
+                        </li>
+                      </>
                     )}
                     <li>
                       <NavLink

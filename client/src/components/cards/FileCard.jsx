@@ -28,9 +28,7 @@ function FileCard({ file, fileType }) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`view?${file._id}&fileType=${fileType}`, {
-      state: { file: file },
-    });
+    navigate(`view?id=${file._id}&fileType=${fileType}`);
   };
 
   const handleDownload = async () => {

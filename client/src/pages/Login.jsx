@@ -12,6 +12,7 @@ function Login() {
   // input values for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // msgs
@@ -22,6 +23,13 @@ function Login() {
         e.preventDefault()
         setErrmsg('')
         setSuccessmsg('')
+        // validate
+        if(!email || !password){
+          setErrmsg('Please fill all the fields')
+          setLoading(false)
+          return
+        }
+        setLoading(true)
         try {
             const response = await fetch(`/auth/login`, {
                 method: 'POST',
@@ -44,6 +52,8 @@ function Login() {
             }
         } catch (error) {
             console.log(error)
+        }finally{
+            setLoading(false)
         }
     }
 
@@ -52,6 +62,8 @@ function Login() {
   }
 
   async function auth() {
+    setErrmsg("");
+    setSuccessmsg("");
     const response = await fetch(`/request`, {
       method: "POST",
     });
@@ -89,7 +101,7 @@ function Login() {
               {errmsg && <p className="errmsg">{errmsg}</p>}
               {successmsg && <p className="successmsg">{successmsg}</p>}
               <button className="btn login-btn">
-                Login
+                {loading ? "Loading..." : "Login"}
                 {/* icon */}
               </button>
             </form>

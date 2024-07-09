@@ -17,10 +17,10 @@ router.get("/", async (req, res) => {
       question.answers = await Answer.find({ question: question._id });
     }
 
-    res.json(questions);
+    res.json({ status: "OK", data: questions });
   } catch (err) {
     console.log(err);
-    res.status(400).json("Error: " + err);
+    res.json({ status: "ERROR", message: "Failed to fetch questions" });
   }
 });
 
@@ -121,19 +121,27 @@ router.post("/removevote/:id", requireAuth, async (req, res) => {
 // });
 
 // delete question
-// router.delete("/:id", requireAuth, async (req, res) => {
-//   try {
-//     const question = await Question.findById(req.params.id);
-//     const user = await User.findById(question.user);
-//     user.questions = user.questions.filter(
-//       (ques) => ques.toString() !== req.params.id
-//     );
-//     await user.save();
-//     await question.delete();
-//     res.json("Question deleted!");
-//   } catch (err) {
-//     res.status(400).json("Error: " + err);
-//   }
-// });
+router.delete("/delete/:id", requireAuth, async (req, res) => {
+  try {
+    // admin access
+    const reqUser = await User.findById(req.user._id);
+    if (reqUser.role !== "admin") {
+      return res.json({ status: "ERROR", message: "Unauthorized" });
+    }
+    const question = await Question.findById(req.params.id);
+    const user = await User.findById(question.user);
+    user.questions = user.questions.filter(
+      (ques) => ques.toString() !== question._id.toString()
+    );
+    // delete all answers too
+    await Answer.deleteMany({ question: req.params.id });
+    await user.save();
+    await Question.findByIdAndDelete(req.params.id);
+    res.json({ status: "OK", message: "Question deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "ERROR", message: "Failed to delete question" });
+  }
+});
 
 module.exports = router;

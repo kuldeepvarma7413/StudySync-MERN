@@ -6,6 +6,22 @@ const Answer = require("../models/answer.model");
 const requireAuth = require("../middleware/auth");
 const sendEmail = require("../utils/sendEmail");
 
+// get all answers
+router.get("/", requireAuth, async (req, res) => {
+  try {
+    const answers = await Answer.find().lean();
+    for (let answer of answers) {
+      answer.user = await User.findById(answer.user).select(
+        "photo email username"
+      );
+    }
+    res.json({ status: "OK", data: answers });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "ERROR", message: "Failed to fetch answers" });
+  }
+});
+
 // get answers by question id
 router.get("/:id", requireAuth, async (req, res) => {
   try {
@@ -97,6 +113,30 @@ router.post("/removevote/:id", requireAuth, async (req, res) => {
     return res.json({ status: "OK", message: "Upvote removed!" });
   } catch (err) {
     return res.status(400).json({ status: "ERROR", message: "Error: " + err });
+  }
+});
+
+// delete answer
+router.delete("/delete/:id", requireAuth, async (req, res) => {
+  try {
+    // admin access
+    const reqUser = await User.findById(req.user._id);
+    if (reqUser.role !== "admin") {
+      return res.json({ status: "ERROR", message: "Unauthorized access" });
+    }
+    const answer = await Answer.findById(req.params.id);
+    const user = await User.findById(answer.user);
+    user.answers = user.answers.filter(
+      (id) => id.toString() !== answer._id.toString()
+    );
+    await user.save();
+    await Answer.findByIdAndDelete(answer._id);
+    res.json({ status: "OK", message: "Answer deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(400)
+      .json({ status: "ERROR", message: "Failed to delete answer" });
   }
 });
 

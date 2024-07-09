@@ -88,7 +88,7 @@ function Answer({ answer }) {
     <div className="question-card answer-card">
       <SnackbarCustom ref={snackbarRef} type={snackBarType} message={message} />
       <div className="analysis">
-        <img src={answer.user.photo} alt="user image" />
+        <img src={answer.user.photo ? answer.user.photo : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"} alt="user image" />
         <div className="analysis-action">
           <BiSolidUpvote
             className="upvote"

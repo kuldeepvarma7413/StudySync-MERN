@@ -128,6 +128,20 @@
   transition: 0.3s;
 }
 
+.admin-label{
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4E3366;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 0 0 5px 5px;
+  z-index: 99;
+  font-size: 20px;
+  font-weight: 500;
+}
+
 @media screen and (max-width: 1150px) {
   .nav__menu {
     z-index: 9999;
