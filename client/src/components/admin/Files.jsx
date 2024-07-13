@@ -22,8 +22,7 @@ const Files = ({ cafiles, pdffiles, snackbar }) => {
 
   const handleDeleteFile = async (fileId) => {
     try {
-      const res = await fetch(
-        `/content/delete-${fileType}/${fileId}`,
+      const res = await fetch(`/content/delete-${fileType}/${fileId}`,
         {
           method: "DELETE",
           headers: {
@@ -68,8 +67,7 @@ const Files = ({ cafiles, pdffiles, snackbar }) => {
     console.log(updatedFile);
 
     try {
-      const response = await fetch(
-        `/content/edit-${fileType}file/${fileId}`,
+      const response = await fetch(`/content/edit-${fileType}file/${fileId}`,
         {
           method: "PUT",
           headers: {

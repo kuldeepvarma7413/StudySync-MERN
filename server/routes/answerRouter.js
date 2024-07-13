@@ -58,7 +58,7 @@ router.post("/add", requireAuth, async (req, res) => {
     await sendEmail({
       email: question.user.email,
       subject: "New Answer",
-      text: `Hello ${question.user.username},\n\nYour question has been answered by ${user.username}.\n
+      text: `Hello ${question.user.name},\n\nYour question has been answered by ${user.name}.\n
       Click here ${process.env.BASE_URL}/discuss/view-question/${questionId}\n\nThanks,\nTeam StudySync`,
     });
 
@@ -130,7 +130,8 @@ router.delete("/delete/:id", requireAuth, async (req, res) => {
       (id) => id.toString() !== answer._id.toString()
     );
     await user.save();
-    await Answer.findByIdAndDelete(answer._id);
+    await Answer.findByIdAndDelete(req.params.id);
+
     res.json({ status: "OK", message: "Answer deleted successfully" });
   } catch (err) {
     console.log(err);

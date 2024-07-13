@@ -49,8 +49,7 @@ function Signup() {
 
     try {
       setLoading(true);
-      const response = await fetch(
-        `/auth/register`,
+      const response = await fetch(`/auth/register`,
         {
           method: "POST",
           headers: {
@@ -82,8 +81,7 @@ function Signup() {
   }
 
   async function auth() {
-    const response = await fetch(
-      `/request`,
+    const response = await fetch(`/request`,
       {
         method: "POST",
       }

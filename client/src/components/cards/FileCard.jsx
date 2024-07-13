@@ -14,10 +14,7 @@ function FileCard({ file, fileType }) {
 
   const fileTitle = file.unit
     ? file.title
-    : "CA " +
-      file.caNumber +
-      " " +
-      file.courseCode +
+    : file.title +
       " " +
       dateCaObject.toLocaleString("en-US", {
         month: "long",
@@ -34,25 +31,25 @@ function FileCard({ file, fileType }) {
   const handleDownload = async () => {
     try {
       const response = await fetch(file.fileUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/octet-stream',
+          "Content-Type": "application/octet-stream",
         },
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', fileTitle+'.pdf');
+      link.setAttribute("download", fileTitle + ".pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error while fetching file', error);
+      console.error("Error while fetching file", error);
     }
   };
 
@@ -78,7 +75,9 @@ function FileCard({ file, fileType }) {
         >
           {fileTitle}
         </h3>
-        <p className="coursename">{file.courseCode}</p>
+        <p className="coursename">
+          {file.caNumber>=0 && "CA " + file.caNumber+" - "} {file.courseCode}
+        </p>
         <p className="filecard-text">
           Uploaded by {file.uploadedBy}
           <br />
@@ -87,7 +86,9 @@ function FileCard({ file, fileType }) {
         <p className="filecard-text bottom">
           Views: {file.views}
           {/* Likes: {file.likes} */}
-          <button onClick={handleDownload} className="btn download-btn">Download</button>
+          <button onClick={handleDownload} className="btn download-btn">
+            Download
+          </button>
         </p>
       </div>
     </div>

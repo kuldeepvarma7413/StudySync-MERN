@@ -32,8 +32,7 @@ function EditProfile({ user, close, onSuccess, onError }) {
     try {
       setCheckingAvailible(true);
       setMessage("");
-      const res = await fetch(
-        `/user/check-username`,
+      const res = await fetch(`/user/check-username`,
         {
           method: "POST",
           headers: {
@@ -91,8 +90,7 @@ function EditProfile({ user, close, onSuccess, onError }) {
 
     try {
       setUpdating(true);
-      const res = await fetch(
-        `/user/update`,
+      const res = await fetch(`/user/update`,
         {
           method: "POST",
           headers: {

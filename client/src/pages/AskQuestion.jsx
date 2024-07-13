@@ -80,7 +80,7 @@ function AskQuestion() {
         });
 
         // fetch questions and console
-        fetch("/questions")
+        fetch(`/questions`)
         .then((res) => res.json())
         .then((data) => console.log(data))
     } else {

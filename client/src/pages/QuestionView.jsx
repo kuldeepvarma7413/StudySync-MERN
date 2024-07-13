@@ -56,6 +56,11 @@ function QuestionView() {
           setVoted(true);
         }
         setIsLoading(false);
+      }).catch((error) => {
+        snackbarRef.current.show()
+        setMessage("Question not found")
+        setSnackBarType("error")
+        setIsLoading(false)
       });
   }, []);
   useEffect(() => {
@@ -206,7 +211,7 @@ function QuestionView() {
               <div className="analysis">
                 <img
                   src={
-                    question.user.photo
+                    question?.user?.photo
                       ? question.user.photo
                       : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"
                   }
@@ -215,11 +220,11 @@ function QuestionView() {
                 <div className="data-analysis">
                   <span>
                     {/* <FaRegEye /> */}
-                    <p>{question.views} views</p>
+                    <p>{question?.views} views</p>
                   </span>
                   <span>
                     {/* <FaReply /> */}
-                    <p>{question.answers.length} answers</p>
+                    <p>{question?.answers?.length} answers</p>
                   </span>
                 </div>
                 <div className="analysis-action">
@@ -241,19 +246,19 @@ function QuestionView() {
                   <NavLink className="question-title">{question.title}</NavLink>
                 </h3>
                 <p className="description">
-                  {question.description.split("\n").map((line, index) => (
+                  {question.description?.split("\n").map((line, index) => (
                     <p key={index}>{line}</p>
                   ))}
                 </p>
                 <div className="bottom">
                   <div className="tags">
-                    {question.tags.map((tag, index) => {
+                    {question.tags?.map((tag, index) => {
                       return <p key={index}>{tag}</p>;
                     })}
                   </div>
                   <p>
-                    <NavLink to={`/profile/${question.user._id}`}>
-                      <u>{question.user.username}</u>
+                    <NavLink to={`/profile/${question.user?._id}`}>
+                      <u>{question.user?.username}</u>
                     </NavLink>
                     <p>asked {timeAgo(question.createdAt)}</p>
                   </p>

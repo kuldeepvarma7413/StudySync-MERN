@@ -53,8 +53,10 @@ router.get("/:id", requireAuth, async (req, res) => {
       const question = await Question.findById(user.questions[i]._id);
       totalUpvotes += question.upvotes.length;
     }
+    console.log("answere", user.answers)
     for (var i = 0; i < user.answers.length; i++) {
       const answer = await Answer.findById(user.answers[i]._id);
+      console.log("answer", answer)
       totalUpvotes += answer.upvotes.length;
     }
 

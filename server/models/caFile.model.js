@@ -7,6 +7,10 @@ const caFileSchema = new mongoose.Schema({
         ref: 'Course',
         required: true,
     },
+    title: {
+        type: String,
+        required: true
+    },
     fileUrl: {
         type: String,
         required: true

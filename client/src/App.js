@@ -23,16 +23,22 @@ import Cookies from "js-cookie";
 import Profile from "./pages/Profile";
 import EditProfile from "./components/profile/EditProfile";
 
+
 function App() {
-  const [isAutheticated, setIsAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  const authChange = () => {
+    if (Cookies.get("token")) {
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+  }
 
   useEffect(() => {
-    if (Cookies.get("token")) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [window.location.pathname]);
+    authChange();
+    console.log(authenticated)
+  }, []);
 
   return (
     <Router>
@@ -43,7 +49,7 @@ function App() {
           path="/*"
           element={
             <div>
-              <Navbar />
+              <Navbar authChange={ authChange } />
               <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/profile/:id" element={<Profile />} />
@@ -75,28 +81,28 @@ function App() {
                 />
                 <Route
                   path="/admin"
-                  element={isAutheticated ? <Admin /> : "Unauthorized Access"}
-                />
+                  element={authenticated ? <Admin /> : "Unauthorized Access"}
+                  />
                 <Route
                   path="/resources"
                   element={
-                    isAutheticated ? <Resources /> : "Unauthorized Access"
+                    authenticated ? <Resources /> : "Unauthorized Access"
                   }
-                />
+                  />
                 <Route
                   path="/upload"
-                  element={isAutheticated ? <Upload /> : "Unauthorized Access"}
-                />
+                  element={authenticated ? <Upload /> : "Unauthorized Access"}
+                  />
                 <Route
                   path="/report"
-                  element={isAutheticated ? <Report /> : "Unauthorized Access"}
-                />
+                  element={authenticated ? <Report /> : "Unauthorized Access"}
+                  />
                 <Route
                   path="/discuss/ask-question"
                   element={
-                    isAutheticated ? <AskQuestion /> : "Unauthorized Access"
+                    authenticated ? <AskQuestion /> : "Unauthorized Access"
                   }
-                />
+                  />
 
                 <Route path="*" element={"Invalid URL"} />
               </Routes>

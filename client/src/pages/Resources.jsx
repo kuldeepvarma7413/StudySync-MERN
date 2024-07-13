@@ -105,8 +105,7 @@ function Resources() {
     const fetchFiles = async () => {
       try {
         if (fileType === "ppt") {
-          const response = await fetch(
-            `/content/pdffiles`,
+          const response = await fetch(`/content/pdffiles`,
             {
               method: "GET",
               headers: {
@@ -119,8 +118,7 @@ function Resources() {
           setFiles(data.data);
           setFilteredFiles(data.data);
         } else if (fileType === "ca") {
-          const response = await fetch(
-            `/content/cafiles`,
+          const response = await fetch(`/content/cafiles`,
             {
               method: "GET",
               headers: {

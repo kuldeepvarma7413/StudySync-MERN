@@ -7,18 +7,13 @@ import Logo from "../../images/logo.png";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
-const Navbar = () => {
+const Navbar = ({authChange}) => {
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
   const [userImage, setUserImage] = useState();
   const user = JSON.parse(localStorage.getItem("user"));
-
-  // snackbar
-  const [SnackbarType, setSnackBarType] = useState("false");
-  const [message, setMessage] = useState("");
-  const snackbarRef = useRef(null);
   const profileMenuRef = useRef(null);
 
   useEffect(() => {
@@ -55,6 +50,7 @@ const Navbar = () => {
     const token = Cookies.get("token");
     if (token) {
       setAuthenticated(true);
+      authChange()
       // fetch user data and store in local storage
       try {
         const res = await fetch(`/user/`, {
@@ -81,6 +77,7 @@ const Navbar = () => {
     navigate("/");
     window.location.reload();
     setAuthenticated(false);
+    authChange()
     Cookies.remove("token");
     localStorage.removeItem("user");
   };

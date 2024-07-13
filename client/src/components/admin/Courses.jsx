@@ -55,8 +55,7 @@ const Courses = ({ allCourses, snackbar }) => {
   };
 
   const handleDeleteCourse = async (courseId) => {
-    const response = await fetch(
-      `/courses/delete-course/${courseId}`,
+    const response = await fetch(`/courses/delete-course/${courseId}`,
       {
         method: "DELETE",
         headers: {
@@ -92,8 +91,7 @@ const Courses = ({ allCourses, snackbar }) => {
       `courseCode-${courseId}`
     ).value;
 
-    const response = await fetch(
-      `/courses/update-course/${courseId}`,
+    const response = await fetch(`/courses/update-course/${courseId}`,
       {
         method: "PUT",
         headers: {

@@ -42,8 +42,7 @@ const Discussions = ({ questions, answers, snackbar }) => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(
-        `/${filterType.slice(0, -1)}s/delete/${id}`,
+      const res = await fetch(`/${filterType.slice(0, -1)}s/delete/${id}`,
         {
           method: "DELETE",
           headers: {

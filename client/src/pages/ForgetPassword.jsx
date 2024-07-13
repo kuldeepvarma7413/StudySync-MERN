@@ -28,8 +28,7 @@ function ForgetPassword() {
     } else {
       setLoading(true);
       try{
-          const res = await fetch(
-            `/auth/forget-password/${email}`,
+          const res = await fetch(`/auth/forget-password/${email}`,
             {
               method: "POST",
               headers: {

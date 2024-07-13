@@ -202,7 +202,7 @@ function Admin() {
   const checkAccess = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/user/", {
+      const res = await fetch(`/user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

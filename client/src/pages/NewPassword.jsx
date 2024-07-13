@@ -29,8 +29,7 @@ function NewPassword() {
       return;
     }
     // Send backend request
-    const res = await fetch(
-      `/auth/set-password/${userId}/${token}`,
+    const res = await fetch(`/auth/set-password/${userId}/${token}`,
       {
         method: "POST",
         headers: {

@@ -35,6 +35,16 @@ router.get("/ppt/:id", requireAuth, async (req, res) => {
   }
 });
 
+// get ca file by id
+router.get("/ca/:id", requireAuth, async (req, res) => {
+  try {
+    const caFile = await CAFile.findById(req.params.id);
+    res.json({ status: "OK", data: caFile });
+  } catch (err) {
+    res.status(400).json({ status: "ERROR", message: "Error: " + err });
+  }
+});
+
 router.get("/pdffiles", requireAuth, async (req, res) => {
   try {
     const pdfFiles = await PDFFile.find().sort({ createdAt: -1 }).lean();
@@ -167,7 +177,8 @@ router.delete("/delete-ppt/:id", requireAuth, async (req, res) => {
       return res.json({ status: "ERROR", message: "Access denied" });
     }
     const pdfFile = await PDFFile.findById(req.params.id);
-    const publicId = "pdffiles/"+pdfFile.fileUrl.split("/").pop().split(".")[0];
+    const publicId =
+      "pdffiles/" + pdfFile.fileUrl.split("/").pop().split(".")[0];
     await cloudinary.uploader.destroy(publicId);
     await PDFFile.findByIdAndDelete(req.params.id);
     res.json({ status: "OK", message: "PDF file deleted successfully" });
@@ -248,7 +259,7 @@ router.post(
 
       for (const file of files) {
         if (file.mimetype.startsWith("image/")) {
-          const img = await pdfDoc.embedPng(file.buffer);
+          let img = await pdfDoc.embedJpg(file.buffer);
           const imgDims = img.scale(1);
           const page = pdfDoc.addPage([imgDims.width, imgDims.height]);
           page.drawImage(img, {
@@ -294,6 +305,7 @@ router.post(
       const user = await User.findById(req.user._id);
 
       const caFile = new CAFile({
+        title: req.body.title,
         course: req.body.course,
         fileUrl: result.secure_url,
         uploadedBy: user.role === "admin" ? "studysync" : req.user.name,
@@ -339,7 +351,7 @@ router.delete("/delete-ca/:id", requireAuth, async (req, res) => {
       return res.json({ status: "ERROR", message: "Access denied" });
     }
     const caFile = await CAFile.findById(req.params.id);
-    const publicId = "cafiles/"+caFile.fileUrl.split("/").pop().split(".")[0];
+    const publicId = "cafiles/" + caFile.fileUrl.split("/").pop().split(".")[0];
     await cloudinary.uploader.destroy(publicId);
     await CAFile.findByIdAndDelete(req.params.id);
     res.json({ status: "OK", message: "CA file deleted successfully" });
@@ -347,6 +359,5 @@ router.delete("/delete-ca/:id", requireAuth, async (req, res) => {
     res.status(400).json({ status: "ERROR", message: "Error: " + err });
   }
 });
-
 
 module.exports = router;
