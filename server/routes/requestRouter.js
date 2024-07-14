@@ -5,7 +5,6 @@ const { OAuth2Client } = require("google-auth-library");
 
 // google token
 router.post("/", async (req, res) => {
-  console.log("Google Auth Request");
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
 

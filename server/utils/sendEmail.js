@@ -1,8 +1,7 @@
 const nodemailer = require('nodemailer');
 
 module.exports = async ({email, subject, text}) => {
-    console.log('Sending email')
-    console.log(email, subject, text)
+    // console.log('Sending email')
     if (!email ||!subject ||!text) {
         throw new Error('Email, subject, and text are required');
     }
@@ -26,7 +25,7 @@ module.exports = async ({email, subject, text}) => {
             text: text
         });
 
-        console.log('Email sent successfully');
+        // console.log('Email sent successfully');
     } catch (e) {
         console.error('Error sending email:', e);
     }

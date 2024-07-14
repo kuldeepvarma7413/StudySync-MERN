@@ -14,7 +14,6 @@ function Output({ editorRef, language }) {
     try {
       setIsLoading(true);
       const { run: result } = await executeCode(sourceCode, language);
-      console.log(result);
       setOutput(result.output.split("\n"));
       result.stderr ? setIsError(true) : setIsError(false);
     } catch (error) {

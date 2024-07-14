@@ -26,7 +26,7 @@ const Courses = ({ allCourses, snackbar }) => {
 
     try {
       setAddingCourse(true);
-      const response = await fetch(`/courses/add-course`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/courses/add-course`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const Courses = ({ allCourses, snackbar }) => {
   };
 
   const handleDeleteCourse = async (courseId) => {
-    const response = await fetch(`/courses/delete-course/${courseId}`,
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/courses/delete-course/${courseId}`,
       {
         method: "DELETE",
         headers: {
@@ -91,7 +91,7 @@ const Courses = ({ allCourses, snackbar }) => {
       `courseCode-${courseId}`
     ).value;
 
-    const response = await fetch(`/courses/update-course/${courseId}`,
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/courses/update-course/${courseId}`,
       {
         method: "PUT",
         headers: {

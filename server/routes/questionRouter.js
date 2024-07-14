@@ -26,7 +26,6 @@ router.get("/", async (req, res) => {
 
 // get question by id
 router.get("/:id", async (req, res) => {
-  console.log("fetching question");
   try {
     let question = await Question.findById(req.params.id).lean();
     // increase views count
@@ -59,7 +58,6 @@ router.post("/add", requireAuth, async (req, res) => {
     await newQuestion.save();
     user.questions.push(newQuestion._id);
     await user.save();
-    console.log("Question added!");
     res.json({ status: "OK", message: "Question added successfully" });
   } catch (err) {
     console.log(err);

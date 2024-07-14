@@ -21,7 +21,7 @@ function Discuss() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/questions`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/questions`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

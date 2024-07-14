@@ -7,12 +7,12 @@ const Question = require("../models/question.model");
 const requireAuth = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 const cloudinary = require("cloudinary").v2;
+const jwt = require("jsonwebtoken");
 
 // get user by email and account type
 router.get("/", requireAuth, async (req, res) => {
   const { email, accountType } = req.user;
   try {
-    console.log(email, accountType);
     const user = await User.findOne({ email: email, accountType: accountType });
     if (!user) {
       return res.json({ status: "ERROR", message: "User not found" });
@@ -40,7 +40,7 @@ router.get("/all", requireAuth, async (req, res) => {
 });
 
 // get user by id
-router.get("/:id", requireAuth, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -53,10 +53,8 @@ router.get("/:id", requireAuth, async (req, res) => {
       const question = await Question.findById(user.questions[i]._id);
       totalUpvotes += question.upvotes.length;
     }
-    console.log("answere", user.answers)
     for (var i = 0; i < user.answers.length; i++) {
       const answer = await Answer.findById(user.answers[i]._id);
-      console.log("answer", answer)
       totalUpvotes += answer.upvotes.length;
     }
 
@@ -67,7 +65,20 @@ router.get("/:id", requireAuth, async (req, res) => {
     let answers = await Answer.find({ user: id });
 
     let isUser = false;
-    if (req.user._id == id) {
+    let reqUser = null;
+
+    // authentication
+    var token = req.headers["authorization"];
+    if (token) {
+      token = token.replace("Bearer ", "");
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (!err) {
+          reqUser = decoded;
+        }
+      });
+    }
+
+    if (reqUser && reqUser._id == id) {
       isUser = true;
     }
 
@@ -82,9 +93,12 @@ router.get("/:id", requireAuth, async (req, res) => {
       status: user.isDeleted ? "Deleted" : "Active",
       lastUpdated: user.updatedAt,
       createdAt: user.createdAt,
-      questions: questions,
-      answers: answers,
     };
+
+    if (isUser) {
+      data.questions = questions;
+      data.answers = answers;
+    }
     return res.json({ status: "OK", data, isUser });
   } catch (err) {
     console.error(err);
@@ -92,10 +106,8 @@ router.get("/:id", requireAuth, async (req, res) => {
   }
 });
 
-
 // change password
 router.post("/change-password/:id", requireAuth, async (req, res) => {
-  console.log("id ", req.params.id);
   const { oldPassword, newPassword } = req.body;
   try {
     const user = await User.findOne({ _id: req.params.id });
@@ -165,14 +177,13 @@ router.post("/update", requireAuth, upload.none(), async (req, res) => {
     if (!/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/.test(username)) {
       return res.json({ status: "ERROR", message: "Invalid username" });
     }
-    
+
     if (user.photo != profilePic) {
       // remove previous profile photo from cloudinary if there is any
       if (user.photo) {
         const public_id =
-        "profile-photos/" + user.photo.split("/").pop().split(".")[0];
-        if(public_id)
-          await cloudinary.uploader.destroy(public_id);
+          "profile-photos/" + user.photo.split("/").pop().split(".")[0];
+        if (public_id) await cloudinary.uploader.destroy(public_id);
       }
       // upload profile photo on cloudinary
       const result = await cloudinary.uploader.upload(profilePic, {
@@ -181,7 +192,7 @@ router.post("/update", requireAuth, upload.none(), async (req, res) => {
         width: 200,
         height: 200,
       });
-      
+
       await User.findOneAndUpdate(
         { _id: user._id },
         { photo: result.secure_url }
@@ -189,7 +200,10 @@ router.post("/update", requireAuth, upload.none(), async (req, res) => {
     }
 
     // update user
-    await User.findOneAndUpdate({ _id: user._id }, { name, username, updatedAt: Date.now()});
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { name, username, updatedAt: Date.now() }
+    );
 
     const updatedUser = await User.findOne({ _id: user._id });
     res.json({

@@ -338,3 +338,9 @@
     padding: 5px 15px;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .profile-container .change-password input{
+    width: 210px;
+  }
+}

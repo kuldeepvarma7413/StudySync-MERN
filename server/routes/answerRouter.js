@@ -51,10 +51,9 @@ router.post("/add", requireAuth, async (req, res) => {
     await newAnswer.save();
     user.answers.push(newAnswer._id);
     await user.save();
-    console.log("Answer added!");
     // send mail to user
     const question = await Question.findById(questionId).lean();
-    question.user = await User.findById(question.user).select("email username");
+    question.user = await User.findById(question.user).select("email username name");
     await sendEmail({
       email: question.user.email,
       subject: "New Answer",
@@ -71,11 +70,9 @@ router.post("/add", requireAuth, async (req, res) => {
 
 // upvote answer
 router.post("/addvote/:id", requireAuth, async (req, res) => {
-  console.log(req.params.id, req.user.email);
   try {
     const answer = await Answer.findById(req.params.id);
     const user = await User.findOne({ email: req.user.email });
-    // console.log(user, answer);
     // add vote in answer
     if (!answer.upvotes.includes(user._id)) {
       answer.upvotes.push(user._id);
@@ -95,7 +92,6 @@ router.post("/addvote/:id", requireAuth, async (req, res) => {
 
 // downvote answer
 router.post("/removevote/:id", requireAuth, async (req, res) => {
-  console.log(req.params.id, req.user.email);
   try {
     const answer = await Answer.findById(req.params.id);
     const user = await User.findOne({ email: req.user.email });

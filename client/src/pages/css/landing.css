@@ -1,11 +1,11 @@
 .landing-page section {
   margin: 0px 120px;
-  margin-top: 50px !important;
+  margin-top: 80px !important;
   letter-spacing: 0.2px;
   word-spacing: 0.5px;
 }
 
-.server-loading{
+.server-loading {
   position: fixed;
   flex-direction: column;
   top: 0;
@@ -129,15 +129,17 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   row-gap: 100px;
+  margin: auto;
   margin-top: 100px;
 }
 
 /* features */
 .features {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
   gap: 20px;
-  row-gap: 100px;
+  row-gap: 50px;
   margin-top: 200px;
 }
 
@@ -150,7 +152,7 @@
 }
 
 .landing-page .download {
-  margin-top: 170px !important;
+  margin-top: 110px !important;
 }
 
 .download .title {
@@ -173,11 +175,19 @@
 
 /* testimonials */
 .testimonials {
-  margin-top: 200px;
-  padding: 50px 80px;
+  /* margin-top: 200px; */
+  /* padding: 50px 80px; */
   text-align: center;
-  color: white;
+  color: gray;
   /* height: 1020px; */
+}
+
+.landing-page .testimonials {
+  margin: 50px 0px !important;
+}
+
+.testimonials img {
+  height: 400px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -189,20 +199,12 @@
     margin: 0px 30px;
   }
 
-  .working-steps {
-    margin: auto;
-  }
-
   .download {
     padding: 50px 20px;
   }
 
   .download .description {
     width: 100%;
-  }
-
-  .testimonials {
-    padding: 50px 20px;
   }
 
   .landing-page section {
@@ -213,14 +215,8 @@
   .download .description {
     margin-bottom: 30px;
   }
-}
-
-@media screen and (max-width: 1120px) {
-  .features {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .working-steps {
-    grid-template-columns: repeat(2, 1fr);
+  .testimonials img {
+    height: 300px;
   }
 }
 
@@ -272,8 +268,6 @@
   }
 
   .features {
-    grid-template-columns: repeat(1, 1fr);
-    row-gap: 50px;
     margin-top: 50px;
   }
 
@@ -286,8 +280,40 @@
     width: 100%;
     font-size: 14px;
   }
+  .testimonials img {
+    height: 220px;
+  }
+  .landing-page .testimonials {
+    margin: 30px 0px !important;
+  }
+}
 
-  .testimonials {
-    padding: 50px 20px;
+@media screen and (min-width: 320px) and (max-width: 600px) {
+  h3 {
+    font-size: 22px !important;
+  }
+  p {
+    font-size: 14px !important;
+  }
+  a {
+    font-size: 12px !important;
+  }
+  .testimonials img {
+    height: 150px;
+  }
+  .landing-page .testimonials {
+    margin: 20px 0px !important;
+  }
+  .working-steps {
+    row-gap: 30px;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .testimonials img {
+    height: 100px;
+  }
+  .landing-page .testimonials {
+    margin: 10px 0px !important;
   }
 }

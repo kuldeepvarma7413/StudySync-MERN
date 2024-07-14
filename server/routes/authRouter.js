@@ -172,12 +172,10 @@ router.get("/", async (req, res) => {
     const response = await oAuth2Client.getToken(code);
 
     await oAuth2Client.setCredentials(response.tokens);
-    console.log("token acquired");
 
     const GoogleUser = oAuth2Client.credentials;
 
     const userData = await getUserData(GoogleUser.access_token);
-    console.log(userData);
     // check if user exists
     const user = await User.findOne({
       email: userData.email,
@@ -202,7 +200,7 @@ router.get("/", async (req, res) => {
       const token = jwt.sign(
         {
           name: newUser.name,
-          _id: user._id,
+          _id: newUser._id,
           email: newUser.email,
           accountType: newUser.accountType,
         },
@@ -268,7 +266,6 @@ router.post("/forget-password/:email", async (req, res) => {
 router.post("/set-password/:id/:reqtoken", async (req, res) => {
   const { id, reqtoken } = req.params;
   const { password } = req.body;
-  console.log(id, reqtoken, password);
   try {
     const user = await User.findOne({ _id: id, accountType: "custom" });
     if (!user) {

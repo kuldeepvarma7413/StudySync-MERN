@@ -38,7 +38,7 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(`/answers/addvote/${answer._id}`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/addvote/${answer._id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,13 +47,10 @@ function Answer({ answer }) {
         });
         const data = await res.json();
         if (data.status !== "OK") {
-          console.log("upvoted error");
           setVotes((prevVotes) => prevVotes - 1);
           setVoted(false);
         }
       } catch (err) {
-        console.log(err);
-        console.log("upvoted error 2");
         setVotes((prevVotes) => prevVotes - 1);
         setVoted(false);
       }
@@ -62,7 +59,7 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(`/answers/removevote/${answer._id}`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/removevote/${answer._id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -71,13 +68,10 @@ function Answer({ answer }) {
         });
         const data = await res.json();
         if (data.status !== "OK") {
-          console.log("downvoted error");
           setVotes((prevVotes) => prevVotes + 1);
           setVoted(true);
         }
       } catch (err) {
-        console.log(err);
-        console.log("downvoted error 2");
         setVotes((prevVotes) => prevVotes + 1);
         setVoted(true);
       }

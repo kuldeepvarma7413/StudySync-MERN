@@ -128,8 +128,8 @@ function Upload() {
     setIsUploading(true);
     fetch(
       filetype === true
-        ? `/content/add-pdffile`
-        : `/content/add-cafile`,
+        ? `${process.env.REACT_APP_BACKEND_URL}/content/add-pdffile`
+        : `${process.env.REACT_APP_BACKEND_URL}/content/add-cafile`,
       {
         method: "POST",
         body: formData,
@@ -164,7 +164,7 @@ function Upload() {
 
   // fetch courses
   useEffect(() => {
-    fetch(`/courses`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
       headers: {
         authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },

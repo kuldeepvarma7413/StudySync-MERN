@@ -29,11 +29,13 @@
     border-radius: 24px;
     padding: 5px 15px;
     width: 300px;
+    height: fit-content;
 }
 
 .search-filter-div .filters {
     background-color: #EFE5FF;
     border-radius: 24px;
+    height: fit-content;
 }
 
 .search-filter-div .filters input {

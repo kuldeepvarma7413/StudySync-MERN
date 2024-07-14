@@ -95,7 +95,7 @@ router.post(
             width: imgDims.width,
             height: imgDims.height,
           });
-          console.log(`Added image file: ${file.originalname}`);
+          // console.log(`Added image file: ${file.originalname}`);
         } else if (file.mimetype === "application/pdf") {
           const donorPdfDoc = await PDFDocument.load(file.buffer);
           const copiedPages = await pdfDoc.copyPages(
@@ -103,12 +103,12 @@ router.post(
             donorPdfDoc.getPageIndices()
           );
           copiedPages.forEach((page) => pdfDoc.addPage(page));
-          console.log(`Added PDF file: ${file.originalname}`);
+          // console.log(`Added PDF file: ${file.originalname}`);
         }
       }
 
       const pdfBytes = await pdfDoc.save();
-      console.log(`Merged PDF size: ${pdfBytes.length} bytes`);
+      // console.log(`Merged PDF size: ${pdfBytes.length} bytes`);
 
       const uploadStream = () => {
         return new Promise((resolve, reject) => {
@@ -127,7 +127,7 @@ router.post(
       };
 
       const result = await uploadStream();
-      console.log(`Uploaded to Cloudinary: ${result.secure_url}`);
+      // console.log(`Uploaded to Cloudinary: ${result.secure_url}`);
 
       const user = await User.findById(req.user._id);
 
@@ -228,7 +228,6 @@ router.get("/cafiles", requireAuth, async (req, res) => {
         const course = await Course.findOne({ _id: file.course }).select(
           "courseCode"
         );
-        console.log(course, file.course);
         return {
           ...file,
           courseCode: course.courseCode,
@@ -268,7 +267,7 @@ router.post(
             width: imgDims.width,
             height: imgDims.height,
           });
-          console.log(`Added image file: ${file.originalname}`);
+          // console.log(`Added image file: ${file.originalname}`);
         } else if (file.mimetype === "application/pdf") {
           const donorPdfDoc = await PDFDocument.load(file.buffer);
           const copiedPages = await pdfDoc.copyPages(
@@ -276,12 +275,12 @@ router.post(
             donorPdfDoc.getPageIndices()
           );
           copiedPages.forEach((page) => pdfDoc.addPage(page));
-          console.log(`Added PDF file: ${file.originalname}`);
+          // console.log(`Added PDF file: ${file.originalname}`);
         }
       }
 
       const pdfBytes = await pdfDoc.save();
-      console.log(`Merged PDF size: ${pdfBytes.length} bytes`);
+      // console.log(`Merged PDF size: ${pdfBytes.length} bytes`);
 
       const uploadStream = () => {
         return new Promise((resolve, reject) => {
@@ -300,7 +299,7 @@ router.post(
       };
 
       const result = await uploadStream();
-      console.log(`Uploaded to Cloudinary: ${result.secure_url}`);
+      // console.log(`Uploaded to Cloudinary: ${result.secure_url}`);
 
       const user = await User.findById(req.user._id);
 

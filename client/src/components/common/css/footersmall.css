@@ -55,16 +55,16 @@
     
 }
 
-@media screen and (min-device-width: 481px) and (max-device-width: 768px) { 
+@media screen and (min-device-width: 320px) and (max-device-width: 768px) { 
     .footer-small{
-        padding: 15px 20px;
+        padding: 11px;
         flex-direction: column;
+        height: 65px;
     }
-}
-
-@media only screen and (max-device-width: 480px) {
-    .footer-small{
-        padding: 15px 20px;
-        flex-direction: column;
+    .footer-small ul li a{
+        font-size: 10px;
+    }
+    .footer-small p{
+        font-size: 8px;
     }
 }

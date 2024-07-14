@@ -22,6 +22,7 @@ import NewPassword from "./pages/NewPassword";
 import Cookies from "js-cookie";
 import Profile from "./pages/Profile";
 import EditProfile from "./components/profile/EditProfile";
+import Unauthorized from "./pages/Unauthorized";
 
 
 function App() {
@@ -37,7 +38,6 @@ function App() {
 
   useEffect(() => {
     authChange();
-    console.log(authenticated)
   }, []);
 
   return (
@@ -81,26 +81,26 @@ function App() {
                 />
                 <Route
                   path="/admin"
-                  element={authenticated ? <Admin /> : "Unauthorized Access"}
+                  element={authenticated ? <Admin /> : <Unauthorized />}
                   />
                 <Route
                   path="/resources"
                   element={
-                    authenticated ? <Resources /> : "Unauthorized Access"
+                    authenticated ? <Resources /> : <Unauthorized />
                   }
                   />
                 <Route
                   path="/upload"
-                  element={authenticated ? <Upload /> : "Unauthorized Access"}
+                  element={authenticated ? <Upload /> : <Unauthorized />}
                   />
                 <Route
                   path="/report"
-                  element={authenticated ? <Report /> : "Unauthorized Access"}
+                  element={authenticated ? <Report /> : <Unauthorized />}
                   />
                 <Route
                   path="/discuss/ask-question"
                   element={
-                    authenticated ? <AskQuestion /> : "Unauthorized Access"
+                    authenticated ? <AskQuestion /> : <Unauthorized />
                   }
                   />
 
