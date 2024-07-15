@@ -47,15 +47,15 @@ mongoose
     });
 
     // routes
-    app.use("/api/request", requestRouter);
-    app.use("/api/auth", authRouter);
-    app.use("/api/user", userRouter);
-    app.use("/api/content", requireAuth, contentRouter);
-    app.use("/api/courses", requireAuth, courseRouter);
-    app.use("/api/questions", questionRouter);
-    app.use("/api/answers", answerRouter);
-    app.use("/api/subscribe", subscribeRouter);
-    app.use("/api/report", requireAuth, reportRouter);
+    app.use("/request", requestRouter);
+    app.use("/auth", authRouter);
+    app.use("/user", userRouter);
+    app.use("/content", requireAuth, contentRouter);
+    app.use("/courses", requireAuth, courseRouter);
+    app.use("/questions", questionRouter);
+    app.use("/answers", answerRouter);
+    app.use("/subscribe", subscribeRouter);
+    app.use("/report", requireAuth, reportRouter);
 
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");

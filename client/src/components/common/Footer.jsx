@@ -10,7 +10,7 @@ import Logo from "../../images/logo.png";
 import SnackbarCustom from "./SnackbarCustom";
 import { NavLink } from "react-router-dom";
 
-function Footer() {
+function Footer({scrollToDownload = () => {}}) {
   const [email, setEmail] = useState("");
 
   // snackbar
@@ -76,7 +76,7 @@ function Footer() {
             <NavLink to={'/resources'}>Resources</NavLink>
             <NavLink to={'/discuss'}>Discuss</NavLink>
             <NavLink to={'/code-editor'}>Practice</NavLink>
-            <NavLink to={'/#download'}>Download</NavLink>
+            <NavLink onClick={scrollToDownload}>Download</NavLink>
             <NavLink to={'/our-team'}>Our Team</NavLink>
           </div>
         </div>

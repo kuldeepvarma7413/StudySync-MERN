@@ -121,14 +121,6 @@ const Navbar = ({authChange}) => {
   // container style
   const location = useLocation();
 
-  const containerStyle =
-    location.pathname === "/"
-      ? {
-          background:
-            "linear-gradient(rgba(78, 51, 102, 0.8), rgba(78, 51, 102, 0.5), rgba(78, 51, 102, 0.02))",
-        }
-      : { background: "none" };
-
   const menuItemStyle =
     location.pathname === "/code-editor"
       ? { color: "white" }
@@ -136,7 +128,7 @@ const Navbar = ({authChange}) => {
 
   return (
     <header className="header">
-      <nav className="nav container" style={containerStyle}>
+      <nav className="nav container">
         <NavLink to="/" className="nav__logo">
           <img src={Logo} alt="Logo" />
         </NavLink>

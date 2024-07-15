@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./css/landing.css";
 import standingMan from "../images/people-standing.png";
 import KidsImg from "../images/kids.png";
@@ -9,6 +9,27 @@ import Footer from "../components/common/Footer";
 
 function Landing() {
   document.title = "Home | StudySync";
+
+  // scroll to download section
+  const downloadSectionRef = useRef();
+  // scroll to about section
+  const aboutSectionRef = useRef();
+
+  const scrollToDownload = () => {
+    downloadSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+
+  useEffect(() => {
+    // if location contains #download
+    const location = window.location.href;
+    if (location.includes("#download")) {
+      scrollToDownload();
+    }
+  }, []);
+
+  const handleLearnMore = () => {
+    aboutSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  }
 
   const fCardData = [
     {
@@ -82,58 +103,8 @@ function Landing() {
     },
   ];
 
-  // turn on server loading when deploying on free hosting
-  //
-  // const [serverLoading, setServerLoading] = useState(true);
-  // const [time, setTime] = useState(40);
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTime((prev) => prev - 1);
-  //   }, 1000);
-
-  //   const controller = new AbortController();
-  //   const signal = controller.signal;
-
-  //   const fetchTimeout = setTimeout(() => {
-  //     controller.abort();
-  //   }, 40000); // 40 seconds
-
-  //   fetch(`/`, { signal })
-  //     .then(() => {
-  //       setServerLoading(false);
-  //       clearInterval(timer);
-  //       clearTimeout(fetchTimeout);
-  //     })
-  //     .catch((error) => {
-  //       if (error.name === "AbortError") {
-  //         console.log("Fetch request timed out");
-  //       } else {
-  //         console.log("Fetch request failed", error);
-  //       }
-  //       setServerLoading(false);
-  //       clearInterval(timer);
-  //       clearTimeout(fetchTimeout);
-  //     });
-
-  //   // Cleanup function to clear interval, timeout, and abort fetch if component unmounts
-  //   return () => {
-  //     clearInterval(timer);
-  //     clearTimeout(fetchTimeout);
-  //     window.location.reload();
-  //     controller.abort();
-  //   };
-  // }, []);
-
   return (
     <>
-      {/* {serverLoading == true ? (
-        <div className="server-loading">
-          <p>Server is starting...</p>
-          <p>Estimated time {time} seconds</p>
-        </div>
-      ) : (
-        <> */}
       <div className="landing-page">
         <section className="landing-content">
           <div className="left-content">
@@ -147,7 +118,7 @@ function Landing() {
               college students. Elevate your learning experience today and excel
               with us!
             </p>
-            <a className="btn learn-more-btn">Learn More</a>
+            <a className="btn learn-more-btn" onClick={handleLearnMore}>Learn More</a>
           </div>
           <div className="right-content">
             {/* standing man image */}
@@ -155,7 +126,7 @@ function Landing() {
           </div>
         </section>
         {/* about */}
-        <section className="about" id="about">
+        <section className="about" id="about" ref={aboutSectionRef}>
           <div>
             <p className="title">About Our Website</p>
           </div>
@@ -205,7 +176,7 @@ function Landing() {
           })}
         </section>
         {/* downoad */}
-        <section className="download" id="download">
+        <section className="download" ref={downloadSectionRef} id="download">
           <div>
             <p className="title">Download Our App Today!</p>
           </div>
@@ -227,12 +198,10 @@ function Landing() {
           </a>
         </section>
         <section className="testimonials">
-            <img src={KidsImg} className="img1" alt="students" />
+          <img src={KidsImg} className="img1" alt="students" />
         </section>
       </div>
-      {/* </>
-      )} */}
-      <Footer />
+      <Footer scrollToDownload={scrollToDownload}/>
     </>
   );
 }
