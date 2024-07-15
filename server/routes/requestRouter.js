@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
 
-  const redirectURI = `${process.env.REACT_APP_BACKEND_URL}/auth`;
+  const redirectURI = `/auth`;
 
   const oAuth2Client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,

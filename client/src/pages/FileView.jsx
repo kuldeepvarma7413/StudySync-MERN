@@ -25,7 +25,7 @@ function FileView() {
 
   const fetchFile = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/content/${fileType}/${fileId}`,
+      const response = await fetch(`/content/${fileType}/${fileId}`,
         {
           method: "GET",
           headers: {
@@ -48,7 +48,7 @@ function FileView() {
   // increment view
   useEffect(() => {
     if (fileType === "ppt") {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdfview/${fileId}`,
+      fetch(`/content/pdfview/${fileId}`,
         {
           method: "PUT",
           headers: {
@@ -58,7 +58,7 @@ function FileView() {
         }
       );
     } else {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/caview/${fileId}`, {
+      fetch(`/content/caview/${fileId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

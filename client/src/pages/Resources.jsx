@@ -105,7 +105,7 @@ function Resources() {
     const fetchFiles = async () => {
       try {
         if (fileType === "ppt") {
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdffiles`,
+          const response = await fetch(`/content/pdffiles`,
             {
               method: "GET",
               headers: {
@@ -118,7 +118,7 @@ function Resources() {
           setFiles(data.data);
           setFilteredFiles(data.data);
         } else if (fileType === "ca") {
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/content/cafiles`,
+          const response = await fetch(`/content/cafiles`,
             {
               method: "GET",
               headers: {
@@ -143,7 +143,7 @@ function Resources() {
 
   // Fetch courses
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+    fetch(`/courses`, {
       headers: {
         authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },

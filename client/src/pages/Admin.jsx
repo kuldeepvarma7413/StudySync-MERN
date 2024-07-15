@@ -37,7 +37,7 @@ function Admin() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/all`, {
+      const response = await fetch(`/user/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Admin() {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/report/all`, {
+      const response = await fetch(`/report/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function Admin() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
+      const response = await fetch(`/courses`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function Admin() {
 
   const fetchPdfFiles = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdffiles`, {
+      const response = await fetch(`/content/pdffiles`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ function Admin() {
 
   const fetchCAFiles = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/content/cafiles`, {
+      const response = await fetch(`/content/cafiles`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ function Admin() {
 
   const fetchQuestions = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/questions`, {
+      const response = await fetch(`/questions`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +154,7 @@ function Admin() {
 
   const fetchAnswers = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/answers`, {
+      const response = await fetch(`/answers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -201,7 +201,7 @@ function Admin() {
   const checkAccess = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/`, {
+      const res = await fetch(`/user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

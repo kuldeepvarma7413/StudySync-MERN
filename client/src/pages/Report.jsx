@@ -19,7 +19,7 @@ function Report() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/report/add`, {
+    fetch(`/report/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
