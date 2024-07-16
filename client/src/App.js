@@ -23,6 +23,7 @@ import Cookies from "js-cookie";
 import Profile from "./pages/Profile";
 import EditProfile from "./components/profile/EditProfile";
 import Unauthorized from "./pages/Unauthorized";
+import Sitemap from "./pages/Sitemap";
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/sitemap.xml" element={<Sitemap />} />
         <Route
           path="/*"
           element={

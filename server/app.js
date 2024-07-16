@@ -57,6 +57,11 @@ mongoose
     app.use("/subscribe", subscribeRouter);
     app.use("/report", requireAuth, reportRouter);
 
+    // sitemap in pulic
+    app.get('/sitemap.xml', (req, res) => {
+      res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+    });
+
     app.get("/", (req, res) => {
       res.send("Hello from StudySync Server!");
     });
