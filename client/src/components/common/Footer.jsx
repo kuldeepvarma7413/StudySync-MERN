@@ -29,7 +29,7 @@ function Footer({scrollToDownload = () => {}}) {
       return;
     }
 
-    fetch(`/subscribe`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

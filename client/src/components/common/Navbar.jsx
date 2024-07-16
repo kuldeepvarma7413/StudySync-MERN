@@ -53,7 +53,7 @@ const Navbar = ({authChange}) => {
       authChange()
       // fetch user data and store in local storage
       try {
-        const res = await fetch(`/user/`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

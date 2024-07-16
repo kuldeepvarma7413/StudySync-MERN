@@ -39,7 +39,7 @@ function Profile() {
     setIsLoading(true);
     const getUser = async () => {
       try {
-        let res = await fetch(`/user/${params.id}`,
+        let res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/${params.id}`,
           {
             headers: {
               Authorization: "Bearer " + Cookies.get("token"),
@@ -88,7 +88,7 @@ function Profile() {
     }
 
     try {
-      const res = await fetch(`/user/change-password/${params.id}`,
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/change-password/${params.id}`,
         {
           method: "POST",
           headers: {

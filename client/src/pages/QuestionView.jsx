@@ -40,7 +40,7 @@ function QuestionView() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/questions/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ function QuestionView() {
   }, []);
   useEffect(() => {
     setIsAnswerLoading(true);
-    fetch(`/answers/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ function QuestionView() {
     }
 
     setIsPosting(true);
-    fetch(`/answers/add`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ function QuestionView() {
       .then((data) => {
         if (data.status === "OK") {
           changeAnswerDescription("");
-          fetch(`/answers/${questionId}`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -147,7 +147,7 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(`/questions/addvote/${questionId}`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/addvote/${questionId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -169,7 +169,7 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(`/questions/removevote/${questionId}`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/removevote/${questionId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -31,7 +31,7 @@ function Login() {
         }
         setLoading(true)
         try {
-            const response = await fetch(`/auth/login`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ function Login() {
   async function auth() {
     setErrmsg("");
     setSuccessmsg("");
-    const response = await fetch(`/request`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/request`, {
       method: "POST",
     });
     const data = await response.json();
