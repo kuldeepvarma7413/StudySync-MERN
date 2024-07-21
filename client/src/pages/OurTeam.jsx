@@ -8,7 +8,7 @@ function OurTeam() {
         <div className="our-team">
             <h1>Our Team</h1>
             <div className="team-member">
-                <img src="https://media.licdn.com/dms/image/D4D03AQFzjZuT5Xv_bA/profile-displayphoto-shrink_400_400/0/1687401538044?e=1721260800&v=beta&t=tkPliInIV_VNsDB92bC2QITERTgTVuCnexAvqUbHdPw" alt="Avatar" />
+                <img src="https://avatars.githubusercontent.com/u/99025650?v=4" alt="Avatar" />
                 <h2>Kul Deep Varma</h2>
                 <p>CEO & Developer</p>
                 <p>Guided by a relentless pursuit of excellence and a passion for empowering our team, I lead with a visionary spirit, steering our company towards success and growth.</p>
