@@ -15,9 +15,9 @@ router.post("/register", async (req, res) => {
   const { name, username, email, password } = req.body; // Destructure request body
 
   try {
-    let existingUser = await User.findOne({ email }); // Check for existing user
+    let existingUser = await User.findOne({ email: email, accountType: 'custom', isDeleted: false }); // Check for existing user
     if (existingUser) {
-      return res.json({ status: "ERROR", error: "Duplicate email found" });
+      return res.status(401).json({ status: "ERROR", error: "Duplicate email found" });
     }
 
     // Check for existing username
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
       username: username.toLowerCase(),
     });
     if (existingUsername) {
-      return res.json({ status: "ERROR", error: "Duplicate username found" });
+      return res.status(401).json({ status: "ERROR", error: "Duplicate username found" });
     }
 
     // Hash password using bcrypt before saving
@@ -57,7 +57,7 @@ router.post("/register", async (req, res) => {
     });
   } catch (err) {
     console.error(err); // Log the error for debugging
-    res.json({ status: "ERROR", error: "Registration failed" }); // Generic error message
+    res.status(401).json({ status: "ERROR", error: "Registration failed" }); // Generic error message
   }
 });
 
@@ -106,7 +106,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Compare password hashes using bcrypt
-    const isMatch = await bcrypt.compare(password, user.password); // Replace with actual password validation logic
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res
@@ -117,19 +117,19 @@ router.post("/login", async (req, res) => {
     if (!user.verified) {
       let token = await Token.findOne({ user: user._id });
       if (!token) {
-        const token = new Token({
+        const newToken = new Token({
           user: user._id,
           token: crypto.randomBytes(16).toString("hex"),
         }); // Generate token
-        await token.save();
-        const url = `${process.env.BASE_URL}/users/${user._id}/verify/${token.token}`;
+        await newToken.save();
+        const url = `${process.env.BASE_URL}/users/${user._id}/verify/${newToken.token}`;
         await sendEmail({
           email: user.email,
           subject: "Verify your email",
           text: `Click this link to verify your email: ${url}`,
         }); // Send verification email
       }
-      return res.json({
+      return res.status(200).json({
         status: "ERROR",
         message: "Verification Email sent successfully, Please Verify.",
       });
@@ -139,7 +139,7 @@ router.post("/login", async (req, res) => {
       { name: user.name, _id: user._id, email: user.email, accountType: user.accountType },
       process.env.JWT_SECRET
     ); // Generate JWT
-    res.json({
+    res.status(200).json({
       status: "OK",
       token,
       user,
@@ -147,7 +147,7 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error(err); // Log the error for debugging
-    res.json({ status: "ERROR", error: "Login failed" }); // Generic error message
+    res.status(500).json({ status: "ERROR", error: "Login failed" }); // Return a 500 status for server errors
   }
 });
 
@@ -211,7 +211,12 @@ router.get("/", async (req, res) => {
       );
     } else {
       const token = jwt.sign(
-        { name: user.name, _id: user._id, email: user.email, accountType: user.accountType },
+        {
+          name: user.name,
+          _id: user._id,
+          email: user.email,
+          accountType: user.accountType,
+        },
         process.env.JWT_SECRET
       ); // Generate JWT
       return res.redirect(
