@@ -9,14 +9,14 @@ router.use((req, res, next) => {
         token = token.replace('Bearer ', '')
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if(err){
-                res.json({status: 'ERROR', error: 'Unauthorized request'})
+                return res.json({status: 'ERROR', error: 'Unauthorized request'})
             }else{
                 req.user = decoded
                 next()
             }
         })
     }else{
-        res.json({status: 'ERROR', error: 'Unauthorized request'})
+        return res.json({status: 'ERROR', error: 'Unauthorized request'})
     }
 })
 

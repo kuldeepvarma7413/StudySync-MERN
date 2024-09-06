@@ -38,7 +38,7 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/addvote/${answer._id}`, {
+        const res = await fetch(`/answers/addvote/${answer._id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function Answer({ answer }) {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/removevote/${answer._id}`, {
+        const res = await fetch(`/answers/removevote/${answer._id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

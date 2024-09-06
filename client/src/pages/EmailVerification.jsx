@@ -16,7 +16,7 @@ function EmailVerification() {
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `${process.env.REACT_APP_BACKEND_URL}/auth/${param.id}/verify/${param.token}`;
+				const url = `/auth/${param.id}/verify/${param.token}`;
 				fetch(url).then(res=>res.json()).then(data=>{
                     if(data.status === 200){
                         setValidUrl(true);

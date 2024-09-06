@@ -234,7 +234,7 @@ router.post("/forget-password/:email", async (req, res) => {
   try {
     const user = await User.findOne({ email, accountType: "custom" });
     if (!user) {
-      return res.json({ status: "ERROR", message: "User not found" });
+      return res.status(401).json({ status: "ERROR", message: "User not found" });
     } else {
       // check already token exists
       let t = await Token.findOne({ user: user._id });
@@ -263,7 +263,7 @@ router.post("/forget-password/:email", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.json({ status: "ERROR", error: "Failed to send reset password link" });
+    res.status(401).json({ status: "ERROR", error: "Failed to send reset password link" });
   }
 });
 
