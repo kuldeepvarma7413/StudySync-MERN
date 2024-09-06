@@ -10,7 +10,7 @@ function Question({ question }) {
   return (
     <div className="question-card">
       <div className="analysis">
-        <img src={question.user.photo ? question.user.photo : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"} alt="user image" />
+        <img src={question.user?.photo ? question.user?.photo : "https://res.cloudinary.com/dkjgwvtdq/image/upload/f_auto,q_auto/v1/profilephotos/pjo2blwkflwzxg8mhpoa"} alt="user image" />
         <div className="data-analysis">
           <span>
             <FaRegEye />

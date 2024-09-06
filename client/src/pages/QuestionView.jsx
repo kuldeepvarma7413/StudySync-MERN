@@ -40,7 +40,7 @@ function QuestionView() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/questions/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/questions/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,16 +56,17 @@ function QuestionView() {
           setVoted(true);
         }
         setIsLoading(false);
-      }).catch((error) => {
-        snackbarRef.current.show()
-        setMessage("Question not found")
-        setSnackBarType("error")
-        setIsLoading(false)
+      })
+      .catch((error) => {
+        snackbarRef.current.show();
+        setMessage("Question not found");
+        setSnackBarType("error");
+        setIsLoading(false);
       });
   }, []);
   useEffect(() => {
     setIsAnswerLoading(true);
-    fetch(`/answers/${questionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +98,7 @@ function QuestionView() {
     }
 
     setIsPosting(true);
-    fetch(`/answers/add`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +113,7 @@ function QuestionView() {
       .then((data) => {
         if (data.status === "OK") {
           changeAnswerDescription("");
-          fetch(`/answers/${questionId}`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/answers/${questionId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -147,13 +148,16 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes + 1);
       setVoted(true);
       try {
-        const res = await fetch(`/questions/addvote/${questionId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + Cookies.get("token"),
-          },
-        });
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/questions/addvote/${questionId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + Cookies.get("token"),
+            },
+          }
+        );
         const data = await res.json();
         if (data.status !== "OK") {
           setVotes((prevVotes) => prevVotes - 1);
@@ -169,13 +173,16 @@ function QuestionView() {
       setVotes((prevVotes) => prevVotes - 1);
       setVoted(false);
       try {
-        const res = await fetch(`/questions/removevote/${questionId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + Cookies.get("token"),
-          },
-        });
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/questions/removevote/${questionId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + Cookies.get("token"),
+            },
+          }
+        );
         const data = await res.json();
         if (data.status !== "OK") {
           setVotes((prevVotes) => prevVotes + 1);
@@ -262,6 +269,22 @@ function QuestionView() {
                 </div>
               </div>
             </div>
+            {/* google ads */}
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+              crossOrigin="anonymous"
+            ></script>
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8386642099973212"
+              data-ad-slot="3931864628"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
             {/* answers */}
             <p className="answers-title">Answers</p>
             {/* all answers */}
@@ -275,6 +298,22 @@ function QuestionView() {
                 </div>
               </>
             )}
+            {/* google ads */}
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+              crossOrigin="anonymous"
+            ></script>
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8386642099973212"
+              data-ad-slot="3931864628"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
             {/* reply */}
             <form>
               <div className="reply">

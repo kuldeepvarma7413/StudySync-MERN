@@ -25,7 +25,8 @@ function FileView() {
 
   const fetchFile = async () => {
     try {
-      const response = await fetch(`/content/${fileType}/${fileId}`,
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/content/${fileType}/${fileId}`,
         {
           method: "GET",
           headers: {
@@ -43,22 +44,20 @@ function FileView() {
     } catch (error) {
       console.error("Error fetching file:", error);
     }
-  }
+  };
 
   // increment view
   useEffect(() => {
     if (fileType === "ppt") {
-      fetch(`/content/pdfview/${fileId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/pdfview/${fileId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
     } else {
-      fetch(`/content/caview/${fileId}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/content/caview/${fileId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +82,9 @@ function FileView() {
             {fileType == "ppt" ? (
               <h1 className="fileview-title">{file.title}</h1>
             ) : (
-              <h1 className="fileview-title">CA {file.caNumber} {file.courseCode}</h1>
+              <h1 className="fileview-title">
+                CA {file.caNumber} {file.courseCode}
+              </h1>
             )}
             <p className="fileview-text analysis">
               <span>
@@ -100,6 +101,22 @@ function FileView() {
               <p className="fileview-text">Description: {file.description}</p>
             </div>
           </div>
+          {/* google ads */}
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+            crossOrigin="anonymous"
+          ></script>
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client="ca-pub-8386642099973212"
+            data-ad-slot="3931864628"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
           <div className="fileview-body">
             <div className="fileview-thumbnail">
               {/* <div className='loader'></div> */}
@@ -126,6 +143,22 @@ function FileView() {
           </div>
         </div>
       </div>
+      {/* google ads */}
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+        crossOrigin="anonymous"
+      ></script>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-8386642099973212"
+        data-ad-slot="3931864628"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
       <FooterSmall />
     </>
   );

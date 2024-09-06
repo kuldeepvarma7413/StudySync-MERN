@@ -105,7 +105,8 @@ function Resources() {
     const fetchFiles = async () => {
       try {
         if (fileType === "ppt") {
-          const response = await fetch(`/content/pdffiles`,
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/content/pdffiles`,
             {
               method: "GET",
               headers: {
@@ -118,7 +119,8 @@ function Resources() {
           setFiles(data.data);
           setFilteredFiles(data.data);
         } else if (fileType === "ca") {
-          const response = await fetch(`/content/cafiles`,
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/content/cafiles`,
             {
               method: "GET",
               headers: {
@@ -133,7 +135,7 @@ function Resources() {
         }
       } catch (error) {
         console.error("Error fetching files:", error);
-      }finally{
+      } finally {
         setIsLoading(false);
       }
     };
@@ -143,7 +145,7 @@ function Resources() {
 
   // Fetch courses
   useEffect(() => {
-    fetch(`/courses`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/courses`, {
       headers: {
         authorization: "Bearer " + Cookies.get("token").replace("Bearer ", ""),
       },
@@ -277,6 +279,22 @@ function Resources() {
           activeClassName="active"
         />
       </div>
+      {/* google ads */}
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+        crossOrigin="anonymous"
+      ></script>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-8386642099973212"
+        data-ad-slot="3931864628"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
       <FooterSmall />
     </>
   );

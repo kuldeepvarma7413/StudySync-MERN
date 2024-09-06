@@ -17,7 +17,7 @@ function Landing() {
 
   const scrollToDownload = () => {
     downloadSectionRef.current.scrollIntoView({ behavior: "smooth" });
-  }
+  };
 
   useEffect(() => {
     // if location contains #download
@@ -29,7 +29,7 @@ function Landing() {
 
   const handleLearnMore = () => {
     aboutSectionRef.current.scrollIntoView({ behavior: "smooth" });
-  }
+  };
 
   const fCardData = [
     {
@@ -118,7 +118,9 @@ function Landing() {
               college students. Elevate your learning experience today and excel
               with us!
             </p>
-            <a className="btn learn-more-btn" onClick={handleLearnMore}>Learn More</a>
+            <a className="btn learn-more-btn" onClick={handleLearnMore}>
+              Learn More
+            </a>
           </div>
           <div className="right-content">
             {/* standing man image */}
@@ -162,6 +164,22 @@ function Landing() {
             })}
           </div>
         </section>
+        {/* google ads */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+          crossOrigin="anonymous"
+        ></script>
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-8386642099973212"
+          data-ad-slot="3931864628"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
         {/* feature cards */}
         <section className="features">
           {fCardData.map((card, index) => {
@@ -175,6 +193,7 @@ function Landing() {
             );
           })}
         </section>
+
         {/* downoad */}
         <section className="download" ref={downloadSectionRef} id="download">
           <div>
@@ -197,11 +216,28 @@ function Landing() {
             <img src={PlayStore} alt="" />
           </a>
         </section>
+
+        {/* google ads */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8386642099973212"
+          crossOrigin="anonymous"
+        ></script>
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-8386642099973212"
+          data-ad-slot="3931864628"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
         <section className="testimonials">
           <img src={KidsImg} className="img1" alt="students" />
         </section>
       </div>
-      <Footer scrollToDownload={scrollToDownload}/>
+      <Footer scrollToDownload={scrollToDownload} />
     </>
   );
 }

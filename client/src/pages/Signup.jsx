@@ -4,7 +4,6 @@ import Logo from "../images/logo.png";
 import Character from "../images/Character-sitting-chair.png";
 import Cactus from "../images/cactus.png";
 import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
 import validatePassword from "../utils/validatePassword";
 import validateEmail from "../utils/validateEmail";
 import validateUsername from "../utils/validateUsername";
@@ -49,7 +48,7 @@ function Signup() {
 
     try {
       setLoading(true);
-      const response = await fetch(`/auth/register`,
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/register`,
         {
           method: "POST",
           headers: {
@@ -81,7 +80,7 @@ function Signup() {
   }
 
   async function auth() {
-    const response = await fetch(`/request`,
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/request`,
       {
         method: "POST",
       }
